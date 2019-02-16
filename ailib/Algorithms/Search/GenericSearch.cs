@@ -3,7 +3,7 @@ using System.Collections.Generic;
 
 namespace ailib.Algorithms.Search
 {
-    internal abstract class GenericSearch<TState, TAction> : ISearchAlgorithm<TState, TAction>
+    public abstract class GenericSearch<TState, TAction> : ISearchAlgorithm<TState, TAction>
     {
         public bool IsFinished { get; private set; }
         public bool IsSolved { get; private set; }
