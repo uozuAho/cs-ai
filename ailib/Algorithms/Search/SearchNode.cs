@@ -8,7 +8,7 @@ namespace ailib.Algorithms.Search
         public TState State { get; }
 
         /// <summary>
-        /// Action that resulted in this state
+        /// Action that resulted in this state. Arbitrary value if parent is null.
         /// </summary>
         public TAction Action { get; }
         
