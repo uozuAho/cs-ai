@@ -84,5 +84,13 @@ namespace ailib.Algorithms.Search
                 }
             }
         }
+
+        public void Solve()
+        {
+            while (!IsFinished)
+            {
+                Step();
+            }
+        }
     }
 }

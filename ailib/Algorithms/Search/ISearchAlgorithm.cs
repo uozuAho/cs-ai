@@ -20,5 +20,10 @@ namespace ailib.Algorithms.Search
         /// Perform one step of the search
         /// </summary>
         void Step();
+
+        /// <summary>
+        /// Run until solved or no solution
+        /// </summary>
+        void Solve();
     }
 }
