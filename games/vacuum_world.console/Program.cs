@@ -1,5 +1,4 @@
 ﻿using System;
-using System.ComponentModel;
 using System.Diagnostics;
 using ailib.Algorithms.Search;
 
@@ -9,8 +8,7 @@ namespace vacuum_world.console
     {
         private static void Main(string[] args)
         {
-//            var size = int.Parse(args[0]);
-            var size = 5;
+            var size = int.Parse(args[0]);
             var initialState = new VacuumWorldState(size);
             RandomlyMakeSquaresDirty(initialState);
             
