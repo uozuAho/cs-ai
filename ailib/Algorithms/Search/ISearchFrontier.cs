@@ -1,13 +1,10 @@
-using System.Collections.Generic;
-
 namespace ailib.Algorithms.Search
 {
-    public interface ISearchFrontier<T>
+    internal interface ISearchFrontier<TState, TAction>
     {
-        void Push(T state);
-        T Pop();
-        bool Contains(T state);
-        IEnumerable<T> GetStates();
+        void Push(SearchNode<TState, TAction> state);
+        SearchNode<TState, TAction> Pop();
+        bool ContainsState(TState state);
         bool IsEmpty();
     }
 }

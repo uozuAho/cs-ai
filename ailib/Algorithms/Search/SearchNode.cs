@@ -18,7 +18,7 @@ namespace ailib.Algorithms.Search
         public SearchNode<TState, TAction> Parent { get; }
         
         /// Path cost at this node = parent.path_cost + step_cost(parent, action) */
-        public double PathCost;
+        public readonly double PathCost;
 
         public SearchNode(TState state,
             SearchNode<TState, TAction> parent,

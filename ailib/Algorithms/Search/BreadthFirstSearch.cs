@@ -4,8 +4,8 @@ namespace ailib.Algorithms.Search
     {
         public BreadthFirstSearch(ISearchProblem<TState, TAction> problem) : base(problem)
         {
-            _frontier = new FifoFrontier<SearchNode<TState, TAction>>();
-            _frontier.Push(new SearchNode<TState, TAction>(problem.InitialState, null, default(TAction), 0));
+            Frontier = new FifoFrontier<TState, TAction>();
+            Frontier.Push(new SearchNode<TState, TAction>(problem.InitialState, null, default(TAction), 0));
         }
     }
 }

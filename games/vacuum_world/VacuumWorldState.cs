@@ -4,7 +4,7 @@ using System.Linq;
 
 namespace vacuum_world
 {
-    public class VacuumWorldState
+    public class VacuumWorldState : IEquatable<VacuumWorldState>
     {
         public int WorldSize => _squares.Count;
 
@@ -55,7 +55,78 @@ namespace vacuum_world
             BoundsCheck(y);
             return _squares[x][y];
         }
-        
+
+        public bool Equals(VacuumWorldState other)
+        {
+            if (ReferenceEquals(null, other)) return false;
+            if (ReferenceEquals(this, other)) return true;
+
+            return _vacuumPos.Equals(other._vacuumPos)
+                   && SquaresAreEqual(_squares, other._squares);
+        }
+
+        public override bool Equals(object obj)
+        {
+            if (ReferenceEquals(null, obj)) return false;
+            if (ReferenceEquals(this, obj)) return true;
+            if (obj.GetType() != GetType()) return false;
+            
+            return Equals((VacuumWorldState) obj);
+        }
+
+        public override int GetHashCode()
+        {
+            unchecked
+            {
+                return (_vacuumPos.GetHashCode() * 397) ^ GetSquaresHashCode();
+            }
+        }
+
+        private int GetSquaresHashCode()
+        {
+            var hashCode = 17;
+            
+            for (var i = 0; i < WorldSize; i++)
+            {
+                for (var j = 0; j < WorldSize; j++)
+                {
+                    unchecked
+                    {
+                        hashCode += _squares[i][j].IsDirty.GetHashCode();
+                    }
+                }
+            }
+
+            return hashCode;
+        }
+
+        public static bool operator ==(VacuumWorldState left, VacuumWorldState right)
+        {
+            return Equals(left, right);
+        }
+
+        public static bool operator !=(VacuumWorldState left, VacuumWorldState right)
+        {
+            return !Equals(left, right);
+        }
+
+        private static bool SquaresAreEqual(IReadOnlyList<List<Square>> squaresA, IReadOnlyList<List<Square>> squaresB)
+        {
+            if (squaresA.Count != squaresB.Count) return false;
+
+            for (var i = 0; i < squaresA.Count; i++)
+            {
+                if (squaresA[i].Count != squaresB[i].Count) return false;
+                
+                for (var j = 0; j < squaresA.Count; j++)
+                {
+                    if (squaresA[i][j].IsDirty != squaresB[i][j].IsDirty) return false;
+                }
+            }
+
+            return true;
+        }
+
         private void BoundsCheck(Point2D pos)
         {
             BoundsCheck(pos.X);
@@ -73,7 +144,7 @@ namespace vacuum_world
 
     public class Square
     {
-        public bool IsDirty { get; set; } = false;
+        public bool IsDirty { get; set; }
     }
 
     public struct Point2D

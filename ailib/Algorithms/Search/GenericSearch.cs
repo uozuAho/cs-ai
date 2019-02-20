@@ -9,13 +9,13 @@ namespace ailib.Algorithms.Search
         public bool IsSolved { get; private set; }
         public TState CurrentState { get; private set; }
 
-        protected ISearchFrontier<SearchNode<TState, TAction>> _frontier;
+        internal ISearchFrontier<TState, TAction> Frontier;
         
-        private ISearchProblem<TState, TAction> _problem;
+        private readonly ISearchProblem<TState, TAction> _problem;
         private readonly Dictionary<TState, SearchNode<TState, TAction>> _explored;
         private SearchNode<TState, TAction> _goal;
 
-        protected GenericSearch(ISearchProblem<TState, TAction> problem)
+        internal GenericSearch(ISearchProblem<TState, TAction> problem)
         {
             _problem = problem;
             CurrentState = problem.InitialState;
@@ -48,17 +48,18 @@ namespace ailib.Algorithms.Search
         public void Step()
         {
             if (IsFinished) return;
-            if (_frontier.IsEmpty())
-            {
-                IsFinished = true;
-                return;
-            }
+            
+            SearchNode<TState, TAction> node;
 
-            var node = _frontier.Pop();
-            while (node != null  && _explored.ContainsKey(node.State))
+            do
             {
-                node = _frontier.Pop();
-            }
+                if (Frontier.IsEmpty())
+                {
+                    IsFinished = true;
+                    return;
+                }
+                node = Frontier.Pop();
+            } while (_explored.ContainsKey(node.State));
 
             _explored[node.State] = node;
             CurrentState = node.State;
@@ -68,19 +69,20 @@ namespace ailib.Algorithms.Search
                 var childState = _problem.DoAction(node.State, action);
                 var childCost = node.PathCost + _problem.PathCost(node.State, action);
                 var child = new SearchNode<TState, TAction>(childState, node, action, childCost);
-                if (!_explored.ContainsKey(childState) && !_frontier.Contains(child)) {
-                    if (_problem.IsGoal(childState)) {
-                        _goal = child;
-                        CurrentState = childState;
-                        IsFinished = true;
-                        IsSolved = true;
-                        // add goal to explored to allow this.getSolutionTo(goal)
-                        _explored[childState] = child;
-                    }
-                    else
-                    {
-                        _frontier.Push(child);
-                    }
+                
+                if (_explored.ContainsKey(childState) || Frontier.ContainsState(childState)) continue;
+                
+                if (_problem.IsGoal(childState)) {
+                    _goal = child;
+                    CurrentState = childState;
+                    IsFinished = true;
+                    IsSolved = true;
+                    // add goal to explored to allow this.getSolutionTo(goal)
+                    _explored[childState] = child;
+                }
+                else
+                {
+                    Frontier.Push(child);
                 }
             }
         }

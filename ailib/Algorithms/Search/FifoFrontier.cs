@@ -2,47 +2,33 @@ using System.Collections.Generic;
 
 namespace ailib.Algorithms.Search
 {
-    public class FifoFrontier<T> : ISearchFrontier<T>
+    internal class FifoFrontier<TState, TAction> : ISearchFrontier<TState, TAction>
     {
-        private readonly Queue<T> _queue;
-        private readonly HashSet<T> _set;
+        private readonly Queue<SearchNode<TState, TAction>> _queue;
+        private readonly HashSet<TState> _states;
 
         public FifoFrontier()
         {
-            _queue = new Queue<T>();
-            _set = new HashSet<T>();
+            _queue = new Queue<SearchNode<TState, TAction>>();
+            _states = new HashSet<TState>();
         }
         
-        public void Push(T state)
+        public void Push(SearchNode<TState, TAction> node)
         {
-            _set.Add(state);
-            _queue.Enqueue(state);
+            _states.Add(node.State);
+            _queue.Enqueue(node);
         }
 
-        public T Pop()
+        public SearchNode<TState, TAction> Pop()
         {
-            var item = _queue.Dequeue();
-            _set.Remove(item);
-            return item;
+            var node = _queue.Dequeue();
+            _states.Remove(node.State);
+            return node;
         }
 
-        public bool Contains(T state)
+        public bool ContainsState(TState state)
         {
-            return _set.Contains(state);
-        }
-
-        public IEnumerable<T> GetStates()
-        {
-            using (var enumerator = _queue.GetEnumerator())
-            {
-                if (enumerator.Current == null) yield break;
-
-                while (enumerator.Current != null)
-                {
-                    yield return enumerator.Current;
-                    enumerator.MoveNext();
-                }                
-            }
+            return _states.Contains(state);
         }
 
         public bool IsEmpty()
