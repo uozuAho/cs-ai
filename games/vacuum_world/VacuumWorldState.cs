@@ -1,6 +1,7 @@
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Text;
 
 namespace vacuum_world
 {
@@ -139,6 +140,29 @@ namespace vacuum_world
             {
                 throw new IndexOutOfRangeException();
             }
+        }
+        
+        public override string ToString()
+        {
+            var sb = new StringBuilder();
+            
+            for (var i = 0; i < WorldSize; i++)
+            {
+                for (var j = 0; j < WorldSize; j++)
+                {
+                    if (VacuumPos.Equals(new Point2D(i, j)))
+                    {
+                        sb.Append("V");
+                    }
+                    else
+                    {
+                        sb.Append(GetSquare(i, j).IsDirty ? "X" : ".");
+                    }
+                }
+                sb.AppendLine();
+            }
+
+            return sb.ToString();
         }
     }
 
