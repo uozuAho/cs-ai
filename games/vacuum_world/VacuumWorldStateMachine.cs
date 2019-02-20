@@ -15,6 +15,8 @@ namespace vacuum_world
             {
                 {VacuumWorldAction.Left, DoLeft},
                 {VacuumWorldAction.Right, DoRight},
+                {VacuumWorldAction.Down, DoDown},
+                {VacuumWorldAction.Up, DoUp},
                 {VacuumWorldAction.Suck, DoSuck}
             };
 
@@ -23,10 +25,22 @@ namespace vacuum_world
             _state = state.Clone();
         }
 
+        /// <summary>
+        /// Perform the action and update the state machine
+        /// </summary>
         public void DoAction(VacuumWorldAction action)
         {
+            var newState = PeekAction(_state, action);
+            _state = newState;
+        }
+
+        /// <summary>
+        /// Get the resultant state from performing the given action on the given state
+        /// </summary>
+        public static VacuumWorldState PeekAction(VacuumWorldState state, VacuumWorldAction action)
+        {
             var handler = ActionHandlers[action];
-            _state = handler(_state);
+            return handler(state);
         }
 
         private static VacuumWorldState DoLeft(VacuumWorldState state) 
@@ -45,6 +59,26 @@ namespace vacuum_world
             if (newState.VacuumPos.X < state.WorldSize - 1)
             {
                 newState.VacuumPos = new Point2D(state.VacuumPos.X + 1, state.VacuumPos.Y);
+            }
+            return newState;
+        }
+        
+        private static VacuumWorldState DoDown(VacuumWorldState state) 
+        {
+            var newState = state.Clone();
+            if (newState.VacuumPos.Y < state.WorldSize - 1)
+            {
+                newState.VacuumPos = new Point2D(state.VacuumPos.X, state.VacuumPos.Y + 1);
+            }
+            return newState;
+        }
+        
+        private static VacuumWorldState DoUp(VacuumWorldState state) 
+        {
+            var newState = state.Clone();
+            if (newState.VacuumPos.Y > 0)
+            {
+                newState.VacuumPos = new Point2D(state.VacuumPos.X, state.VacuumPos.Y - 1);
             }
             return newState;
         }
