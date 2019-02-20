@@ -40,6 +40,13 @@ namespace ailib.Algorithms.Search
             return actions;
         }
 
+        public IEnumerable<TAction> GetSolution()
+        {
+            if (!IsSolved) throw new InvalidOperationException("No solution!");
+            
+            return GetSolutionTo(CurrentState);
+        }
+
         public bool IsExplored(TState state)
         {
             return _explored.ContainsKey(state);

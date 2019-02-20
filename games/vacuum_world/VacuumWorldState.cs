@@ -146,17 +146,17 @@ namespace vacuum_world
         {
             var sb = new StringBuilder();
             
-            for (var i = 0; i < WorldSize; i++)
+            for (var y = 0; y < WorldSize; y++)
             {
-                for (var j = 0; j < WorldSize; j++)
+                for (var x = 0; x < WorldSize; x++)
                 {
-                    if (VacuumPos.Equals(new Point2D(i, j)))
+                    if (VacuumPos.Equals(new Point2D(x, y)))
                     {
                         sb.Append("V");
                     }
                     else
                     {
-                        sb.Append(GetSquare(i, j).IsDirty ? "X" : ".");
+                        sb.Append(GetSquare(x, y).IsDirty ? "X" : ".");
                     }
                 }
                 sb.AppendLine();

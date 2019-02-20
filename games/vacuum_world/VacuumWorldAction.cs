@@ -4,6 +4,8 @@ namespace vacuum_world
     {
         Left,
         Right,
+        Down,
+        Up,
         Suck
     }
 }

@@ -9,12 +9,9 @@ namespace vacuum_world
     {
         public VacuumWorldState InitialState { get; }
         
-        private readonly VacuumWorldStateMachine _stateMachine;
-
         public VacuumWorldSearchProblem(VacuumWorldState initialState)
         {
             InitialState = initialState;
-            _stateMachine = new VacuumWorldStateMachine(initialState);
         }
         
         public IEnumerable<VacuumWorldAction> GetActions(VacuumWorldState state)
@@ -24,8 +21,7 @@ namespace vacuum_world
 
         public VacuumWorldState DoAction(VacuumWorldState state, VacuumWorldAction action)
         {
-            _stateMachine.DoAction(action);
-            return _stateMachine.State;
+            return VacuumWorldStateMachine.PeekAction(state, action);
         }
 
         public bool IsGoal(VacuumWorldState state)

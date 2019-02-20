@@ -1,4 +1,6 @@
 ﻿using System;
+using System.ComponentModel;
+using System.Diagnostics;
 using ailib.Algorithms.Search;
 
 namespace vacuum_world.console
@@ -8,33 +10,38 @@ namespace vacuum_world.console
         private static void Main(string[] args)
         {
 //            var size = int.Parse(args[0]);
-            var size = 3;
-            var state = new VacuumWorldState(size);
-            RandomlyMakeSquaresDirty(state);
+            var size = 5;
+            var initialState = new VacuumWorldState(size);
+            RandomlyMakeSquaresDirty(initialState);
             
-            DrawWorld(state);
-
-            var problem = new VacuumWorldSearchProblem(state);
+            var problem = new VacuumWorldSearchProblem(initialState);
             var bfs = new BreadthFirstSearch<VacuumWorldState, VacuumWorldAction>(problem);
 
-            while (true)
+            var stopwatch = Stopwatch.StartNew();
+            bfs.Solve();
+            var solveTimeMs = stopwatch.ElapsedMilliseconds;
+            
+            Console.WriteLine($"Ran BFS in {solveTimeMs}ms");
+
+            if (!bfs.IsSolved)
             {
+                Console.WriteLine("no solution!");
+                return;
+            }
+
+            var machine = new VacuumWorldStateMachine(initialState);
+
+            foreach (var action in bfs.GetSolution())
+            {
+                DrawWorld(machine.State);
                 var key = Console.ReadKey();
                 if (key.Key == ConsoleKey.Escape) break;
-                bfs.Step();
-                DrawWorld(bfs.CurrentState);
-                if (bfs.IsSolved)
-                {
-                    Console.WriteLine("done!");
-                    break;
-                }
-
-                if (bfs.IsFinished)
-                {
-                    Console.WriteLine("no solution!");
-                    break;
-                }
+                machine.DoAction(action);
             }
+            
+            DrawWorld(machine.State);
+            
+            Console.WriteLine("all clean!");
         }
 
         private static void RandomlyMakeSquaresDirty(VacuumWorldState state)

@@ -39,7 +39,14 @@ namespace vacuum_world.test
         public void All_actions_should_be_available()
         {
             var actions = _problem.GetActions(_initialState);
-            var expectedActions = new[] {VacuumWorldAction.Suck, VacuumWorldAction.Left, VacuumWorldAction.Right};
+            var expectedActions = new[]
+            {
+                VacuumWorldAction.Suck, 
+                VacuumWorldAction.Left, 
+                VacuumWorldAction.Right,
+                VacuumWorldAction.Down,
+                VacuumWorldAction.Up
+            };
 
             CollectionAssert.AreEquivalent(expectedActions, actions);
         }

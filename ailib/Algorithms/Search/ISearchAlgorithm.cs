@@ -13,6 +13,11 @@ namespace ailib.Algorithms.Search
         /// Throws error if given state not explored 
         /// </summary>
         IEnumerable<TAction> GetSolutionTo(TState state);
+        
+        /// <summary>
+        /// Get the actions required to reach the first goal found.
+        /// </summary>
+        IEnumerable<TAction> GetSolution();
 
         bool IsExplored(TState state);
 
