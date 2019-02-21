@@ -50,7 +50,7 @@ namespace vacuum_world.console
             {
                 for (var j = 0; j < state.WorldSize; j++)
                 {
-                    state.GetSquare(i, j).IsDirty = random.NextDouble() < 0.5;
+                    state.SetSquareIsDirty(i, j, random.NextDouble() < 0.5);
                 }
             }
         }
