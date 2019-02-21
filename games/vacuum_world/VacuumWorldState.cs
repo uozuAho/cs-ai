@@ -87,14 +87,15 @@ namespace vacuum_world
         private int GetSquaresHashCode()
         {
             var hashCode = 17;
-            
-            for (var y = 0; y < WorldSize; y++)
+            var size = WorldSize;
+
+            for (var y = 0; y < size; y++)
             {
-                for (var x = 0; x < WorldSize; x++)
+                for (var x = 0; x < size; x++)
                 {
                     unchecked
                     {
-                        hashCode += (_squares[x, y] ? 1 : 0) << (y * WorldSize + x);
+                        hashCode += (_squares[x, y] ? 1 : 0) << (y * size + x);
                     }
                 }
             }
