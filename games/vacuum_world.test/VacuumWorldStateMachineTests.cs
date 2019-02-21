@@ -13,13 +13,13 @@ namespace vacuum_world.test
         public void Suck_dirty_should_make_it_clean()
         {
             var state = new VacuumWorldState(3);
-            state.GetSquare(1, 1).IsDirty = true;
+            state.SetSquareIsDirty(1, 1, true);
             state.VacuumPos = new Point2D(1, 1);
             var machine = new VacuumWorldStateMachine(state);
             
             machine.DoAction(VacuumWorldAction.Suck);
          
-            Assert.IsFalse(machine.State.GetSquare(1, 1).IsDirty);
+            Assert.IsFalse(machine.State.SquareIsDirty(1, 1));
         }
         
         [Test]

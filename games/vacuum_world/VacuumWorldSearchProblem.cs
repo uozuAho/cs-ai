@@ -40,7 +40,7 @@ namespace vacuum_world
             {
                 for (var j = 0; j < state.WorldSize; j++)
                 {
-                    if (state.GetSquare(i, j).IsDirty) return false;
+                    if (state.SquareIsDirty(i, j)) return false;
                 }
             }
 

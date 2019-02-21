@@ -1,13 +1,11 @@
 using System;
-using System.Collections.Generic;
-using System.Linq;
 using System.Text;
 
 namespace vacuum_world
 {
     public class VacuumWorldState : IEquatable<VacuumWorldState>
     {
-        public int WorldSize => _squares.Count;
+        public int WorldSize { get; }
 
         private Point2D _vacuumPos;
         public Point2D VacuumPos
@@ -20,41 +18,44 @@ namespace vacuum_world
             }
         }
         
-        /** NxN array of floor squares in the world */
-        private List<List<Square>> _squares;
+        /** NxN array of floor squares in the world. value = isDirty? */
+        private readonly bool[,] _squares;
 
         public VacuumWorldState(int size)
         {
-            _squares = new List<List<Square>>();
-            for (var i = 0; i < size; i++)
-            {
-                _squares.Add(Enumerable.Range(0, size).Select(x => new Square()).ToList());
-            }
+            WorldSize = size;
+            _squares = new bool[size, size];
         }
     
         public VacuumWorldState Clone()
         {
-            var size = _squares.Count;
-            var copy = new VacuumWorldState(_squares.Count) {_squares = new List<List<Square>>()};
-            for (var i = 0; i < size; i++)
+            var copy = new VacuumWorldState(WorldSize) {VacuumPos = VacuumPos};
+
+            for (var y = 0; y < WorldSize; y++)
             {
-                copy._squares.Add(_squares[i].Select(s => new Square {IsDirty = s.IsDirty}).ToList());
+                for (var x = 0; x < WorldSize; x++)
+                {
+                    copy._squares[x, y] = _squares[x, y];
+                }
             }
-            copy.VacuumPos = VacuumPos;
+
             return copy;
         }
 
-        public Square GetSquare(Point2D pos)
-        {
-            BoundsCheck(pos);
-            return _squares[pos.X][pos.Y];
-        }
-        
-        public Square GetSquare(int x, int y)
+        public bool SquareIsDirty(int x, int y)
         {
             BoundsCheck(x);
             BoundsCheck(y);
-            return _squares[x][y];
+
+            return _squares[x, y];
+        }
+
+        public void SetSquareIsDirty(int x, int y, bool isDirty)
+        {
+            BoundsCheck(x);
+            BoundsCheck(y);
+
+            _squares[x, y] = isDirty;
         }
 
         public bool Equals(VacuumWorldState other)
@@ -87,13 +88,13 @@ namespace vacuum_world
         {
             var hashCode = 17;
             
-            for (var i = 0; i < WorldSize; i++)
+            for (var y = 0; y < WorldSize; y++)
             {
-                for (var j = 0; j < WorldSize; j++)
+                for (var x = 0; x < WorldSize; x++)
                 {
                     unchecked
                     {
-                        hashCode += _squares[i][j].IsDirty.GetHashCode();
+                        hashCode += (_squares[x, y] ? 1 : 0) << (y * WorldSize + x);
                     }
                 }
             }
@@ -111,17 +112,16 @@ namespace vacuum_world
             return !Equals(left, right);
         }
 
-        private static bool SquaresAreEqual(IReadOnlyList<List<Square>> squaresA, IReadOnlyList<List<Square>> squaresB)
+        private static bool SquaresAreEqual(bool[,] squaresA, bool [,] squaresB)
         {
-            if (squaresA.Count != squaresB.Count) return false;
+            // assume same size
+            var size = squaresA.GetLength(0);
 
-            for (var i = 0; i < squaresA.Count; i++)
+            for (var y = 0; y < size; y++)
             {
-                if (squaresA[i].Count != squaresB[i].Count) return false;
-                
-                for (var j = 0; j < squaresA.Count; j++)
+                for (var x = 0; x < size; x++)
                 {
-                    if (squaresA[i][j].IsDirty != squaresB[i][j].IsDirty) return false;
+                    if (squaresA[x, y] != squaresB[x, y]) return false;
                 }
             }
 
@@ -136,7 +136,7 @@ namespace vacuum_world
 
         private void BoundsCheck(int n)
         {
-            if (n < 0 || n > _squares.Count)
+            if (n < 0 || n >= WorldSize)
             {
                 throw new IndexOutOfRangeException();
             }
@@ -156,7 +156,7 @@ namespace vacuum_world
                     }
                     else
                     {
-                        sb.Append(GetSquare(x, y).IsDirty ? "X" : ".");
+                        sb.Append(_squares[x, y] ? "X" : ".");
                     }
                 }
                 sb.AppendLine();
@@ -164,11 +164,6 @@ namespace vacuum_world
 
             return sb.ToString();
         }
-    }
-
-    public class Square
-    {
-        public bool IsDirty { get; set; }
     }
 
     public struct Point2D

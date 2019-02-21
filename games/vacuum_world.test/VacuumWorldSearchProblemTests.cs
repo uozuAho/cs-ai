@@ -11,8 +11,8 @@ namespace vacuum_world.test
         public void Setup()
         {
             _initialState = new VacuumWorldState(2);
-            _initialState.GetSquare(0, 0).IsDirty = true;
-            _initialState.GetSquare(0, 1).IsDirty = true;
+            _initialState.SetSquareIsDirty(0, 0, true);
+            _initialState.SetSquareIsDirty(0, 1, true);
             
             _problem = new VacuumWorldSearchProblem(_initialState);
         }
