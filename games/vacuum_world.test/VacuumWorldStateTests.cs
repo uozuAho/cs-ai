@@ -2,6 +2,7 @@ using NUnit.Framework;
 
 namespace vacuum_world.test
 {
+    [TestFixture]
     public class VacuumWorldStateTests
     {
         [Test]
@@ -21,9 +22,9 @@ namespace vacuum_world.test
             var b = new VacuumWorldState(3);
             
             a.VacuumPos = new Point2D(1, 2);
-            a.GetSquare(1, 1).IsDirty = true;
+            a.SetSquareIsDirty(1, 1, true);
             b.VacuumPos = new Point2D(1, 2);
-            b.GetSquare(1, 1).IsDirty = true;
+            b.SetSquareIsDirty(1, 1, true);
             
             Assert.AreEqual(a, b);
             Assert.AreEqual(a.GetHashCode(), b.GetHashCode());
@@ -47,7 +48,7 @@ namespace vacuum_world.test
             var a = new VacuumWorldState(3);
             var b = new VacuumWorldState(3);
 
-            a.GetSquare(1, 1).IsDirty = true;
+            a.SetSquareIsDirty(1, 1, true);
             
             Assert.AreNotEqual(a, b);
             Assert.AreNotEqual(a.GetHashCode(), b.GetHashCode());

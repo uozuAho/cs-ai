@@ -86,7 +86,7 @@ namespace vacuum_world
         private static VacuumWorldState DoSuck(VacuumWorldState state) 
         {
             var newState = state.Clone();
-            newState.GetSquare(newState.VacuumPos).IsDirty = false;
+            newState.SetSquareIsDirty(newState.VacuumPos.X, newState.VacuumPos.Y, false);
             return newState;
         }
     }
