@@ -1,4 +1,5 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using ailib.DataStructures;
 using NUnit.Framework;
 
@@ -6,7 +7,7 @@ namespace ailib.test.DataStructures
 {
     public class BinaryHeapTests
     {
-        private BinaryHeap<int> h;
+        private BinaryHeap<int> _emptyIntHeap;
 
         private class IntComparer : IComparer<int>
         {
@@ -19,82 +20,77 @@ namespace ailib.test.DataStructures
         [SetUp]
         public void Setup()
         {
-            h = new BinaryHeap<int>(new IntComparer());
+            _emptyIntHeap = new BinaryHeap<int>(new IntComparer());
         }
 
         [Test]
-        public void Should_throw_on_emtpy_peek()
+        public void Should_throw_on_empty_peek()
         {
-            Assert.That(() => h.PeekMin(), Throws.InvalidOperationException);
+            Assert.That(() => _emptyIntHeap.PeekMin(), Throws.InvalidOperationException);
         }
 
         [Test]
-        public void Should_throw_on_emtpy_removes()
+        public void Should_throw_on_empty_removes()
         {
-            Assert.That(() => h.Remove(1), Throws.InvalidOperationException);
-            Assert.That(() => h.RemoveMin(), Throws.InvalidOperationException);
+            Assert.That(() => _emptyIntHeap.Remove(1), Throws.InvalidOperationException);
+            Assert.That(() => _emptyIntHeap.RemoveMin(), Throws.InvalidOperationException);
         }
 
         [Test]
         public void Should_have_0_size_when_empty()
         {
-            Assert.AreEqual(0, h.Size);
+            Assert.AreEqual(0, _emptyIntHeap.Size);
         }
 
         [Test]
         public void Should_return_false_on_empty_contains()
         {
-            Assert.IsFalse(h.Contains(32));
+            Assert.IsFalse(_emptyIntHeap.Contains(32));
         }
 
         [Test]
-        public void Should_return_false_on_empty_contains()
+        public void Add_and_remove_single()
         {
-            Assert.IsFalse(h.Contains(32));
+            _emptyIntHeap.Add(55);
+            Assert.IsTrue(_emptyIntHeap.Contains(55));
+            Assert.AreEqual(55, _emptyIntHeap.PeekMin());
+            Assert.AreEqual(1, _emptyIntHeap.Size);
+            Assert.AreEqual(55, _emptyIntHeap.RemoveMin());
+            Assert.AreEqual(0, _emptyIntHeap.Size);
+            Assert.IsFalse(_emptyIntHeap.Contains(55));
         }
 
-            it('add and remove single', function() {
-                h.add(55);
-                expect(h.contains(55)).toBe(true);
-                expect(h.peekMin()).toBe(55);
-                expect(h.size()).toBe(1);
-                expect(h.removeMin()).toBe(55);
-                expect(h.size()).toBe(0);
-                expect(h.contains(55)).toBe(false);
-            });
+        [Test]
+        public void Add_and_remove()
+        {
+            _emptyIntHeap.Add(1);
+            _emptyIntHeap.Add(2);
+            _emptyIntHeap.Add(3);
+            Assert.AreEqual(1, _emptyIntHeap.RemoveMin());
+            Assert.AreEqual(2, _emptyIntHeap.RemoveMin());
+            Assert.AreEqual(3, _emptyIntHeap.RemoveMin());
+        }
 
-            it('add and remove sequence', function() {
-                h.add(1);
-                h.add(2);
-                h.add(3);
-                expect(h.removeMin()).toBe(1);
-                expect(h.removeMin()).toBe(2);
-                expect(h.removeMin()).toBe(3);
-            });
+        [Test]
+        public void Add_reverse_should_remove_in_priority_order()
+        {
+            _emptyIntHeap.Add(3);
+            _emptyIntHeap.Add(2);
+            _emptyIntHeap.Add(1);
+            Assert.AreEqual(1, _emptyIntHeap.RemoveMin());
+            Assert.AreEqual(2, _emptyIntHeap.RemoveMin());
+            Assert.AreEqual(3, _emptyIntHeap.RemoveMin());
+        }
 
-            it('add and remove reverse sequence', function() {
-                h.add(3);
-                h.add(2);
-                h.add(1);
-                expect(h.removeMin()).toBe(1);
-                expect(h.removeMin()).toBe(2);
-                expect(h.removeMin()).toBe(3);
-            });
-
-            it('should throw on removing non-existent item', function() {
-                h.add(3);
-                expect(() => h.remove(4)).toThrow();
-            });
-
-            it('remove', function() {
-                h.add(3);
-                h.add(2);
-                h.add(1);
-                h.remove(2);
-                expect(h.peekMin()).toBe(1);
-                expect(h.size()).toBe(2);
-            });
-        });
-
+        [Test]
+        public void Remove_middle_item()
+        {
+            _emptyIntHeap.Add(1);
+            _emptyIntHeap.Add(2);
+            _emptyIntHeap.Add(3);
+            _emptyIntHeap.Remove(2);
+            Assert.AreEqual(1, _emptyIntHeap.PeekMin());
+            Assert.AreEqual(2, _emptyIntHeap.Size);
+        }
     }
 }

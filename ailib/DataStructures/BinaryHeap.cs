@@ -6,8 +6,9 @@ namespace ailib.DataStructures
     /// BinaryHeap, implemented with array storage
     public class BinaryHeap<T>
     {
-        public int Size { get; private set; }
-        private readonly T[] _buf;
+        public int Size => _buf.Count;
+
+        private readonly List<T> _buf;
         private readonly IComparer<T> _comparer;
 
         /**
@@ -16,12 +17,13 @@ namespace ailib.DataStructures
          */
         public BinaryHeap(IComparer<T> comparer)
         {
+            _buf = new List<T>();
             _comparer = comparer;
         }
 
         public void Add(T item)
         {
-            _buf[Size++] = item;
+            _buf.Add(item);
             Swim(Size - 1);
         }
 
@@ -29,24 +31,22 @@ namespace ailib.DataStructures
         {
             if (Size == 0) throw new InvalidOperationException("cannot remove from empty");
 
-            var idx = indexOf(item, 0);
+            var idx = IndexOf(item, 0);
 
-            if (idx == -1)
-            {
-                throw new InvalidOperationException("cannot remove item not in heap");
-            }
+            if (idx == -1) throw new InvalidOperationException("cannot remove item not in heap");
 
             RemoveAtIdx(idx);
         }
 
         public bool Contains(T item)
         {
-            return indexOf(item, 0) >= 0;
+            return IndexOf(item, 0) >= 0;
         }
 
         /** Remove the minimum item */
         public T RemoveMin()
         {
+            if (Size == 0) throw new InvalidOperationException("cannot remove from empty");
             return RemoveAtIdx(0);
         }
 
@@ -63,7 +63,9 @@ namespace ailib.DataStructures
 
             // swap item at idx and last item
             var temp = _buf[idx];
-            _buf[idx] = _buf[--Size];
+            var lastIdx = Size - 1;
+            _buf[idx] = _buf[lastIdx];
+            _buf.RemoveAt(lastIdx);
             // sink last item placed at idx
             Sink(idx);
             return temp;
@@ -72,28 +74,26 @@ namespace ailib.DataStructures
         /** Return the first found index of the given item, else -1
          *  @param subroot node to start the search.
          */
-        private int indexOf(T item, int subroot)
+        private int IndexOf(T item, int subRoot)
         {
-            if (subroot >= Size) {
+            if (subRoot >= Size) {
                 // gone past leaf
                 return -1;
             }
-            if (_comparer.Compare(item, this._buf[subroot]) == -1)
+            if (_comparer.Compare(item, _buf[subRoot]) == -1)
             {
                 // item is less than current node - will not be in this subtree
                 return -1;
             }
-            if (item.Equals(_buf[subroot]))
+            if (item.Equals(_buf[subRoot]))
             {
-                return subroot;
+                return subRoot;
             }
-            else
-            {
-                var idx = indexOf(item, subroot * 2 + 1);
-                return idx >= 0
-                    ? idx
-                    : this.indexOf(item, subroot * 2 + 2);
-            }
+
+            var idx = IndexOf(item, subRoot * 2 + 1);
+            return idx >= 0
+                ? idx
+                : IndexOf(item, subRoot * 2 + 2);
         }
 
         private void Swim(int idx)
