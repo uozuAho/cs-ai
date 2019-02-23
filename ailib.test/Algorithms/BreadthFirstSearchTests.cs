@@ -4,7 +4,7 @@ using ailib.Algorithms.Search;
 using FakeItEasy;
 using NUnit.Framework;
 
-namespace ailib.test
+namespace ailib.test.Algorithms
 {
     public class BreadthFirstSearchTests
     {
