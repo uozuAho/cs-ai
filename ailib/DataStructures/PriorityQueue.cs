@@ -2,23 +2,26 @@ using System.Collections.Generic;
 
 namespace ailib.DataStructures
 {
+    /// <summary>
+    /// Queue that dequeues minimum item first
+    /// </summary>
     public class PriorityQueue<T>
     {
-        private readonly BinaryHeap<T> _heap;
+        private readonly BinaryMinHeap<T> _minHeap;
 
         public PriorityQueue(IComparer<T> comparer)
         {
-            _heap = new BinaryHeap<T>(comparer);
+            _minHeap = new BinaryMinHeap<T>(comparer);
         }
 
         public void Push(T item)
         {
-            _heap.Add(item);
+            _minHeap.Add(item);
         }
 
         public T Pop()
         {
-            return _heap.RemoveMin();
+            return _minHeap.RemoveMin();
         }
     }
 }

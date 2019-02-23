@@ -3,19 +3,17 @@ using System.Collections.Generic;
 
 namespace ailib.DataStructures
 {
-    /// BinaryHeap, implemented with array storage
-    public class BinaryHeap<T>
+    /// <summary>
+    /// Standard binary 'min' heap. Smallest items (based on comparer) float to the top.
+    /// </summary>
+    public class BinaryMinHeap<T>
     {
         public int Size => _buf.Count;
 
         private readonly List<T> _buf;
         private readonly IComparer<T> _comparer;
 
-        /**
-         * @param compare Optional comparator. Default is a < b ? -1 : a > b ? 1 : 0.
-         *                Reverse this to make a max heap.
-         */
-        public BinaryHeap(IComparer<T> comparer)
+        public BinaryMinHeap(IComparer<T> comparer)
         {
             _buf = new List<T>();
             _comparer = comparer;
@@ -43,14 +41,12 @@ namespace ailib.DataStructures
             return IndexOf(item, 0) >= 0;
         }
 
-        /** Remove the minimum item */
         public T RemoveMin()
         {
             if (Size == 0) throw new InvalidOperationException("cannot remove from empty");
             return RemoveAtIdx(0);
         }
 
-        /** Get the minimum item without removing it */
         public T PeekMin()
         {
             if (Size == 0) throw new InvalidOperationException("cannot peek when empty");
@@ -71,9 +67,6 @@ namespace ailib.DataStructures
             return temp;
         }
 
-        /** Return the first found index of the given item, else -1
-         *  @param subroot node to start the search.
-         */
         private int IndexOf(T item, int subRoot)
         {
             if (subRoot >= Size) {
@@ -139,7 +132,6 @@ namespace ailib.DataStructures
             }
         }
 
-        /** swap items at given indexes */
         private void Swap(int idxA, int idxB)
         {
             var temp = _buf[idxA];

@@ -7,7 +7,7 @@ namespace ailib.test.DataStructures
 {
     public class BinaryHeapTests
     {
-        private BinaryHeap<int> _emptyIntHeap;
+        private BinaryMinHeap<int> _emptyIntMinHeap;
 
         private class IntComparer : IComparer<int>
         {
@@ -20,77 +20,77 @@ namespace ailib.test.DataStructures
         [SetUp]
         public void Setup()
         {
-            _emptyIntHeap = new BinaryHeap<int>(new IntComparer());
+            _emptyIntMinHeap = new BinaryMinHeap<int>(new IntComparer());
         }
 
         [Test]
         public void Should_throw_on_empty_peek()
         {
-            Assert.That(() => _emptyIntHeap.PeekMin(), Throws.InvalidOperationException);
+            Assert.That(() => _emptyIntMinHeap.PeekMin(), Throws.InvalidOperationException);
         }
 
         [Test]
         public void Should_throw_on_empty_removes()
         {
-            Assert.That(() => _emptyIntHeap.Remove(1), Throws.InvalidOperationException);
-            Assert.That(() => _emptyIntHeap.RemoveMin(), Throws.InvalidOperationException);
+            Assert.That(() => _emptyIntMinHeap.Remove(1), Throws.InvalidOperationException);
+            Assert.That(() => _emptyIntMinHeap.RemoveMin(), Throws.InvalidOperationException);
         }
 
         [Test]
         public void Should_have_0_size_when_empty()
         {
-            Assert.AreEqual(0, _emptyIntHeap.Size);
+            Assert.AreEqual(0, _emptyIntMinHeap.Size);
         }
 
         [Test]
         public void Should_return_false_on_empty_contains()
         {
-            Assert.IsFalse(_emptyIntHeap.Contains(32));
+            Assert.IsFalse(_emptyIntMinHeap.Contains(32));
         }
 
         [Test]
         public void Add_and_remove_single()
         {
-            _emptyIntHeap.Add(55);
-            Assert.IsTrue(_emptyIntHeap.Contains(55));
-            Assert.AreEqual(55, _emptyIntHeap.PeekMin());
-            Assert.AreEqual(1, _emptyIntHeap.Size);
-            Assert.AreEqual(55, _emptyIntHeap.RemoveMin());
-            Assert.AreEqual(0, _emptyIntHeap.Size);
-            Assert.IsFalse(_emptyIntHeap.Contains(55));
+            _emptyIntMinHeap.Add(55);
+            Assert.IsTrue(_emptyIntMinHeap.Contains(55));
+            Assert.AreEqual(55, _emptyIntMinHeap.PeekMin());
+            Assert.AreEqual(1, _emptyIntMinHeap.Size);
+            Assert.AreEqual(55, _emptyIntMinHeap.RemoveMin());
+            Assert.AreEqual(0, _emptyIntMinHeap.Size);
+            Assert.IsFalse(_emptyIntMinHeap.Contains(55));
         }
 
         [Test]
         public void Add_and_remove()
         {
-            _emptyIntHeap.Add(1);
-            _emptyIntHeap.Add(2);
-            _emptyIntHeap.Add(3);
-            Assert.AreEqual(1, _emptyIntHeap.RemoveMin());
-            Assert.AreEqual(2, _emptyIntHeap.RemoveMin());
-            Assert.AreEqual(3, _emptyIntHeap.RemoveMin());
+            _emptyIntMinHeap.Add(1);
+            _emptyIntMinHeap.Add(2);
+            _emptyIntMinHeap.Add(3);
+            Assert.AreEqual(1, _emptyIntMinHeap.RemoveMin());
+            Assert.AreEqual(2, _emptyIntMinHeap.RemoveMin());
+            Assert.AreEqual(3, _emptyIntMinHeap.RemoveMin());
         }
 
         [Test]
         public void Add_reverse_should_remove_in_priority_order()
         {
-            _emptyIntHeap.Add(3);
-            _emptyIntHeap.Add(2);
-            _emptyIntHeap.Add(1);
-            Assert.AreEqual(1, _emptyIntHeap.RemoveMin());
-            Assert.AreEqual(2, _emptyIntHeap.RemoveMin());
-            Assert.AreEqual(3, _emptyIntHeap.RemoveMin());
+            _emptyIntMinHeap.Add(3);
+            _emptyIntMinHeap.Add(2);
+            _emptyIntMinHeap.Add(1);
+            Assert.AreEqual(1, _emptyIntMinHeap.RemoveMin());
+            Assert.AreEqual(2, _emptyIntMinHeap.RemoveMin());
+            Assert.AreEqual(3, _emptyIntMinHeap.RemoveMin());
         }
 
         [Test]
         public void Remove_middle_item()
         {
-            _emptyIntHeap.Add(1);
-            _emptyIntHeap.Add(2);
-            _emptyIntHeap.Add(3);
-            _emptyIntHeap.Remove(2);
-            Assert.AreEqual(1, _emptyIntHeap.PeekMin());
-            Assert.AreEqual(2, _emptyIntHeap.Size);
+            _emptyIntMinHeap.Add(1);
+            _emptyIntMinHeap.Add(2);
+            _emptyIntMinHeap.Add(3);
+            _emptyIntMinHeap.Remove(2);
+            Assert.AreEqual(1, _emptyIntMinHeap.PeekMin());
+            Assert.AreEqual(2, _emptyIntMinHeap.Size);
         }
     }
 }
