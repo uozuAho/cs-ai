@@ -12,6 +12,7 @@ namespace ailib.Algorithms.Search
         public GreedyBestFirstSearch(ISearchProblem<TState, TAction> problem, Func<TState, int> heuristic) : base(problem)
         {
             _heuristic = heuristic;
+            Frontier.Push(new SearchNode<TState, TAction>(problem.InitialState, null, default(TAction), 0));
         }
 
         protected override int PriorityFunc(TState state)
