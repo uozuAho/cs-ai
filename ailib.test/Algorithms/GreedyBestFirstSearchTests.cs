@@ -14,7 +14,6 @@ namespace ailib.test.Algorithms
         public void Setup()
         {
             _problem = A.Fake<ISearchProblem<StateMock<int>, ActionMock<string>>>();
-            
         }
 
         [Test]
@@ -40,7 +39,7 @@ namespace ailib.test.Algorithms
             _search.Step();
             
             // assert
-            Assert.AreEqual(state1, _search.CurrentState);
+            Assert.AreEqual(state3, _search.CurrentState);
         }
     }
 }

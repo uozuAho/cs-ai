@@ -8,6 +8,8 @@ namespace ailib.Algorithms.Search
         
         TState CurrentState { get; }
         
+        int NumberOfExploredStates { get; }
+        
         /// <summary>
         /// Get the actions from the initial state to the given state.
         /// Throws error if given state not explored 
@@ -20,7 +22,7 @@ namespace ailib.Algorithms.Search
         IEnumerable<TAction> GetSolution();
 
         bool IsExplored(TState state);
-
+        
         /// <summary>
         /// Perform one step of the search
         /// </summary>
