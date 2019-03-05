@@ -27,7 +27,9 @@ namespace vacuum_world.console
             
             // greedy best first is much more efficient, but won't find an optimal solution, ie. number of
             // moves to clean all squares may be more than the minimum possible
-            var solver = new GreedyBestFirstSearch<VacuumWorldState, VacuumWorldAction>(problem, NumCleanSquares);
+//            var solver = new GreedyBestFirstSearch<VacuumWorldState, VacuumWorldAction>(problem, NumCleanSquares);
+            
+            var solver = new AStarSearch<VacuumWorldState, VacuumWorldAction>(problem, NumCleanSquares);
 
             var stopwatch = Stopwatch.StartNew();
             solver.Solve();
