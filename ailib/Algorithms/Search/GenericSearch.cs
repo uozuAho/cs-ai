@@ -8,6 +8,8 @@ namespace ailib.Algorithms.Search
         public bool IsFinished { get; private set; }
         public bool IsSolved { get; private set; }
         public TState CurrentState { get; private set; }
+        
+        public int NumberOfExploredStates => _explored.Count;
 
         internal ISearchFrontier<TState, TAction> Frontier;
         

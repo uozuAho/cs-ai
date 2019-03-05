@@ -9,19 +9,33 @@ namespace vacuum_world.console
         private static void Main(string[] args)
         {
             var size = int.Parse(args[0]);
+            
+            Console.WriteLine($"Finding cleaning solution for {size}x{size} world...");
+            
             var initialState = new VacuumWorldState(size);
             RandomlyMakeSquaresDirty(initialState);
             
             var problem = new VacuumWorldSearchProblem(initialState);
-            var bfs = new BreadthFirstSearch<VacuumWorldState, VacuumWorldAction>(problem);
+            
+            // bfs is too inefficient to solve more than ~5x5 worlds. For 5x5 world with all dirty squares, the number
+            // of possible states =
+            //       2    (square is dirty or clean)
+            //    ^ 25    (25 squares)
+            //    * 25    (25 possible vacuum locations)
+            //    = 838 860 800
+            // var solver = new BreadthFirstSearch<VacuumWorldState, VacuumWorldAction>(problem);
+            
+            // greedy best first is much more efficient, but won't find an optimal solution, ie. number of
+            // moves to clean all squares may be more than the minimum possible
+            var solver = new GreedyBestFirstSearch<VacuumWorldState, VacuumWorldAction>(problem, NumCleanSquares);
 
             var stopwatch = Stopwatch.StartNew();
-            bfs.Solve();
+            solver.Solve();
             var solveTimeMs = stopwatch.ElapsedMilliseconds;
             
-            Console.WriteLine($"Ran BFS in {solveTimeMs}ms");
+            Console.WriteLine($"Solver completed in {solveTimeMs}ms, explored {solver.NumberOfExploredStates} states");
 
-            if (!bfs.IsSolved)
+            if (!solver.IsSolved)
             {
                 Console.WriteLine("no solution!");
                 return;
@@ -29,7 +43,7 @@ namespace vacuum_world.console
 
             var machine = new VacuumWorldStateMachine(initialState);
 
-            foreach (var action in bfs.GetSolution())
+            foreach (var action in solver.GetSolution())
             {
                 DrawWorld(machine.State);
                 var key = Console.ReadKey();
@@ -58,6 +72,28 @@ namespace vacuum_world.console
         private static void DrawWorld(VacuumWorldState state)
         {
             Console.WriteLine(state);
+        }
+
+        private static int NumCleanSquares(VacuumWorldState state)
+        {
+            var numSquares = state.WorldSize * state.WorldSize;
+
+            return numSquares - NumDirtySquares(state);
+        }
+        
+        private static int NumDirtySquares(VacuumWorldState state)
+        {
+            var num = 0;
+            
+            for (var y = 0; y < state.WorldSize; y++)
+            {
+                for (var x = 0; x < state.WorldSize; x++)
+                {
+                    if (state.SquareIsDirty(x, y)) num++;
+                }
+            }
+
+            return num;
         }
     }
 }
