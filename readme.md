@@ -6,4 +6,4 @@ See other ai projects (todo: links)
 
 # todo
 
-astar solutions to vacuum world don't look optimal. log length of solution
+- make binheap selectable min/max? may make priority queue, best first searches more intuitive

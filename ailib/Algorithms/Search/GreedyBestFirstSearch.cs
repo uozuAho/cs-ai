@@ -18,7 +18,7 @@ namespace ailib.Algorithms.Search
             Frontier.Push(new SearchNode<TState, TAction>(problem.InitialState, null, default(TAction), 0));
         }
 
-        protected override int PriorityFunc(SearchNode<TState, TAction> node)
+        protected override double PriorityFunc(SearchNode<TState, TAction> node)
         {
             return _scoreState(node.State);
         }

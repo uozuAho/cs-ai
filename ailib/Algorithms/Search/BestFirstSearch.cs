@@ -11,7 +11,7 @@ namespace ailib.Algorithms.Search
             Frontier = new PriorityFrontier<TState, TAction>(nodeComparer);
         }
         
-        protected abstract int PriorityFunc(SearchNode<TState, TAction> node);
+        protected abstract double PriorityFunc(SearchNode<TState, TAction> node);
 
         private int CompareStates(SearchNode<TState, TAction> a, SearchNode<TState, TAction> b)
         {

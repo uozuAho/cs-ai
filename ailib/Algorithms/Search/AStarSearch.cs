@@ -22,10 +22,10 @@ namespace ailib.Algorithms.Search
         /// = g(n)  path cost of n
         /// + h(n)  plus heuristic (score) of n
         /// </summary>
-        protected override int PriorityFunc(SearchNode<TState, TAction> node)
+        protected override double PriorityFunc(SearchNode<TState, TAction> node)
         {
             // todo: should priority func be a double?
-            return (int) node.PathCost + _scoreState(node.State);
+            return node.PathCost + _scoreState(node.State);
         }
     }
 }
