@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Diagnostics;
+using System.Linq;
 using ailib.Algorithms.Search;
 
 namespace vacuum_world.console
@@ -27,9 +28,12 @@ namespace vacuum_world.console
             
             // greedy best first is much more efficient, but won't find an optimal solution, ie. number of
             // moves to clean all squares may be more than the minimum possible
-//            var solver = new GreedyBestFirstSearch<VacuumWorldState, VacuumWorldAction>(problem, NumCleanSquares);
+//            var solver = new GreedyBestFirstSearch<VacuumWorldState, VacuumWorldAction>(problem, NumDirtySquares);
             
-            var solver = new AStarSearch<VacuumWorldState, VacuumWorldAction>(problem, NumCleanSquares);
+            // todo: is there an optimal heuristic for vacuum world a*?
+            // - NumDirtySquares results in searching too many states
+            // - 5 * NumDirtySquares finishes quickly, but doesn't look optimal
+            var solver = new AStarSearch<VacuumWorldState, VacuumWorldAction>(problem, state => 5 * NumDirtySquares(state));
 
             var stopwatch = Stopwatch.StartNew();
             solver.Solve();
@@ -43,9 +47,13 @@ namespace vacuum_world.console
                 return;
             }
 
+            var solution = solver.GetSolution().ToList();
+            
+            Console.WriteLine($"Reached goal in {solution.Count} actions");
+
             var machine = new VacuumWorldStateMachine(initialState);
 
-            foreach (var action in solver.GetSolution())
+            foreach (var action in solution)
             {
                 DrawWorld(machine.State);
                 var key = Console.ReadKey();

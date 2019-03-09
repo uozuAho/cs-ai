@@ -37,7 +37,7 @@ namespace ailib.test.Algorithms
             search.Step();
             
             // assert
-            Assert.AreEqual(state3, search.CurrentState);
+            Assert.AreEqual(state1, search.CurrentState);
         }
     }
 }
