@@ -33,7 +33,8 @@ namespace vacuum_world.console
             // todo: is there an optimal heuristic for vacuum world a*?
             // - NumDirtySquares results in searching too many states
             // - 5 * NumDirtySquares finishes quickly, but doesn't look optimal
-            var solver = new AStarSearch<VacuumWorldState, VacuumWorldAction>(problem, state => 5 * NumDirtySquares(state));
+            var solver = new AStarSearch<VacuumWorldState, VacuumWorldAction>(problem, state =>
+                MinNumberOfMovesToDirtySquare(state) + 2 * NumDirtySquares(state) - 1);
 
             var stopwatch = Stopwatch.StartNew();
             solver.Solve();
@@ -84,13 +85,6 @@ namespace vacuum_world.console
             Console.WriteLine(state);
         }
 
-        private static int NumCleanSquares(VacuumWorldState state)
-        {
-            var numSquares = state.WorldSize * state.WorldSize;
-
-            return numSquares - NumDirtySquares(state);
-        }
-        
         private static int NumDirtySquares(VacuumWorldState state)
         {
             var num = 0;
@@ -104,6 +98,31 @@ namespace vacuum_world.console
             }
 
             return num;
+        }
+
+        private static int MinNumberOfMovesToDirtySquare(VacuumWorldState state)
+        {
+            var closestNumMoves = int.MaxValue;
+
+            int NumMoves(int x1, int y1, int x2, int y2) => Math.Abs(x1 - x2) + Math.Abs(y1 - y2);
+            
+            // perf: could check in order of distance from vacuum, and stop when found
+            for (var y = 0; y < state.WorldSize; y++)
+            {
+                for (var x = 0; x < state.WorldSize; x++)
+                {
+                    if (!state.SquareIsDirty(x, y)) continue;
+                    
+                    var numMoves = NumMoves(x, y, state.VacuumPos.X, state.VacuumPos.Y);
+                        
+                    if (numMoves < closestNumMoves)
+                    {
+                        closestNumMoves = numMoves;
+                    }
+                }
+            }
+
+            return closestNumMoves;
         }
     }
 }
