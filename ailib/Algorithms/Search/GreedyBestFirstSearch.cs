@@ -3,16 +3,20 @@ using System;
 namespace ailib.Algorithms.Search
 {
     /// <summary>
-    /// Greedy best first search. Simply uses the given state scorer to pick the highest score
-    /// state to search next.
+    /// Greedy best first search. Expands nodes in minimum order given by the heuristic
     /// </summary>
     public class GreedyBestFirstSearch<TState, TAction> : BestFirstSearch<TState, TAction>
     {
-        private readonly Func<TState, int> _scoreState;
+        private readonly Func<TState, int> _heuristic;
 
-        public GreedyBestFirstSearch(ISearchProblem<TState, TAction> problem, Func<TState, int> scoreState) : base(problem)
+        /// <summary>
+        /// 
+        /// </summary>
+        /// <param name="problem"></param>
+        /// <param name="heuristic">An estimate of the cost to reach the goal from the given state</param>
+        public GreedyBestFirstSearch(ISearchProblem<TState, TAction> problem, Func<TState, int> heuristic) : base(problem)
         {
-            _scoreState = scoreState;
+            _heuristic = heuristic;
             // todo: this should be in BestFirst Init function.. or something. have to call same frontier push
             //       in all subclasses
             Frontier.Push(new SearchNode<TState, TAction>(problem.InitialState, null, default(TAction), 0));
@@ -20,7 +24,7 @@ namespace ailib.Algorithms.Search
 
         protected override double PriorityFunc(SearchNode<TState, TAction> node)
         {
-            return _scoreState(node.State);
+            return _heuristic(node.State);
         }
     }
 }

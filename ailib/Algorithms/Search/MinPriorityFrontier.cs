@@ -3,14 +3,17 @@ using ailib.DataStructures;
 
 namespace ailib.Algorithms.Search
 {
-    public class PriorityFrontier<TState, TAction> : ISearchFrontier<TState, TAction>
+    /// <summary>
+    /// Search nodes are popped in minimum-priority order
+    /// </summary>
+    public class MinPriorityFrontier<TState, TAction> : ISearchFrontier<TState, TAction>
     {
-        private readonly PriorityQueue<SearchNode<TState, TAction>> _queue;
+        private readonly MinPriorityQueue<SearchNode<TState, TAction>> _queue;
         private readonly HashSet<TState> _states;
         
-        public PriorityFrontier(IComparer<SearchNode<TState, TAction>> nodeComparer)
+        public MinPriorityFrontier(IComparer<SearchNode<TState, TAction>> nodeComparer)
         {
-            _queue = new PriorityQueue<SearchNode<TState, TAction>>(nodeComparer);
+            _queue = new MinPriorityQueue<SearchNode<TState, TAction>>(nodeComparer);
             _states = new HashSet<TState>();
         }
         

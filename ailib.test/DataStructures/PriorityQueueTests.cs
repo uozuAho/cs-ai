@@ -6,7 +6,7 @@ namespace ailib.test.DataStructures
 {
     public class PriorityQueueTests
     {
-        private PriorityQueue<int> _emptyIntQueue;
+        private MinPriorityQueue<int> _emptyIntQueue;
 
         private class IntComparer : IComparer<int>
         {
@@ -19,7 +19,7 @@ namespace ailib.test.DataStructures
         [SetUp]
         public void Setup()
         {
-            _emptyIntQueue = new PriorityQueue<int>(new IntComparer());
+            _emptyIntQueue = new MinPriorityQueue<int>(new IntComparer());
         }
         
         [Test]

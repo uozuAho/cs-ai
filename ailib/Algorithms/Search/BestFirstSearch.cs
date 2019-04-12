@@ -8,9 +8,13 @@ namespace ailib.Algorithms.Search
         protected BestFirstSearch(ISearchProblem<TState, TAction> problem) : base(problem)
         {
             var nodeComparer = new SearchNodeComparer(CompareStates);
-            Frontier = new PriorityFrontier<TState, TAction>(nodeComparer);
+            Frontier = new MinPriorityFrontier<TState, TAction>(nodeComparer);
         }
         
+        /// <summary>
+        /// The priority function determines in what order search nodes should be expanded.
+        /// In the case of this best first search, nodes are expanded in lowest-value order.
+        /// </summary>
         protected abstract double PriorityFunc(SearchNode<TState, TAction> node);
 
         private int CompareStates(SearchNode<TState, TAction> a, SearchNode<TState, TAction> b)

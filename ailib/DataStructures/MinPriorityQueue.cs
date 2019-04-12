@@ -5,11 +5,11 @@ namespace ailib.DataStructures
     /// <summary>
     /// Queue that dequeues min item first
     /// </summary>
-    public class PriorityQueue<T>
+    public class MinPriorityQueue<T>
     {
         private readonly BinaryMinHeap<T> _minHeap;
 
-        public PriorityQueue(IComparer<T> comparer)
+        public MinPriorityQueue(IComparer<T> comparer)
         {
             _minHeap = new BinaryMinHeap<T>(comparer);
         }
