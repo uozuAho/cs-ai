@@ -4,7 +4,7 @@ namespace vacuum_world
 {
     public static class VacuumWorldStateExtensions
     {
-        public static int NumDirtySquares(this VacuumWorldState state)
+        public static int NumberOfDirtySquares(this VacuumWorldState state)
         {
             var num = 0;
             
