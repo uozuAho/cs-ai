@@ -2,9 +2,11 @@ using System.Collections.Generic;
 
 namespace ailib.Algorithms.Search
 {
-    internal interface ISearchAlgorithm<TState, out TAction>
+    public interface ISearchAlgorithm<TState, out TAction>
     {
         bool IsFinished { get; }
+        
+        bool IsSolved { get; }
         
         TState CurrentState { get; }
         

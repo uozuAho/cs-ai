@@ -13,12 +13,14 @@ namespace ailib.Algorithms.Search
         public GreedyBestFirstSearch(ISearchProblem<TState, TAction> problem, Func<TState, int> scoreState) : base(problem)
         {
             _scoreState = scoreState;
+            // todo: this should be in BestFirst Init function.. or something. have to call same frontier push
+            //       in all subclasses
             Frontier.Push(new SearchNode<TState, TAction>(problem.InitialState, null, default(TAction), 0));
         }
 
-        protected override int PriorityFunc(TState state)
+        protected override double PriorityFunc(SearchNode<TState, TAction> node)
         {
-            return _scoreState(state);
+            return _scoreState(node.State);
         }
     }
 }

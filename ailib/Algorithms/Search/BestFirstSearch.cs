@@ -11,9 +11,9 @@ namespace ailib.Algorithms.Search
             Frontier = new PriorityFrontier<TState, TAction>(nodeComparer);
         }
         
-        protected abstract int PriorityFunc(TState state);
+        protected abstract double PriorityFunc(SearchNode<TState, TAction> node);
 
-        private int CompareStates(TState a, TState b)
+        private int CompareStates(SearchNode<TState, TAction> a, SearchNode<TState, TAction> b)
         {
             var priorityA = PriorityFunc(a);
             var priorityB = PriorityFunc(b);
@@ -22,9 +22,9 @@ namespace ailib.Algorithms.Search
         
         private class SearchNodeComparer : IComparer<SearchNode<TState, TAction>>
         {
-            private readonly Func<TState, TState, int> _compare;
+            private readonly Func<SearchNode<TState, TAction>, SearchNode<TState, TAction>, int> _compare;
 
-            public SearchNodeComparer(Func<TState, TState, int> compare)
+            public SearchNodeComparer(Func<SearchNode<TState, TAction>, SearchNode<TState, TAction>, int> compare)
             {
                 _compare = compare;
             }
@@ -34,7 +34,7 @@ namespace ailib.Algorithms.Search
                 if (x == null) throw new NullReferenceException(nameof(x));
                 if (y == null) throw new NullReferenceException(nameof(y));
                 
-                return _compare(x.State, y.State);
+                return _compare(x, y);
             }
         }
     }

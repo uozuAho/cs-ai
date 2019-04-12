@@ -5,10 +5,9 @@ using NUnit.Framework;
 
 namespace ailib.test.Algorithms
 {
-    public class GreedyBestFirstSearchTests
+    public class AStarSearchTests
     {
         private ISearchProblem<StateMock<int>, ActionMock<string>> _problem;
-        private GreedyBestFirstSearch<StateMock<int>, ActionMock<string>> _search;
 
         [SetUp]
         public void Setup()
@@ -31,14 +30,14 @@ namespace ailib.test.Algorithms
             A.CallTo(() => _problem.DoAction(state2, action1)).Returns(state1);
             A.CallTo(() => _problem.DoAction(state2, action3)).Returns(state3);
             
-            _search = new GreedyBestFirstSearch<StateMock<int>, ActionMock<string>>(_problem, state => state.Value);
+            var search = new AStarSearch<StateMock<int>, ActionMock<string>>(_problem, state => state.Value);
             
             // act
-            _search.Step(); // step 1 sets current state to initial state
-            _search.Step();
+            search.Step(); // step 1 sets current state to initial state
+            search.Step();
             
             // assert
-            Assert.AreEqual(state1, _search.CurrentState);
+            Assert.AreEqual(state1, search.CurrentState);
         }
     }
 }

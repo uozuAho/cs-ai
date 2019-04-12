@@ -36,11 +36,11 @@ namespace ailib.test.DataStructures
             _emptyIntQueue.Push(2);
             _emptyIntQueue.Push(4);
             _emptyIntQueue.Push(3);
-            Assert.AreEqual(5, _emptyIntQueue.Pop());
-            Assert.AreEqual(4, _emptyIntQueue.Pop());
-            Assert.AreEqual(3, _emptyIntQueue.Pop());
-            Assert.AreEqual(2, _emptyIntQueue.Pop());
             Assert.AreEqual(1, _emptyIntQueue.Pop());
+            Assert.AreEqual(2, _emptyIntQueue.Pop());
+            Assert.AreEqual(3, _emptyIntQueue.Pop());
+            Assert.AreEqual(4, _emptyIntQueue.Pop());
+            Assert.AreEqual(5, _emptyIntQueue.Pop());
         }
     }
 }
