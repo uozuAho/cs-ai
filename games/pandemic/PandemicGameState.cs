@@ -14,17 +14,13 @@ namespace pandemic
         /** city name[] */
         public Stack<string> InfectionDiscardPile { get; }
 
-//        public win_condition?: WinCondition;
-//        public lose_condition?: LoseCondition;
-//        public unused_cubes: Cubes;
         public int OutbreakCounter { get; set; }
 
-        /** map of city name : city state */
-//        private _city_states: Map<string, CityState>;
+        public List<CityState> CityStates { get; }
 
-        private PandemicBoard _board;
-//        private _graph: GraphT<CityState>;
-
+        private readonly PandemicBoard _board;
+        private readonly Dictionary<string, CityState> _cityNameLookup;
+        
         public PandemicGameState(PandemicBoard board)
         {
             _board = board;
@@ -32,16 +28,43 @@ namespace pandemic
             // todo: shuffle
             InfectionDeck = new Stack<string>(_board.Cities.Select(c => c.Name));
             InfectionDiscardPile = new Stack<string>();
+            CityStates = _board.Cities.Select(c => new CityState(c)).ToList();
+            _cityNameLookup = BuildCityNameLookup(CityStates);
             
             InitNewGameState();
         }
 
+        public CityState GetCity(string name)
+        {
+            return _cityNameLookup[name];
+        }
+
         private void InitNewGameState()
         {
-            for (var i = 0; i < 9; i++)
+            InfectCities();
+        }
+
+        private void InfectCities()
+        {
+            for (var numCubes = 1; numCubes <= 3; numCubes++)
             {
-                InfectionDiscardPile.Push(InfectionDeck.Pop());
+                for (var i = 0; i < 3; i++)
+                {
+                    var cityName = InfectionDeck.Pop();
+                    var city = _cityNameLookup[cityName];
+                    for (var j = 0; j < numCubes; j++)
+                    {
+                        city.AddCube();
+                    }
+
+                    InfectionDiscardPile.Push(cityName);
+                }
             }
+        }
+
+        private static Dictionary<string, CityState> BuildCityNameLookup(IEnumerable<CityState> cityStates)
+        {
+            return cityStates.ToDictionary(c => c.City.Name, c => c);
         }
     }
 }

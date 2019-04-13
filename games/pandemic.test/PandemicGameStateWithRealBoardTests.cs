@@ -1,3 +1,4 @@
+using System.Linq;
 using NUnit.Framework;
 
 namespace pandemic.test
@@ -19,6 +20,14 @@ namespace pandemic.test
             Assert.AreEqual(48 - 9, _state.InfectionDeck.Count);
             Assert.AreEqual(9, _state.InfectionDiscardPile.Count);
             Assert.AreEqual(2, _state.InfectionRate);
+        }
+
+        [Test]
+        public void InitialState_ShouldHave9InfectedCities()
+        {
+            Assert.AreEqual(3, _state.CityStates.Count(c => c.NumCubes() == 3));
+            Assert.AreEqual(3, _state.CityStates.Count(c => c.NumCubes() == 2));
+            Assert.AreEqual(3, _state.CityStates.Count(c => c.NumCubes() == 1));
         }
     }
 }
