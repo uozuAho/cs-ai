@@ -50,8 +50,23 @@ namespace ailib.test.DataStructures
 
             // assert
             var edgesFrom0 = _graph.GetEdgesFrom(0);
-            
             Assert.AreEqual(2, edgesFrom0.Count);
+        }
+        
+        [Test]
+        public void Adjacent()
+        {
+            // arrange
+            _graph.AddNode(0);
+            _graph.AddNode(1);
+            _graph.AddEdge(0, 1);
+            
+            // act
+            var adjacentTo0 = _graph.Adjacent(0).ToList();
+
+            // assert
+            Assert.AreEqual(1, adjacentTo0.Count);
+            Assert.AreEqual(1, adjacentTo0.Single());
         }
     }
 }
