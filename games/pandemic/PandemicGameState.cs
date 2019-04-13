@@ -17,6 +17,7 @@ namespace pandemic
         public int OutbreakCounter { get; set; }
 
         public List<CityState> CityStates { get; }
+        public Cubes CubePile { get; set; }
 
         private readonly PandemicBoard _board;
         private readonly Dictionary<string, CityState> _cityNameLookup;
@@ -30,6 +31,7 @@ namespace pandemic
             InfectionDiscardPile = new Stack<string>();
             CityStates = _board.Cities.Select(c => new CityState(c)).ToList();
             _cityNameLookup = BuildCityNameLookup(CityStates);
+            CubePile = CreateNewCubePile();
         }
 
         public CityState GetCity(string name)
@@ -40,6 +42,22 @@ namespace pandemic
         private static Dictionary<string, CityState> BuildCityNameLookup(IEnumerable<CityState> cityStates)
         {
             return cityStates.ToDictionary(c => c.City.Name, c => c);
+        }
+
+        private static Cubes CreateNewCubePile()
+        {
+            var cubes = new Cubes();
+            var allColours = new[] {Colour.Red, Colour.Blue, Colour.Black, Colour.Yellow};
+            
+            foreach (var colour in allColours)
+            {
+                for (var i = 0; i < 24; i++)
+                {
+                    cubes.AddCube(colour);
+                }
+            }
+
+            return cubes;
         }
     }
 }

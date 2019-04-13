@@ -6,8 +6,6 @@ namespace pandemic.test
 {
     public class PandemicStateMachineTests
     {
-        // game state machine. receives actions, and updates its internal game state
-        // responsible for maintaining the correct game state, given the input actions
         private PandemicStateMachine _machine;
         
         [SetUp]
@@ -20,13 +18,23 @@ namespace pandemic.test
         }
 
         [Test]
-        public void GivenNoActions_BoardShouldBeEmpty()
+        public void GivenNoActions_BoardShouldBeReadyToInit()
         {
             var state = _machine.State;
+            
+            // no cubes on any cities
             Assert.AreEqual(0, state.CityStates.Sum(c => c.NumCubes(Colour.Red)));
             Assert.AreEqual(0, state.CityStates.Sum(c => c.NumCubes(Colour.Blue)));
             Assert.AreEqual(0, state.CityStates.Sum(c => c.NumCubes(Colour.Black)));
             Assert.AreEqual(0, state.CityStates.Sum(c => c.NumCubes(Colour.Yellow)));
+            
+            Assert.AreEqual(48, state.InfectionDeck.Count);
+            Assert.AreEqual(0, state.InfectionDiscardPile.Count);
+            
+            Assert.AreEqual(24, state.CubePile.NumCubes(Colour.Red));
+            Assert.AreEqual(24, state.CubePile.NumCubes(Colour.Blue));
+            Assert.AreEqual(24, state.CubePile.NumCubes(Colour.Black));
+            Assert.AreEqual(24, state.CubePile.NumCubes(Colour.Yellow));
         }
         
         [Test]
