@@ -30,36 +30,11 @@ namespace pandemic
             InfectionDiscardPile = new Stack<string>();
             CityStates = _board.Cities.Select(c => new CityState(c)).ToList();
             _cityNameLookup = BuildCityNameLookup(CityStates);
-            
-            InitNewGameState();
         }
 
         public CityState GetCity(string name)
         {
             return _cityNameLookup[name];
-        }
-
-        private void InitNewGameState()
-        {
-            InfectCities();
-        }
-
-        private void InfectCities()
-        {
-            for (var numCubes = 1; numCubes <= 3; numCubes++)
-            {
-                for (var i = 0; i < 3; i++)
-                {
-                    var cityName = InfectionDeck.Pop();
-                    var city = _cityNameLookup[cityName];
-                    for (var j = 0; j < numCubes; j++)
-                    {
-                        city.AddCube();
-                    }
-
-                    InfectionDiscardPile.Push(cityName);
-                }
-            }
         }
 
         private static Dictionary<string, CityState> BuildCityNameLookup(IEnumerable<CityState> cityStates)
