@@ -1,8 +1,11 @@
 namespace pandemic
 {
+    // todo: extend City?
     public class CityState
     {
         public City City { get; }
+        
+        // todo: make cubes public
         private readonly Cubes _cubes;
 
         public CityState(City city)

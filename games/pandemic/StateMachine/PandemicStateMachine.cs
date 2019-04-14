@@ -3,15 +3,27 @@ namespace pandemic.StateMachine
     public class PandemicStateMachine
     {
         public PandemicGameState State { get; }
+        
+        private readonly IActionProcessorFactory _processorFactory;
 
-        public PandemicStateMachine(PandemicGameState initialState)
+        public PandemicStateMachine(PandemicGameState initialState, IActionProcessorFactory processorFactory)
         {
             State = initialState;
+            _processorFactory = processorFactory;
         }
-        
-        public void ProcessAction(InitGameAction initGameAction)
+
+        public void ProcessAction(IAction action)
         {
-            InitialInfectCities(State);
+            var processor = _processorFactory.ProcessorFor(action);
+            processor.ProcessAction(State, action);
+        }
+    }
+
+    public class InitGameProcessor : IActionProcessor
+    {
+        public void ProcessAction(PandemicGameState state, IAction action)
+        {
+            InitialInfectCities(state);
         }
         
         private static void InitialInfectCities(PandemicGameState state)
@@ -24,12 +36,35 @@ namespace pandemic.StateMachine
                     var city = state.GetCity(cityName);
                     for (var j = 0; j < numCubes; j++)
                     {
-                        city.AddCube();
+                        state.CubePile.RemoveCube(city.City.Colour);
+                        city.AddCube(city.City.Colour);
                     }
 
                     state.InfectionDiscardPile.Push(cityName);
                 }
             }
         }
+    }
+    
+    public interface IAction
+    {
+    }
+
+    internal class ActionProcessorFactory : IActionProcessorFactory
+    {
+        public IActionProcessor ProcessorFor(IAction action)
+        {
+            return new InitGameProcessor();
+        }
+    }
+
+    public interface IActionProcessorFactory
+    {
+        IActionProcessor ProcessorFor(IAction action);
+    }
+
+    public interface IActionProcessor
+    {
+        void ProcessAction(PandemicGameState state, IAction action);
     }
 }

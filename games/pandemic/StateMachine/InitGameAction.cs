@@ -1,6 +1,6 @@
 namespace pandemic.StateMachine
 {
-    public class InitGameAction
+    public class InitGameAction : IAction
     {
     }
 }
