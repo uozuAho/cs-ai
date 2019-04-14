@@ -2,12 +2,10 @@
 
 namespace pandemic.console
 {
-    class Program
+    internal static class Program
     {
-        static void Main(string[] args)
+        private static void Main(string[] args)
         {
-//            var game = new PandemicStateMachine(new PandemicGameState(PandemicBoard.CreateRealGameBoard()), )
-
             var game = new PandemicGame();
 
             while (!game.IsFinished)
@@ -22,7 +20,7 @@ namespace pandemic.console
 
         private static void PrintGameStateToConsole(PandemicGame game)
         {
-            Console.WriteLine("todo: report game state");
+            Console.WriteLine(game.State);
         }
 
         private static PlayerMove ReadPlayerMoveFromConsole()

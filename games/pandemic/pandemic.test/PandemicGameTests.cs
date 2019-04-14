@@ -17,5 +17,13 @@ namespace pandemic.test
         {
             _game.DoMove(new PlayerMove());
         }
+
+        [Test]
+        public void State_ShouldReturnState()
+        {
+            var state = _game.State;
+            
+            Assert.IsNotNull(state);
+        }
     }
 }
