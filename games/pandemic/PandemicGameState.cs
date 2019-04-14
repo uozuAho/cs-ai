@@ -41,7 +41,7 @@ namespace pandemic
 
         private static Dictionary<string, CityState> BuildCityNameLookup(IEnumerable<CityState> cityStates)
         {
-            return cityStates.ToDictionary(c => c.City.Name, c => c);
+            return cityStates.ToDictionary(c => c.Name, c => c);
         }
 
         private static Cubes CreateNewCubePile()

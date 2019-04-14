@@ -1,6 +1,8 @@
 using System.Linq;
 using NUnit.Framework;
 using pandemic.StateMachine;
+using pandemic.StateMachine.ActionProcessors;
+using pandemic.StateMachine.Actions;
 
 namespace pandemic.test
 {
