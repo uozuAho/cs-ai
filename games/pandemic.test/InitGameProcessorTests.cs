@@ -31,9 +31,9 @@ namespace pandemic.test
             Assert.AreEqual(9, state.InfectionDiscardPile.Count);
             
             // 9 cities should have cubes on them
-            Assert.AreEqual(3, state.CityStates.Count(c => c.NumCubes() == 3));
-            Assert.AreEqual(3, state.CityStates.Count(c => c.NumCubes() == 2));
-            Assert.AreEqual(3, state.CityStates.Count(c => c.NumCubes() == 1));
+            Assert.AreEqual(3, state.CityStates.Count(c => c.NumCubes(c.Colour) == 3));
+            Assert.AreEqual(3, state.CityStates.Count(c => c.NumCubes(c.Colour) == 2));
+            Assert.AreEqual(3, state.CityStates.Count(c => c.NumCubes(c.Colour) == 1));
 
             // cubes should have been removed from pile
             var sumOfAllCubesInPile = ColourExtensions.AllColours()
