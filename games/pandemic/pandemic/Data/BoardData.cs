@@ -1,5 +1,6 @@
 using System.Collections.Generic;
 using ailib.DataStructures;
+using pandemic.GameObjects;
 
 namespace pandemic.Data
 {

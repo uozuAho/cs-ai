@@ -1,7 +1,8 @@
 ﻿using System.Collections.Generic;
 using System.Linq;
+using pandemic.GameObjects;
 
-namespace pandemic
+namespace pandemic.States
 {
     public class PandemicGameState
     {

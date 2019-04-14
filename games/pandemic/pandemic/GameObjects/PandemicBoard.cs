@@ -3,7 +3,7 @@ using System.Linq;
 using ailib.DataStructures;
 using pandemic.Data;
 
-namespace pandemic
+namespace pandemic.GameObjects
 {
     public class PandemicBoard
     {

@@ -2,7 +2,7 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 
-namespace pandemic
+namespace pandemic.GameObjects
 {
     public enum Colour
     {

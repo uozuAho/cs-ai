@@ -1,4 +1,6 @@
-namespace pandemic
+using pandemic.GameObjects;
+
+namespace pandemic.States
 {
     public class CityState : City
     {

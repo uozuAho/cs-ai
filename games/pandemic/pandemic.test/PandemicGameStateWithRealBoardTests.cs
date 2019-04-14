@@ -1,5 +1,7 @@
 using System.Linq;
 using NUnit.Framework;
+using pandemic.GameObjects;
+using pandemic.States;
 
 namespace pandemic.test
 {

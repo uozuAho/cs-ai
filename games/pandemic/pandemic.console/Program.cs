@@ -1,4 +1,5 @@
 ﻿using System;
+using pandemic.GameObjects;
 
 namespace pandemic.console
 {

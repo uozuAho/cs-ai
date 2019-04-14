@@ -1,8 +1,10 @@
 using System.Linq;
 using NUnit.Framework;
+using pandemic.GameObjects;
 using pandemic.StateMachine;
 using pandemic.StateMachine.ActionProcessors;
 using pandemic.StateMachine.Actions;
+using pandemic.States;
 
 namespace pandemic.test
 {
