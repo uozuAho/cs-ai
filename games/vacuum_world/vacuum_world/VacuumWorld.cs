@@ -10,7 +10,8 @@ namespace vacuum_world
     {
         public VacuumWorldState State => _state.Clone();
         
-        private VacuumWorldState _state;
+        private readonly VacuumWorldState _state;
+        private readonly IVacuumWorldActionHandler _actionHandler;
 
         private static readonly Dictionary<VacuumWorldAction, Func<VacuumWorldState, VacuumWorldState>> ActionHandlers
             =
@@ -23,15 +24,15 @@ namespace vacuum_world
                 {VacuumWorldAction.Suck, DoSuck}
             };
 
-        public VacuumWorld(VacuumWorldState state)
+        public VacuumWorld(VacuumWorldState state, IVacuumWorldActionHandler actionHandler)
         {
             _state = state.Clone();
+            _actionHandler = actionHandler;
         }
 
         public void DoAction(VacuumWorldAction action)
         {
-            var newState = PeekAction(_state, action);
-            _state = newState;
+            _actionHandler.DoAction(_state, action);
         }
 
         public static VacuumWorldState PeekAction(VacuumWorldState state, VacuumWorldAction action)

@@ -125,7 +125,7 @@ namespace vacuum_world.console
             IEnumerable<VacuumWorldAction> solution)
         {
             var renderer = new Renderer();
-            var machine = new VacuumWorld(initialState);
+            var machine = new VacuumWorld(initialState, new VacuumWorldActionHandler());
 
             foreach (var action in solution)
             {
