@@ -21,7 +21,7 @@ namespace vacuum_world
 
         public VacuumWorldState DoAction(VacuumWorldState state, VacuumWorldAction action)
         {
-            return VacuumWorldStateMachine.PeekAction(state, action);
+            return VacuumWorld.PeekAction(state, action);
         }
 
         public bool IsGoal(VacuumWorldState state)

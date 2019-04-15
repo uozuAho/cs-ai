@@ -3,7 +3,10 @@ using System.Collections.Generic;
 
 namespace vacuum_world
 {
-    public class VacuumWorldStateMachine
+    /// <summary>
+    /// The fully observable, deterministic vacuum world from AI: a modern approach
+    /// </summary>
+    public class VacuumWorld : IVacuumWorld
     {
         public VacuumWorldState State => _state.Clone();
         
@@ -20,23 +23,17 @@ namespace vacuum_world
                 {VacuumWorldAction.Suck, DoSuck}
             };
 
-        public VacuumWorldStateMachine(VacuumWorldState state)
+        public VacuumWorld(VacuumWorldState state)
         {
             _state = state.Clone();
         }
 
-        /// <summary>
-        /// Perform the action and update the state machine
-        /// </summary>
         public void DoAction(VacuumWorldAction action)
         {
             var newState = PeekAction(_state, action);
             _state = newState;
         }
 
-        /// <summary>
-        /// Get the resultant state from performing the given action on the given state
-        /// </summary>
         public static VacuumWorldState PeekAction(VacuumWorldState state, VacuumWorldAction action)
         {
             var handler = ActionHandlers[action];
@@ -89,5 +86,13 @@ namespace vacuum_world
             newState.SetSquareIsDirty(newState.VacuumPos.X, newState.VacuumPos.Y, false);
             return newState;
         }
+    }
+
+    public interface IVacuumWorld
+    {
+        /// <summary>
+        /// Perform the action and update the world state
+        /// </summary>
+        void DoAction(VacuumWorldAction action);
     }
 }

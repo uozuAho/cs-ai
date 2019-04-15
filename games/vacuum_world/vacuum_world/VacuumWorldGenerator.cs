@@ -2,7 +2,7 @@ using System;
 
 namespace vacuum_world
 {
-    public class VacuumWorldGenerator
+    public static class VacuumWorldGenerator
     {
         public static VacuumWorldState CreateWorldWithRandomlyDirtySquares(int worldSize)
         {
