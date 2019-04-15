@@ -58,5 +58,16 @@ namespace vacuum_world.test
             
             Assert.AreEqual(new Point2D(1, 0), nextState.VacuumPos);
         }
+
+        [Test]
+        public void DoAction_ShouldNotModifyGivenState()
+        {
+            var state = new VacuumWorldState(3);
+
+            var newState = _problem.DoAction(state, VacuumWorldAction.Down);
+            
+            Assert.IsFalse(ReferenceEquals(newState, state));
+            Assert.IsFalse(newState.Equals(state));
+        }
     }
 }

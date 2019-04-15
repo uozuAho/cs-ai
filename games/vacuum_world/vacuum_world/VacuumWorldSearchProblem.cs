@@ -24,8 +24,9 @@ namespace vacuum_world
 
         public VacuumWorldState DoAction(VacuumWorldState state, VacuumWorldAction action)
         {
-            _actionHandler.DoAction(state, action);
-            return state;
+            var newState = state.Clone();
+            _actionHandler.DoAction(newState, action);
+            return newState;
         }
 
         public bool IsGoal(VacuumWorldState state)
