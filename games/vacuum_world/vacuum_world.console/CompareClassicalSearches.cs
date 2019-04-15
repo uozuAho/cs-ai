@@ -12,7 +12,7 @@ namespace vacuum_world.console
         {
             var size = int.Parse(args[0]);
             var initialState = VacuumWorldGenerator.CreateWorldWithRandomlyDirtySquares(size);
-            var problem = new VacuumWorldSearchProblem(initialState);
+            var problem = new VacuumWorldSearchProblem(initialState, new VacuumWorldActionHandler());
 
             var solvers = new List<SearchAlgorithmWithLabel>
             {
