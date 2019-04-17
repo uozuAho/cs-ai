@@ -14,7 +14,7 @@ namespace vacuum_world.test
             _initialState.SetSquareIsDirty(0, 0, true);
             _initialState.SetSquareIsDirty(0, 1, true);
             
-            _problem = new VacuumWorldSearchProblem(_initialState);
+            _problem = new VacuumWorldSearchProblem(_initialState, new VacuumWorldActionHandler());
         }
         
         [Test]
@@ -57,6 +57,17 @@ namespace vacuum_world.test
             var nextState = _problem.DoAction(_initialState, VacuumWorldAction.Right);
             
             Assert.AreEqual(new Point2D(1, 0), nextState.VacuumPos);
+        }
+
+        [Test]
+        public void DoAction_ShouldNotModifyGivenState()
+        {
+            var state = new VacuumWorldState(3);
+
+            var newState = _problem.DoAction(state, VacuumWorldAction.Down);
+            
+            Assert.IsFalse(ReferenceEquals(newState, state));
+            Assert.IsFalse(newState.Equals(state));
         }
     }
 }
