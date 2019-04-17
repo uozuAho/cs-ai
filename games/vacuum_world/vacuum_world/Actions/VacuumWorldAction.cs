@@ -1,4 +1,4 @@
-namespace vacuum_world
+namespace vacuum_world.Actions
 {
     public enum VacuumWorldAction
     {

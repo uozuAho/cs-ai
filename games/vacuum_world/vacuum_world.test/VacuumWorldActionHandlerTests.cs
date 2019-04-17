@@ -1,4 +1,6 @@
 using NUnit.Framework;
+using vacuum_world.ActionHandlers;
+using vacuum_world.Actions;
 
 namespace vacuum_world.test
 {

@@ -3,6 +3,8 @@ using System.Collections.Generic;
 using System.Diagnostics;
 using System.Linq;
 using ailib.Algorithms.Search;
+using vacuum_world.ActionHandlers;
+using vacuum_world.Actions;
 
 namespace vacuum_world.console
 {

@@ -1,7 +1,8 @@
 using System;
 using System.Collections.Generic;
+using vacuum_world.Actions;
 
-namespace vacuum_world
+namespace vacuum_world.ActionHandlers
 {
     public class VacuumWorldActionHandler : IVacuumWorldActionHandler
     {

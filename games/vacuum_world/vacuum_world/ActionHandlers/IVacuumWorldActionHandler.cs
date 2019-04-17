@@ -1,4 +1,6 @@
-namespace vacuum_world
+using vacuum_world.Actions;
+
+namespace vacuum_world.ActionHandlers
 {
     public interface IVacuumWorldActionHandler
     {
