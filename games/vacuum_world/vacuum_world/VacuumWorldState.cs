@@ -49,6 +49,11 @@ namespace vacuum_world
 
             return _squares[x, y];
         }
+        
+        public bool SquareIsDirty(Point2D pos)
+        {
+            return SquareIsDirty(pos.X, pos.Y);
+        }
 
         public void SetSquareIsDirty(int x, int y, bool isDirty)
         {
@@ -57,7 +62,12 @@ namespace vacuum_world
 
             _squares[x, y] = isDirty;
         }
-
+        
+        public void SetSquareIsDirty(Point2D pos, bool isDirty)
+        {
+            SetSquareIsDirty(pos.X, pos.Y, isDirty);
+        }
+        
         public bool Equals(VacuumWorldState other)
         {
             if (ReferenceEquals(null, other)) return false;
