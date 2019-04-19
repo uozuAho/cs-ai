@@ -2,9 +2,9 @@ using NUnit.Framework;
 using vacuum_world.ActionHandlers;
 using vacuum_world.Actions;
 
-namespace vacuum_world.test
+namespace vacuum_world.test.ActionHandlers
 {
-    public class ErraticVacuumWorldSuckActionHandlerTests
+    public class ErraticSuckActionHandlerTests
     {
         private ErraticVacuumWorldSuckActionHandler _handler;
         private VacuumWorldState _state;
