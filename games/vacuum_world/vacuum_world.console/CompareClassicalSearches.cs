@@ -15,7 +15,7 @@ namespace vacuum_world.console
             var size = int.Parse(args[0]);
             var initialState = VacuumWorldGenerator.CreateWorldWithRandomlyDirtySquares(size);
             var problem = new VacuumWorldSearchProblem(initialState,
-                VacuumWorldActionHandler.CreateDefaultActionHandler());
+                VacuumWorldActionHandler.CreateDeterministicActionHandler());
 
             var solvers = new List<SearchAlgorithmWithLabel>
             {
@@ -129,7 +129,7 @@ namespace vacuum_world.console
         {
             var renderer = new Renderer();
             var machine = new VacuumWorld(initialState,
-                VacuumWorldActionHandler.CreateDefaultActionHandler());
+                VacuumWorldActionHandler.CreateDeterministicActionHandler());
 
             foreach (var action in solution)
             {

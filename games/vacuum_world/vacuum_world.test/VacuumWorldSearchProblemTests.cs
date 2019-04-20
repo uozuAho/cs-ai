@@ -17,7 +17,7 @@ namespace vacuum_world.test
             _initialState.MakeSquareDirty(0, 1);
 
             _problem = new VacuumWorldSearchProblem(_initialState,
-                VacuumWorldActionHandler.CreateDefaultActionHandler());
+                VacuumWorldActionHandler.CreateDeterministicActionHandler());
         }
         
         [Test]

@@ -12,7 +12,10 @@ namespace vacuum_world.ActionHandlers
             _actionHandlers = actionHandlers;
         }
 
-        public static VacuumWorldActionHandler CreateDefaultActionHandler()
+        /// <summary>
+        /// Creates the deterministic vacuum world set of action handlers
+        /// </summary>
+        public static VacuumWorldActionHandler CreateDeterministicActionHandler()
         {
             return new VacuumWorldActionHandler(
                 new Dictionary<VacuumWorldAction, IVacuumWorldActionHandler>
@@ -22,6 +25,22 @@ namespace vacuum_world.ActionHandlers
                     {VacuumWorldAction.Down, new DownActionHandler()},
                     {VacuumWorldAction.Up, new UpActionHandler()},
                     {VacuumWorldAction.Suck, new SuckActionHandler()}
+                });
+        }
+
+        /// <summary>
+        /// Creates the 'erratic' vacuum world set of action handlers
+        /// </summary>
+        public static VacuumWorldActionHandler CreateErraticWorldActionHandler()
+        {
+            return new VacuumWorldActionHandler(
+                new Dictionary<VacuumWorldAction, IVacuumWorldActionHandler>
+                {
+                    {VacuumWorldAction.Left, new LeftActionHandler()},
+                    {VacuumWorldAction.Right, new RightActionHandler()},
+                    {VacuumWorldAction.Down, new DownActionHandler()},
+                    {VacuumWorldAction.Up, new UpActionHandler()},
+                    {VacuumWorldAction.Suck, new ErraticSuckActionHandler(new SuckActionHandler())}
                 });
         }
         

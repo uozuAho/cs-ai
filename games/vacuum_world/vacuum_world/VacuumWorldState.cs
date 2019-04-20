@@ -60,6 +60,16 @@ namespace vacuum_world
             SetSquareIsDirty(square.X, square.Y, false);
         }
         
+        public void CleanSquare(int x, int y)
+        {
+            SetSquareIsDirty(x, y, false);
+        }
+        
+        public void MakeSquareDirty(Point2D pos)
+        {
+            MakeSquareDirty(pos.X, pos.Y);
+        }
+        
         public void MakeSquareDirty(int x, int y)
         {
             SetSquareIsDirty(x, y, true);

@@ -59,6 +59,17 @@ namespace vacuum_world
             }
         }
         
+        public static void SetAllSquaresClean(this VacuumWorldState state)
+        {
+            for (var y = 0; y < state.WorldSize; y++)
+            {
+                for (var x = 0; x < state.WorldSize; x++)
+                {
+                    state.CleanSquare(x, y);
+                }
+            }
+        }
+        
         public static IEnumerable<Point2D> AdjacentSquares(this VacuumWorldState state, Point2D pos)
         {
             if (pos.X > 0)                   yield return new Point2D(pos.X - 1, pos.Y);
