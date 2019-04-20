@@ -1,3 +1,5 @@
+using System.Linq;
+using FakeItEasy;
 using NUnit.Framework;
 using vacuum_world.ActionHandlers;
 using vacuum_world.Actions;
@@ -6,13 +8,15 @@ namespace vacuum_world.test.ActionHandlers
 {
     public class ErraticSuckActionHandlerTests
     {
+        private IVacuumWorldActionHandler _decoratedHandler;
         private ErraticVacuumWorldSuckActionHandler _handler;
         private VacuumWorldState _state;
 
         [SetUp]
         public void Setup()
         {
-            _handler = new ErraticVacuumWorldSuckActionHandler();
+            _decoratedHandler = A.Fake<IVacuumWorldActionHandler>();
+            _handler = new ErraticVacuumWorldSuckActionHandler(_decoratedHandler);
             _state = new VacuumWorldState(3);
         }
         
@@ -23,14 +27,47 @@ namespace vacuum_world.test.ActionHandlers
         }
 
         [Test]
-        public void GivenSquareIsDirty_Suck_ShouldCleanSquare()
+        public void DoAction_ShouldCallDecoratedHandler()
         {
+            _handler.DoAction(_state, VacuumWorldAction.Suck);
+
+            A.CallTo(() => _decoratedHandler.DoAction(_state, VacuumWorldAction.Suck)).MustHaveHappened();
+        }
+        
+        [Test]
+        public void GivenCleanExtraProbabilityOf1_Suck_ShouldCleanAdjacentSquare()
+        {
+            // arrange
+            _state.SetAllSquaresDirty();
             _state.VacuumPos = new Point2D(1, 1);
-            _state.SetSquareIsDirty(_state.VacuumPos, true);
             
+            const double cleanExtraProbability = 1.0;
+            _handler = new ErraticVacuumWorldSuckActionHandler(_decoratedHandler, cleanExtraProbability);
+            
+            // act
             _handler.DoAction(_state, VacuumWorldAction.Suck);
             
-            Assert.IsFalse(_state.SquareIsDirty(_state.VacuumPos));
+            // assert
+            var numDirtyNeighbours = _state.AdjacentSquares(_state.VacuumPos).Count(s => _state.SquareIsDirty(s));
+            Assert.AreEqual(3, numDirtyNeighbours);
+        }
+        
+        [Test]
+        public void GivenCleanExtraProbabilityOf0_Suck_ShouldNotCleanAdjacentSquare()
+        {
+            // arrange
+            _state.SetAllSquaresDirty();
+            _state.VacuumPos = new Point2D(1, 1);
+            
+            const double cleanExtraProbability = 0.0;
+            _handler = new ErraticVacuumWorldSuckActionHandler(_decoratedHandler, cleanExtraProbability);
+            
+            // act
+            _handler.DoAction(_state, VacuumWorldAction.Suck);
+            
+            // assert
+            var numDirtyNeighbours = _state.AdjacentSquares(_state.VacuumPos).Count(s => _state.SquareIsDirty(s));
+            Assert.AreEqual(4, numDirtyNeighbours);
         }
     }
 }

@@ -7,7 +7,7 @@ namespace vacuum_world.ActionHandlers
     {
         private readonly Dictionary<VacuumWorldAction, IVacuumWorldActionHandler> _actionHandlers;
 
-        public VacuumWorldActionHandler(Dictionary<VacuumWorldAction, IVacuumWorldActionHandler> actionHandlers)
+        private VacuumWorldActionHandler(Dictionary<VacuumWorldAction, IVacuumWorldActionHandler> actionHandlers)
         {
             _actionHandlers = actionHandlers;
         }

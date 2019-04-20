@@ -1,4 +1,5 @@
 using System;
+using System.Collections.Generic;
 
 namespace vacuum_world
 {
@@ -45,6 +46,25 @@ namespace vacuum_world
             }
 
             return closestNumMoves;
+        }
+        
+        public static void SetAllSquaresDirty(this VacuumWorldState state)
+        {
+            for (var y = 0; y < state.WorldSize; y++)
+            {
+                for (var x = 0; x < state.WorldSize; x++)
+                {
+                    state.SetSquareIsDirty(x, y, true);
+                }
+            }
+        }
+        
+        public static IEnumerable<Point2D> AdjacentSquares(this VacuumWorldState state, Point2D pos)
+        {
+            if (pos.X > 0)                   yield return new Point2D(pos.X - 1, pos.Y);
+            if (pos.X < state.WorldSize - 1) yield return new Point2D(pos.X + 1, pos.Y);
+            if (pos.Y > 0)                   yield return new Point2D(pos.X, pos.Y - 1);
+            if (pos.Y < state.WorldSize - 1) yield return new Point2D(pos.X, pos.Y + 1);
         }
     }
 }
