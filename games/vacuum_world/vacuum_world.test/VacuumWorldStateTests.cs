@@ -22,9 +22,9 @@ namespace vacuum_world.test
             var b = new VacuumWorldState(3);
             
             a.VacuumPos = new Point2D(1, 2);
-            a.SetSquareIsDirty(1, 1, true);
+            a.MakeSquareDirty(1, 1);
             b.VacuumPos = new Point2D(1, 2);
-            b.SetSquareIsDirty(1, 1, true);
+            b.MakeSquareDirty(1, 1);
             
             Assert.AreEqual(a, b);
             Assert.AreEqual(a.GetHashCode(), b.GetHashCode());
@@ -48,7 +48,7 @@ namespace vacuum_world.test
             var a = new VacuumWorldState(3);
             var b = new VacuumWorldState(3);
 
-            a.SetSquareIsDirty(1, 1, true);
+            a.MakeSquareDirty(1, 1);
             
             Assert.AreNotEqual(a, b);
             Assert.AreNotEqual(a.GetHashCode(), b.GetHashCode());

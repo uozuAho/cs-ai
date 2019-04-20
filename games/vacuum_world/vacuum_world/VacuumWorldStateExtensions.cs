@@ -54,7 +54,7 @@ namespace vacuum_world
             {
                 for (var x = 0; x < state.WorldSize; x++)
                 {
-                    state.SetSquareIsDirty(x, y, true);
+                    state.MakeSquareDirty(x, y);
                 }
             }
         }

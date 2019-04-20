@@ -25,7 +25,7 @@ namespace vacuum_world.test.ActionHandlers
         [Test]
         public void Suck_dirty_should_make_it_clean()
         {
-            _state.SetSquareIsDirty(1, 1, true);
+            _state.MakeSquareDirty(1, 1);
             _state.VacuumPos = new Point2D(1, 1);
             
             _handler.DoAction(_state, VacuumWorldAction.Suck);

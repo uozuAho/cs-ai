@@ -55,17 +55,22 @@ namespace vacuum_world
             return SquareIsDirty(pos.X, pos.Y);
         }
 
-        public void SetSquareIsDirty(int x, int y, bool isDirty)
+        public void CleanSquare(Point2D square)
+        {
+            SetSquareIsDirty(square.X, square.Y, false);
+        }
+        
+        public void MakeSquareDirty(int x, int y)
+        {
+            SetSquareIsDirty(x, y, true);
+        }
+        
+        private void SetSquareIsDirty(int x, int y, bool isDirty)
         {
             BoundsCheck(x);
             BoundsCheck(y);
 
             _squares[x, y] = isDirty;
-        }
-        
-        public void SetSquareIsDirty(Point2D pos, bool isDirty)
-        {
-            SetSquareIsDirty(pos.X, pos.Y, isDirty);
         }
         
         public bool Equals(VacuumWorldState other)

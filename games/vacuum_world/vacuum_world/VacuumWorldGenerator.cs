@@ -1,4 +1,5 @@
 using System;
+using vacuum_world.Utils;
 
 namespace vacuum_world
 {
@@ -13,7 +14,10 @@ namespace vacuum_world
             {
                 for (var j = 0; j < state.WorldSize; j++)
                 {
-                    state.SetSquareIsDirty(i, j, random.NextDouble() < 0.5);
+                    if (random.TrueWithProbability(0.5))
+                    {
+                        state.MakeSquareDirty(i, j);
+                    }
                 }
             }
 

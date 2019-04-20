@@ -9,7 +9,7 @@ namespace vacuum_world.ActionHandlers
         {
             if (action != VacuumWorldAction.Suck) throw new InvalidOperationException();
             
-            state.SetSquareIsDirty(state.VacuumPos.X, state.VacuumPos.Y, false);
+            state.CleanSquare(state.VacuumPos);
         }
     }
 }

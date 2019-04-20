@@ -1,7 +1,7 @@
 using System;
-using System.Collections.Generic;
 using System.Linq;
 using vacuum_world.Actions;
+using vacuum_world.Utils;
 
 namespace vacuum_world.ActionHandlers
 {
@@ -24,7 +24,7 @@ namespace vacuum_world.ActionHandlers
             
             _decoratedHandler.DoAction(state, action);
 
-            if (TrueWithProbability(_cleanExtraProbability))
+            if (_random.TrueWithProbability(_cleanExtraProbability))
             {
                 CleanRandomDirtyNeighbour(state);
             }
@@ -36,19 +36,8 @@ namespace vacuum_world.ActionHandlers
 
             if (adj.Count == 0) return;
             
-            var squareToClean = RandomChoice(adj);
-            state.SetSquareIsDirty(squareToClean, false);
-        }
-
-        private T RandomChoice<T>(IReadOnlyList<T> items)
-        {
-            var idx = _random.Next(0, items.Count - 1);
-            return items[idx];
-        }
-
-        private bool TrueWithProbability(double probability)
-        {
-            return _random.NextDouble() < probability;
+            var squareToClean = _random.Choice(adj);
+            state.CleanSquare(squareToClean);
         }
     }
 }
