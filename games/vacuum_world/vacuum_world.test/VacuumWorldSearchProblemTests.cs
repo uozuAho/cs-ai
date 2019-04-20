@@ -13,10 +13,11 @@ namespace vacuum_world.test
         public void Setup()
         {
             _initialState = new VacuumWorldState(2);
-            _initialState.SetSquareIsDirty(0, 0, true);
-            _initialState.SetSquareIsDirty(0, 1, true);
-            
-            _problem = new VacuumWorldSearchProblem(_initialState, new VacuumWorldActionHandler());
+            _initialState.MakeSquareDirty(0, 0);
+            _initialState.MakeSquareDirty(0, 1);
+
+            _problem = new VacuumWorldSearchProblem(_initialState,
+                VacuumWorldActionHandler.CreateDeterministicActionHandler());
         }
         
         [Test]
