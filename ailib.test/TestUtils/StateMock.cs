@@ -2,7 +2,7 @@ namespace ailib.test.TestUtils
 {
     public class StateMock
     {
-        public string Value { get; set; }
+        public string Value { get; }
 
         public StateMock(string value)
         {

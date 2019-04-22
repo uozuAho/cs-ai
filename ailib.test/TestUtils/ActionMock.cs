@@ -2,11 +2,16 @@ namespace ailib.test.TestUtils
 {
     public class ActionMock
     {
-        public string Value { get; set; }
+        private readonly string _value;
 
+        public ActionMock(string value)
+        {
+            _value = value;
+        }
+        
         public override string ToString()
         {
-            return Value;
+            return _value;
         }
     }
 }

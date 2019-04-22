@@ -22,8 +22,8 @@ namespace ailib.test.Algorithms
             var state2 = new StateMock("2");
             var state1 = new StateMock("1");
 
-            var action1 = new ActionMock {Value = "1"};
-            var action3 = new ActionMock {Value = "3"};
+            var action1 = new ActionMock("1");
+            var action3 = new ActionMock("3");
             
             A.CallTo(() => _problem.InitialState).Returns(state2);
             A.CallTo(() => _problem.GetActions(state2)).Returns(new[] {action1, action3});

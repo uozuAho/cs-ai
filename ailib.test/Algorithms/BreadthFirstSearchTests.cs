@@ -49,8 +49,8 @@ namespace ailib.test.Algorithms
         [Test]
         public void First_step()
         {
-            var action1 = new ActionMock { Value = "action 1" };
-            var action2 = new ActionMock { Value = "action 2" };
+            var action1 = new ActionMock("action 1");
+            var action2 = new ActionMock("action 2");
             var initialState = new StateMock("initial state");
             var state1 = new StateMock("state 1");
             var state2 = new StateMock("state 2");
@@ -69,8 +69,8 @@ namespace ailib.test.Algorithms
         [Test]
         public void Solve_should_solve_solvable_problem()
         {
-            var action1 = new ActionMock { Value = "action 1" };
-            var action2 = new ActionMock { Value = "action 2" };
+            var action1 = new ActionMock("action 1");
+            var action2 = new ActionMock("action 2");
             var initialState = new StateMock("initial state");
             var state1 = new StateMock("state 1");
             var state2 = new StateMock("state 2");
