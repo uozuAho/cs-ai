@@ -1,12 +1,17 @@
 namespace ailib.test.TestUtils
 {
-    public class StateMock<T>
+    public class StateMock
     {
-        public T Value { get; set; }
+        public string Value { get; }
+
+        public StateMock(string value)
+        {
+            Value = value;
+        }
         
         public override string ToString()
         {
-            return Value.ToString();
+            return Value;
         }
     }
 }
