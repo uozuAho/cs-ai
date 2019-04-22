@@ -15,3 +15,8 @@ See other ai projects (todo: links)
 
 games/ has some runnable console projects. Use `dotnet run`
 in their *.console directories.
+
+# todo - non deterministic actions
+
+- create a new ISearchProblem for non-deterministic actions
+- solution will be a tree, not a sequence

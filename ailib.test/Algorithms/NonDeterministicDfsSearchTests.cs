@@ -10,9 +10,9 @@ namespace ailib.test.Algorithms
         [Test]
         public void GetSolution_ReturnsAnAndOrTree()
         {
-            var problem = A.Fake<INonDeterministicSearchProblem<StateMock<int>, ActionMock<int>>>();
+            var problem = A.Fake<INonDeterministicSearchProblem<StateMock, ActionMock>>();
             
-            var dfsSearch = new NonDeterministicDfsSearch<StateMock<int>, ActionMock<int>>(problem);
+            var dfsSearch = new NonDeterministicDfsSearch<StateMock, ActionMock>(problem);
             var solution = dfsSearch.GetSolution();
             
             Assert.IsNotNull(solution);

@@ -8,7 +8,7 @@ namespace ailib.Algorithms.Search.NonDeterministic
 
         public AndOrTree<TState, TAction> GetSolution()
         {
-            return new AndOrTree<TState, TAction>();
+            return new AndOrTree<TState, TAction>(new OrNode<TAction>(default(TAction)));
         }
     }
 }
