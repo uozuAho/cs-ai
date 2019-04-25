@@ -178,11 +178,11 @@ namespace vacuum_world
                 {
                     if (VacuumPos.Equals(new Point2D(x, y)))
                     {
-                        sb.Append("V");
+                        sb.Append(_squares[x, y] ? "ọ" : "o");
                     }
                     else
                     {
-                        sb.Append(_squares[x, y] ? "X" : ".");
+                        sb.Append(_squares[x, y] ? "." : "_");
                     }
                 }
                 sb.AppendLine();

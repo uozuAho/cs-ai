@@ -12,7 +12,7 @@ namespace vacuum_world.test.e2e
             var initialState = new VacuumWorldState(2);
             initialState.MakeSquareDirty(1, 1);
 
-            var problem = new ErraticVacuumWorldSearchProblem(initialState);
+            var problem = new ErraticVacuumWorldSearchProblem();
             var solver = new NonDeterministicDfsSearch<VacuumWorldState, VacuumWorldAction>(problem);
             var solution = solver.GetSolution();
             
