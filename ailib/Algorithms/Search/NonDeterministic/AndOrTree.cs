@@ -2,7 +2,7 @@ namespace ailib.Algorithms.Search.NonDeterministic
 {
     public class AndOrTree<TState, TAction>
     {
-        private IAndOrTreeNode<TAction> _root;
+        private readonly IAndOrTreeNode<TAction> _root;
 
         public AndOrTree(IAndOrTreeNode<TAction> root)
         {

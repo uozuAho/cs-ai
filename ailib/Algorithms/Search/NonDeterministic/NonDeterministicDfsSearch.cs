@@ -1,14 +1,23 @@
+using System.Linq;
+
 namespace ailib.Algorithms.Search.NonDeterministic
 {
     public class NonDeterministicDfsSearch<TState, TAction> : INonDeterministicSearchAlgorithm<TState, TAction>
     {
-        public NonDeterministicDfsSearch(INonDeterministicSearchProblem<TState, TAction> problem)
+        private readonly INonDeterministicSearchProblem<TState, TAction> _problem;
+        private readonly TState _initialState;
+
+        public NonDeterministicDfsSearch(INonDeterministicSearchProblem<TState, TAction> problem, TState initialState)
         {
+            _problem = problem;
+            _initialState = initialState;
         }
 
         public AndOrTree<TState, TAction> GetSolution()
         {
-            return new AndOrTree<TState, TAction>(new OrNode<TAction>(default(TAction)));
+            var firstAction = _problem.GetActions(_initialState).First();
+            
+            return new AndOrTree<TState, TAction>(new OrNode<TAction>(firstAction));
         }
     }
 }
