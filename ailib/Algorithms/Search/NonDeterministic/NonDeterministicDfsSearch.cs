@@ -1,4 +1,5 @@
 using System;
+using System.Collections.Generic;
 using System.Linq;
 
 namespace ailib.Algorithms.Search.NonDeterministic
@@ -25,31 +26,12 @@ namespace ailib.Algorithms.Search.NonDeterministic
 
         private void Solve()
         {
-            var solution = new NonDeterministicSearchSolution<TState, TAction>();
-            var currentState = _initialState;
+            var plan = AiBookAndOrSearch<TState, TAction>.AndOrGraphSearch(_problem, _initialState);
 
-            while (true)
-            {
-                if (_problem.IsGoal(currentState))
-                {
-                    _solution = solution;
-                    break;
-                }
-                
-                var availableActions = _problem.GetActions(currentState).ToList();
-                if (!availableActions.Any())
-                    break;
-                
-                var action = availableActions.First();
-                var nextState = _problem.DoAction(currentState, action).First();
-                if (solution.Contains(nextState))
-                {
-                    break;
-                }
-                solution.AddAction(currentState, action);
-                currentState = nextState;
-            }
-            // todo: implement dfs from book here
+            if (plan == null) return;
+            
+            var planList = plan.ToList();
+            _solution = new NonDeterministicSearchSolution<TState, TAction>(planList);
         }
     }
 }

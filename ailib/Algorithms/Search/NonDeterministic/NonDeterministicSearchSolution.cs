@@ -1,27 +1,38 @@
 using System;
 using System.Collections.Generic;
+using System.Linq;
 
 namespace ailib.Algorithms.Search.NonDeterministic
 {
     public class NonDeterministicSearchSolution<TState, TAction>
     {
-        private readonly Dictionary<TState, TAction> _actionMap = new Dictionary<TState, TAction>();
+        private List<IPlanNode<TState, TAction>> _plan;
+        private int _idx;
+
+        public NonDeterministicSearchSolution(List<IPlanNode<TState, TAction>> plan)
+        {
+            _plan = plan;
+            _idx = 0;
+        }
 
         public TAction NextAction(TState state)
         {
-            return _actionMap[state];
-        }
-
-        public void AddAction(TState state, TAction action)
-        {
-            if (_actionMap.ContainsKey(state)) throw new InvalidOperationException("state already exists");
-
-            _actionMap[state] = action;
-        }
-
-        public bool Contains(TState state)
-        {
-            return _actionMap.ContainsKey(state);
+            switch (_plan[_idx])
+            {
+                case OrNode<TState, TAction> orNode:
+                    _idx++;
+                    return orNode.Action;
+                
+                case AndNode<TState, TAction> andNode:
+                    _plan = andNode.GetPlan(state).ToList();
+                    var nextOrNode = _plan[0] as OrNode<TState, TAction>;
+                    if (nextOrNode == null) throw new InvalidOperationException("This shouldn't happen");
+                    _idx = 1;
+                    return nextOrNode.Action;
+                    
+                default:
+                    throw new InvalidOperationException("This shouldn't happen");
+            }
         }
     }
 }

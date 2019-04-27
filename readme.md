@@ -18,5 +18,11 @@ in their *.console directories.
 
 # todo - non deterministic actions
 
-- create a new ISearchProblem for non-deterministic actions
-- solution will be a tree, not a sequence
+- start: no dead ends, no repeated states, no non
+  deterministic actions
+- **DONE** solve search with start conditions
+- solve search with non deterministic actions
+- solve search with repeated states
+- pass vacuum world e2e test
+- solve search with avoidable dead ends
+- solve search with unavoidable dead ends
