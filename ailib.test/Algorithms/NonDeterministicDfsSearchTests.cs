@@ -48,7 +48,6 @@ namespace ailib.test.Algorithms
         }
         
         [Test]
-        [Ignore("todo: this, later")]
         public void GivenNonDeterministicAction_SolutionShouldKeepTryingToGoToGoal()
         {
             var goalState = new StateMock("goal state");

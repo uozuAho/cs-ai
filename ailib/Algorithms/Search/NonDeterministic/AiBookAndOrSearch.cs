@@ -11,17 +11,17 @@ namespace ailib.Algorithms.Search.NonDeterministic
     {
         // note: null = repeated state or dead end ... todo: encode these as objects
 
-        private static IEnumerable<IPlanNode<TState, TAction>> EmptyPlan { get; } =
-            Enumerable.Empty<IPlanNode<TState, TAction>>();
+        private static IPlanNode<TState, TAction> EmptyPlan { get; } =
+            new EmptyPlan<TState, TAction>();
 
-        public static IEnumerable<IPlanNode<TState, TAction>> AndOrGraphSearch(
+        public static IPlanNode<TState, TAction> AndOrGraphSearch(
             INonDeterministicSearchProblem<TState, TAction> problem,
             TState initialState)
         {
             return OrSearch(initialState, problem, new List<TState>());
         }
 
-        private static IEnumerable<IPlanNode<TState, TAction>> OrSearch(
+        private static IPlanNode<TState, TAction> OrSearch(
             TState state,
             INonDeterministicSearchProblem<TState,TAction> problem,
             ICollection<TState> path)
@@ -33,7 +33,7 @@ namespace ailib.Algorithms.Search.NonDeterministic
             {
                 var plan = AndSearch(problem.DoAction(state, action), problem, path.Concat(new[] {state}));
                 if (plan != null)
-                    return new[] {new OrNode<TState, TAction>(action), plan};
+                    return new OrNode<TState, TAction>(action, plan);
             }
 
             return null;
@@ -62,31 +62,37 @@ namespace ailib.Algorithms.Search.NonDeterministic
     {
     }
 
+    public class EmptyPlan<TState, TAction> : IPlanNode<TState, TAction>
+    {
+    }
+
     public class OrNode<TState, TAction> : IPlanNode<TState, TAction>
     {
         public TAction Action { get; }
+        public IPlanNode<TState, TAction> Child { get; }
 
-        public OrNode(TAction action)
+        public OrNode(TAction action, IPlanNode<TState, TAction> child)
         {
             Action = action;
+            Child = child;
         }
     }
     
     public class AndNode<TState, TAction> : IPlanNode<TState, TAction>
     {
-        private readonly Dictionary<TState, IEnumerable<IPlanNode<TState, TAction>>> _statePlans =
-            new Dictionary<TState, IEnumerable<IPlanNode<TState, TAction>>>();
+        private readonly Dictionary<TState, IPlanNode<TState, TAction>> _children =
+            new Dictionary<TState, IPlanNode<TState, TAction>>();
 
-        public void AddPlanForState(TState state, IEnumerable<IPlanNode<TState, TAction>> planNode)
+        public void AddPlanForState(TState state, IPlanNode<TState, TAction> planNode)
         {
-            if (_statePlans.ContainsKey(state)) throw new InvalidOperationException("duplicate state");
+            if (_children.ContainsKey(state)) throw new InvalidOperationException("duplicate state");
             
-            _statePlans[state] = planNode;
+            _children[state] = planNode;
         }
 
-        public IEnumerable<IPlanNode<TState, TAction>> GetPlan(TState state)
+        public IPlanNode<TState, TAction> GetPlan(TState state)
         {
-            return _statePlans[state];
+            return _children[state];
         }
     }
 }

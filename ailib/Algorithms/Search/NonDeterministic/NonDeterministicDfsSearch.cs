@@ -8,7 +8,7 @@ namespace ailib.Algorithms.Search.NonDeterministic
     {
         private readonly INonDeterministicSearchProblem<TState, TAction> _problem;
         private readonly TState _initialState;
-        private NonDeterministicSearchSolution<TState, TAction> _solution;
+        private NonDeterministicDfsSearchSolution<TState, TAction> _solution;
 
         public NonDeterministicDfsSearch(INonDeterministicSearchProblem<TState, TAction> problem, TState initialState)
         {
@@ -17,7 +17,7 @@ namespace ailib.Algorithms.Search.NonDeterministic
             Solve();
         }
 
-        public NonDeterministicSearchSolution<TState, TAction> GetSolution()
+        public NonDeterministicDfsSearchSolution<TState, TAction> GetSolution()
         {
             if (_solution == null) throw new InvalidOperationException("No solution");
 
@@ -30,8 +30,7 @@ namespace ailib.Algorithms.Search.NonDeterministic
 
             if (plan == null) return;
             
-            var planList = plan.ToList();
-            _solution = new NonDeterministicSearchSolution<TState, TAction>(planList);
+            _solution = new NonDeterministicDfsSearchSolution<TState, TAction>(plan);
         }
     }
 }

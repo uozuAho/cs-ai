@@ -21,7 +21,7 @@ in their *.console directories.
 - start: no dead ends, no repeated states, no non
   deterministic actions
 - **DONE** solve search with start conditions
-- solve search with non deterministic actions
+- **DONE** solve search with non deterministic actions
 - solve search with repeated states
 - pass vacuum world e2e test
 - solve search with avoidable dead ends
