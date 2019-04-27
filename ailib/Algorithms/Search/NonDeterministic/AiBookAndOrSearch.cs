@@ -9,7 +9,7 @@ namespace ailib.Algorithms.Search.NonDeterministic
     /// </summary>
     public static class AiBookAndOrSearch<TState, TAction>
     {
-        // note: failure = null
+        // note: null = repeated state or dead end ... todo: encode these as objects
 
         private static IEnumerable<IPlanNode<TState, TAction>> EmptyPlan { get; } =
             Enumerable.Empty<IPlanNode<TState, TAction>>();
@@ -50,8 +50,6 @@ namespace ailib.Algorithms.Search.NonDeterministic
             foreach (var state in states)
             {
                 var plan = OrSearch(state, problem, pathList);
-                
-                if (plan == null) return null;
                 
                 thisPlan.AddPlanForState(state, plan);
             }
