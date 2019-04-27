@@ -46,9 +46,40 @@ namespace ailib.test.Algorithms
             // assert
             Assert.AreEqual(goToGoal, solution.NextAction(_initialState));
         }
-        
+
         [Test]
-        public void GivenNonDeterministicAction_SolutionShouldKeepTryingToGoToGoal()
+        public void GivenNonDeterministicAction_ShouldReachGoal()
+        {
+            var state1 = new StateMock("state 1");
+            var state2 = new StateMock("state 2");
+            var goalState = new StateMock("goal state");
+            var action = new ActionMock("action");
+
+            A.CallTo(() => _problem.IsGoal(goalState)).Returns(true);
+            // available actions
+            A.CallTo(() => _problem.GetActions(_initialState)).Returns(new [] {action});
+            A.CallTo(() => _problem.GetActions(state1)).Returns(new [] {action});
+            A.CallTo(() => _problem.GetActions(state2)).Returns(new [] {action});
+            // action outcomes
+            A.CallTo(() => _problem.DoAction(_initialState, action)).Returns(new[]
+            {
+                state1,
+                state2
+            });
+            A.CallTo(() => _problem.DoAction(state1, action)).Returns(new[] {goalState});
+            A.CallTo(() => _problem.DoAction(state2, action)).Returns(new[] {goalState});
+
+            // act
+            var dfsSearch = new NonDeterministicDfsSearch<StateMock, ActionMock>(_problem, _initialState);
+            var solution = dfsSearch.GetSolution();
+            
+            // assert
+            Assert.AreEqual(action, solution.NextAction(_initialState));
+            Assert.AreEqual(action, solution.NextAction(state1));
+        }
+
+        [Test]
+        public void GivenNonDeterministicActionAndRepeatedState_SolutionShouldKeepTryingToGoToGoal()
         {
             var goalState = new StateMock("goal state");
             var goToGoal = new ActionMock("go to goal");
@@ -66,6 +97,7 @@ namespace ailib.test.Algorithms
             var solution = dfsSearch.GetSolution();
             
             // assert
+            Assert.AreEqual(goToGoal, solution.NextAction(_initialState));
             Assert.AreEqual(goToGoal, solution.NextAction(_initialState));
             Assert.AreEqual(goToGoal, solution.NextAction(_initialState));
         }

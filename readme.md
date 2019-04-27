@@ -22,7 +22,7 @@ in their *.console directories.
   deterministic actions
 - **DONE** solve search with start conditions
 - **DONE** solve search with non deterministic actions
-- solve search with repeated states
+- **DONE** solve search with repeated states
 - pass vacuum world e2e test
 - solve search with avoidable dead ends
 - solve search with unavoidable dead ends
