@@ -77,6 +77,27 @@ namespace ailib.test.Algorithms
             Assert.AreEqual(action, solution.NextAction(_initialState));
             Assert.AreEqual(action, solution.NextAction(state1));
         }
+        
+        [Test]
+        public void GivenOneActionRepeatsAndOneGoesToGoal_ShouldReturnPlanToGoal()
+        {
+            var goalState = new StateMock("goal state");
+            var repeat = new ActionMock("repeat");
+            var goToGoal = new ActionMock("go to goal");
+
+            A.CallTo(() => _problem.IsGoal(_initialState)).Returns(false);
+            A.CallTo(() => _problem.IsGoal(goalState)).Returns(true);
+            A.CallTo(() => _problem.GetActions(_initialState)).Returns(new [] {repeat, goToGoal});
+            A.CallTo(() => _problem.DoAction(_initialState, repeat)).Returns(new[] {_initialState});
+            A.CallTo(() => _problem.DoAction(_initialState, goToGoal)).Returns(new[] {goalState});
+            
+            // act
+            var dfsSearch = new NonDeterministicDfsSearch<StateMock, ActionMock>(_problem, _initialState);
+            var solution = dfsSearch.GetSolution();
+            
+            // assert
+            Assert.AreEqual(goToGoal, solution.NextAction(_initialState));
+        }
 
         [Test]
         public void GivenNonDeterministicActionAndRepeatedState_SolutionShouldKeepTryingToGoToGoal()
