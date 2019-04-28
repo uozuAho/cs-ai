@@ -4,7 +4,7 @@ using System.Linq;
 
 namespace ailib.Algorithms.Search.NonDeterministic
 {
-    public class NonDeterministicDfsSearchSolution<TState, TAction>
+    public class NonDeterministicDfsSearchSolution<TState, TAction> : INonDeterministicSearchSolution<TState, TAction>
     {
         private IPlanNode<TState, TAction> _plan;
 
