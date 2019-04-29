@@ -12,7 +12,7 @@ namespace ailib.Algorithms.Search.NonDeterministic
         // note: null = repeated state or dead end ... todo: encode these as objects?
 
         private static IPlanNode<TState, TAction> EmptyPlan { get; } =
-            new EmptyPlan<TState, TAction>();
+            new Empty<TState, TAction>();
 
         public static IPlanNode<TState, TAction> AndOrGraphSearch(
             INonDeterministicSearchProblem<TState, TAction> problem,
@@ -65,7 +65,7 @@ namespace ailib.Algorithms.Search.NonDeterministic
     {
     }
 
-    public class EmptyPlan<TState, TAction> : IPlanNode<TState, TAction>
+    public class Empty<TState, TAction> : IPlanNode<TState, TAction>
     {
     }
 

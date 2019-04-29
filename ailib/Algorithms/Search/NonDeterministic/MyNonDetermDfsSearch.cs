@@ -11,7 +11,7 @@ namespace ailib.Algorithms.Search.NonDeterministic
     public static class MyNonDetermDfsSearch<TState, TAction>
     {
         private static IPlanNode<TState, TAction> EmptyPlan { get; } =
-            new EmptyPlan<TState, TAction>();
+            new Empty<TState, TAction>();
         
         public static INonDeterministicSearchSolution<TState, TAction> Search(
             INonDeterministicSearchProblem<TState, TAction> problem,
@@ -52,8 +52,12 @@ namespace ailib.Algorithms.Search.NonDeterministic
             IReadOnlyDictionary<TState, IPlanNode<TState, TAction>> explored)
         {
             var thisPlan = new AndNode<TState, TAction>();
+            var statesList = states.ToList();
             
-            foreach (var state in states)
+            // all child states have already been explored - path to goal is not this way (?)
+            if (statesList.All(explored.ContainsKey)) return null;
+            
+            foreach (var state in statesList)
             {
                 var plan = OrSearch(state, problem, explored);
 
