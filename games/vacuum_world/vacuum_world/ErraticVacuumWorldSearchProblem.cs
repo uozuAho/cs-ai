@@ -36,14 +36,18 @@ namespace vacuum_world
             }
             else
             {
+                // todo: clean me
                 if (state.SquareIsDirty(state.VacuumPos))
                 {
                     var newStateCleaned = state.Clone();
                     newStateCleaned.CleanSquare(state.VacuumPos);
                     yield return newStateCleaned;
 
-                    var neighbours = state.AdjacentSquares(state.VacuumPos);
-                    foreach (var neighbour in neighbours)
+                    var dirtyNeighbours = state
+                        .AdjacentSquares(state.VacuumPos)
+                        .Where(state.SquareIsDirty);
+                    
+                    foreach (var neighbour in dirtyNeighbours)
                     {
                         var neighbourCleanedState = newStateCleaned.Clone();
                         neighbourCleanedState.CleanSquare(neighbour);

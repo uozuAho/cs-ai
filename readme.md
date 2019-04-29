@@ -23,6 +23,9 @@ in their *.console directories.
 - **DONE** solve search with start conditions
 - **DONE** solve search with non deterministic actions
 - **DONE** solve search with repeated states
+- clean erratic search problem
+- look for other todos
 - pass vacuum world e2e test
-- solve search with avoidable dead ends
-- solve search with unavoidable dead ends
+- meh? spent too long on this already
+    - solve search with avoidable dead ends
+    - solve search with unavoidable dead ends

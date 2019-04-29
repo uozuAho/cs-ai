@@ -64,6 +64,23 @@ namespace vacuum_world.test
         }
         
         [Test]
+        public void GivenOnlyVacuumSquareIsDirty_Suck_ShouldReturnOnePossibleState()
+        {
+            var currentState = new VacuumWorldState(3);
+            currentState.MakeSquareDirty(currentState.VacuumPos);
+
+            var onlyPossibleState = currentState.Clone();
+            onlyPossibleState.CleanSquare(currentState.VacuumPos);
+            
+            // act
+            var potentialStates = _searchProblem.DoAction(currentState, VacuumWorldAction.Suck).ToList();
+            
+            // assert
+            Assert.AreEqual(1, potentialStates.Count);
+            Assert.AreEqual(1, potentialStates.Count(s => s.Equals(onlyPossibleState)));
+        }
+        
+        [Test]
         public void GivenAllSquaresAreDirty_Suck_ShouldReturnCleanedStatePlusCleanedNeighbourStates()
         {
             var currentState = new VacuumWorldState(3);
@@ -83,7 +100,7 @@ namespace vacuum_world.test
             // assert
             CollectionAssert.AreEquivalent(expectedPotentialStates, potentialStates);
         }
-
+        
         private static IEnumerable<VacuumWorldState> CreateAllStatesWithOneCleanedNeighbour(VacuumWorldState state)
         {
             return state
