@@ -1,6 +1,6 @@
 namespace ailib.Algorithms.Search.NonDeterministic
 {
-    public class EmptyPlanNode<TState, TAction> : IPlanNode<TState, TAction>
+    internal class EmptyPlanNode<TState, TAction> : IPlanNode<TState, TAction>
     {
     }
 }

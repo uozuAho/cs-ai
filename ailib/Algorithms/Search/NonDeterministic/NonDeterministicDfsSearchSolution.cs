@@ -2,7 +2,7 @@ using System;
 
 namespace ailib.Algorithms.Search.NonDeterministic
 {
-    public class NonDeterministicDfsSearchSolution<TState, TAction> : INonDeterministicSearchSolution<TState, TAction>
+    internal class NonDeterministicDfsSearchSolution<TState, TAction> : INonDeterministicSearchSolution<TState, TAction>
     {
         private IPlanNode<TState, TAction> _currentNode;
 

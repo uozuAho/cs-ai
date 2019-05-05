@@ -16,7 +16,14 @@ namespace ailib.test.Algorithms
             _problem = A.Fake<INonDeterministicSearchProblem<StateMock, ActionMock>>();
             _initialState = new StateMock("initial state");
         }
-        
+
+        private INonDeterministicSearchAlgorithm<StateMock, ActionMock> CreateSearchAlgorithm(
+            INonDeterministicSearchProblem<StateMock, ActionMock> problem,
+            StateMock initialState)
+        {
+            return new NonDeterministicDfsSearch<StateMock, ActionMock>(problem, initialState);
+        }
+
         [Test]
         public void GivenOnlyActionLeadsToGoal_FirstSolutionActionShouldGoToGoal()
         {
@@ -29,7 +36,7 @@ namespace ailib.test.Algorithms
             A.CallTo(() => _problem.DoAction(_initialState, goToGoal)).Returns(new[] {goalState});
             
             // act
-            var solution = NonDeterministicDfsSearch<StateMock, ActionMock>.Search(_problem, _initialState);
+            var solution = CreateSearchAlgorithm(_problem, _initialState).GetSolution();
             
             // assert
             Assert.AreEqual(goToGoal, solution.NextAction(_initialState));
@@ -58,7 +65,7 @@ namespace ailib.test.Algorithms
             A.CallTo(() => _problem.DoAction(state2, action)).Returns(new[] {goalState});
 
             // act
-            var solution = NonDeterministicDfsSearch<StateMock, ActionMock>.Search(_problem, _initialState);
+            var solution = CreateSearchAlgorithm(_problem, _initialState).GetSolution();
             
             // assert
             Assert.AreEqual(action, solution.NextAction(_initialState));
@@ -79,7 +86,7 @@ namespace ailib.test.Algorithms
             A.CallTo(() => _problem.DoAction(_initialState, goToGoal)).Returns(new[] {goalState});
             
             // act
-            var solution = NonDeterministicDfsSearch<StateMock, ActionMock>.Search(_problem, _initialState);
+            var solution = CreateSearchAlgorithm(_problem, _initialState).GetSolution();
             
             // assert
             Assert.AreEqual(goToGoal, solution.NextAction(_initialState));
@@ -100,7 +107,7 @@ namespace ailib.test.Algorithms
             });
 
             // act
-            var solution = NonDeterministicDfsSearch<StateMock, ActionMock>.Search(_problem, _initialState);
+            var solution = CreateSearchAlgorithm(_problem, _initialState).GetSolution();
             
             // assert
             Assert.AreEqual(goToGoal, solution.NextAction(_initialState));
@@ -123,7 +130,7 @@ namespace ailib.test.Algorithms
             A.CallTo(() => _problem.DoAction(nextState, goToGoal)).Returns(new[] {goalState});
 
             // act
-            var solution = NonDeterministicDfsSearch<StateMock, ActionMock>.Search(_problem, _initialState);
+            var solution = CreateSearchAlgorithm(_problem, _initialState).GetSolution();
             
             // assert
             Assert.AreEqual(goToNext, solution.NextAction(_initialState));

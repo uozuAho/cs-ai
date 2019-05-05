@@ -3,7 +3,7 @@ using System.Collections.Generic;
 
 namespace ailib.Algorithms.Search.NonDeterministic
 {
-    public class AndNode<TState, TAction> : IPlanNode<TState, TAction>
+    internal class AndNode<TState, TAction> : IPlanNode<TState, TAction>
     {
         private readonly Dictionary<TState, IPlanNode<TState, TAction>> _children =
             new Dictionary<TState, IPlanNode<TState, TAction>>();

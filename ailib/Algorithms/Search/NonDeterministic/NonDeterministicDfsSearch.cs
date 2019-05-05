@@ -27,7 +27,7 @@ namespace ailib.Algorithms.Search.NonDeterministic
             return Search(_problem, _initialState);
         }
         
-        public static INonDeterministicSearchSolution<TState, TAction> Search(
+        private static INonDeterministicSearchSolution<TState, TAction> Search(
             INonDeterministicSearchProblem<TState, TAction> problem,
             TState initialState)
         {
