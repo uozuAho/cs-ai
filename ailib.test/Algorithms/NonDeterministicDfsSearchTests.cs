@@ -18,17 +18,6 @@ namespace ailib.test.Algorithms
         }
         
         [Test]
-        public void GivenNoGoal_GetSolution_ShouldThrow()
-        {
-            A.CallTo(() => _problem.IsGoal(A<StateMock>._)).Returns(false);
-            // don't set up actions = no available actions
-            
-            var dfsSearch = new NonDeterministicDfsSearch<StateMock, ActionMock>(_problem, _initialState);
-
-            Assert.That(() => dfsSearch.GetSolution(), Throws.InvalidOperationException);
-        }
-        
-        [Test]
         public void GivenOnlyActionLeadsToGoal_FirstSolutionActionShouldGoToGoal()
         {
             var goalState = new StateMock("goal state");

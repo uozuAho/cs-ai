@@ -5,13 +5,14 @@ using System.Linq;
 namespace ailib.Algorithms.Search.NonDeterministic
 {
     /// <summary>
-    /// I don't get how the book's 'and or search' is supposed to work.
-    /// Here's my own. Still functional + recursive.
+    /// Solves non deterministic search problems using depth first search.
+    /// Inspired by 'and or graph search' translated from pg 136 of the ai book.
+    /// Handling of (un)avoidable dead ends is not tested ... use at your own risk :)
     /// </summary>
     public static class MyNonDetermDfsSearch<TState, TAction>
     {
         private static IPlanNode<TState, TAction> EmptyPlan { get; } =
-            new Empty<TState, TAction>();
+            new EmptyPlanNode<TState, TAction>();
         
         public static INonDeterministicSearchSolution<TState, TAction> Search(
             INonDeterministicSearchProblem<TState, TAction> problem,
