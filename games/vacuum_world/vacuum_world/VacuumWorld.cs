@@ -18,6 +18,16 @@ namespace vacuum_world
             _actionHandler = actionHandler;
         }
 
+        public static VacuumWorld CreateDeterministicVacuumWorld(VacuumWorldState state)
+        {
+            return new VacuumWorld(state, VacuumWorldActionHandler.CreateDeterministicActionHandler());
+        }
+        
+        public static VacuumWorld CreateErraticVacuumWorld(VacuumWorldState state)
+        {
+            return new VacuumWorld(state, VacuumWorldActionHandler.CreateErraticWorldActionHandler());
+        }
+
         public void DoAction(VacuumWorldAction action)
         {
             _actionHandler.DoAction(State, action);

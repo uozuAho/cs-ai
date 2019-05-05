@@ -1,8 +1,10 @@
 # cs ai
 
-Yet another ai library, this time using C#.
+Yet another go at the AI textbook, this time using C#.
 
-See other ai projects (todo: links)
+See also
+- https://github.com/uozuAho/react_ai
+- https://github.com/uozuAho/ts_ai2
 
 # Getting started
 
