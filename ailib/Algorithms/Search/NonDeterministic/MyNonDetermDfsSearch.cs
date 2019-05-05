@@ -8,10 +8,24 @@ namespace ailib.Algorithms.Search.NonDeterministic
     /// Inspired by 'and or graph search' translated from pg 136 of the ai book.
     /// Handling of (un)avoidable dead ends is not tested ... use at your own risk :)
     /// </summary>
-    public static class MyNonDetermDfsSearch<TState, TAction>
+    public class MyNonDetermDfsSearch<TState, TAction> : INonDeterministicSearchAlgorithm<TState, TAction>
     {
+        private readonly INonDeterministicSearchProblem<TState, TAction> _problem;
+        private readonly TState _initialState;
+
         private static IPlanNode<TState, TAction> EmptyPlan { get; } =
             new EmptyPlanNode<TState, TAction>();
+        
+        public MyNonDetermDfsSearch(INonDeterministicSearchProblem<TState, TAction> problem, TState initialState)
+        {
+            _problem = problem;
+            _initialState = initialState;
+        }
+        
+        public INonDeterministicSearchSolution<TState, TAction> GetSolution()
+        {
+            return Search(_problem, _initialState);
+        }
         
         public static INonDeterministicSearchSolution<TState, TAction> Search(
             INonDeterministicSearchProblem<TState, TAction> problem,
@@ -68,17 +82,6 @@ namespace ailib.Algorithms.Search.NonDeterministic
             }
 
             return thisPlan;
-        }
-    }
-    
-    public class OrNode2<TState, TAction> : IPlanNode<TState, TAction>
-    {
-        public TAction Action { get; }
-        public IPlanNode<TState, TAction> Child { get; set; }
-
-        public OrNode2(TAction action)
-        {
-            Action = action;
         }
     }
 }
