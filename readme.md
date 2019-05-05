@@ -18,7 +18,6 @@ in their *.console directories.
 
 # todo - non deterministic actions
 
-- clean erratic search problem
 - make as much private as possible
 - look for other todos
 - meh? spent too long on this already
