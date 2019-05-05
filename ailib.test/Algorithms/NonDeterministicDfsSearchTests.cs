@@ -29,7 +29,7 @@ namespace ailib.test.Algorithms
             A.CallTo(() => _problem.DoAction(_initialState, goToGoal)).Returns(new[] {goalState});
             
             // act
-            var solution = MyNonDetermDfsSearch<StateMock, ActionMock>.Search(_problem, _initialState);
+            var solution = NonDeterministicDfsSearch<StateMock, ActionMock>.Search(_problem, _initialState);
             
             // assert
             Assert.AreEqual(goToGoal, solution.NextAction(_initialState));
@@ -58,7 +58,7 @@ namespace ailib.test.Algorithms
             A.CallTo(() => _problem.DoAction(state2, action)).Returns(new[] {goalState});
 
             // act
-            var solution = MyNonDetermDfsSearch<StateMock, ActionMock>.Search(_problem, _initialState);
+            var solution = NonDeterministicDfsSearch<StateMock, ActionMock>.Search(_problem, _initialState);
             
             // assert
             Assert.AreEqual(action, solution.NextAction(_initialState));
@@ -79,7 +79,7 @@ namespace ailib.test.Algorithms
             A.CallTo(() => _problem.DoAction(_initialState, goToGoal)).Returns(new[] {goalState});
             
             // act
-            var solution = MyNonDetermDfsSearch<StateMock, ActionMock>.Search(_problem, _initialState);
+            var solution = NonDeterministicDfsSearch<StateMock, ActionMock>.Search(_problem, _initialState);
             
             // assert
             Assert.AreEqual(goToGoal, solution.NextAction(_initialState));
@@ -100,7 +100,7 @@ namespace ailib.test.Algorithms
             });
 
             // act
-            var solution = MyNonDetermDfsSearch<StateMock, ActionMock>.Search(_problem, _initialState);
+            var solution = NonDeterministicDfsSearch<StateMock, ActionMock>.Search(_problem, _initialState);
             
             // assert
             Assert.AreEqual(goToGoal, solution.NextAction(_initialState));
@@ -123,7 +123,7 @@ namespace ailib.test.Algorithms
             A.CallTo(() => _problem.DoAction(nextState, goToGoal)).Returns(new[] {goalState});
 
             // act
-            var solution = MyNonDetermDfsSearch<StateMock, ActionMock>.Search(_problem, _initialState);
+            var solution = NonDeterministicDfsSearch<StateMock, ActionMock>.Search(_problem, _initialState);
             
             // assert
             Assert.AreEqual(goToNext, solution.NextAction(_initialState));
