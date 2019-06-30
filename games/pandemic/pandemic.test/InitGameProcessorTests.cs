@@ -1,7 +1,6 @@
 using System.Linq;
 using NUnit.Framework;
 using pandemic.GameObjects;
-using pandemic.StateMachine;
 using pandemic.StateMachine.ActionProcessors;
 using pandemic.StateMachine.Actions;
 using pandemic.States;
@@ -21,7 +20,8 @@ namespace pandemic.test
         [Test]
         public void GivenRealBoard_ProcessInit_ShouldInitialiseGameCorrectly()
         {
-            var state = new PandemicGameState(PandemicBoard.CreateRealGameBoard());
+            var players = new[] {new Player(Character.Medic)};
+            var state = new PandemicGameState(PandemicBoard.CreateRealGameBoard(), players);
             
             _processor.ProcessAction(state, new InitGameAction());
             
@@ -43,6 +43,10 @@ namespace pandemic.test
                 .Sum();
             
             Assert.AreEqual(4 * 24 - 9 - 6 - 3, sumOfAllCubesInPile);
+
+            // all players should be at Atlanta
+            var atlanta = state.GetCity("Atlanta");
+            Assert.IsTrue(state.Players.All(p => p.Location == atlanta));
         }
     }
 }
