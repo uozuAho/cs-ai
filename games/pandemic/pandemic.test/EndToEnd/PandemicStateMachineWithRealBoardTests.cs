@@ -18,7 +18,7 @@ namespace pandemic.test.EndToEnd
             var actionProcessorFactory = new ActionProcessorFactory();
 
             _stateMachine = new PandemicStateMachine(initialState, actionProcessorFactory);
-            _stateMachine.ProcessAction(new InitGameAction());
+            _stateMachine.ProcessAction(new InitGameAction(new[] {Character.Medic}));
         }
 
         [Test]
@@ -27,16 +27,6 @@ namespace pandemic.test.EndToEnd
             _stateMachine.ProcessAction(new MoveAction("Miami"));
 
             Assert.AreEqual("Miami", _stateMachine.State.Players[0].Location.Name);
-        }
-    }
-
-    internal class MoveAction : IAction
-    {
-        public string CityName { get; }
-
-        public MoveAction(string cityName)
-        {
-            CityName = cityName;
         }
     }
 }
