@@ -8,25 +8,75 @@ namespace dp
     {
         public static void Run()
         {
+            Test();
+            RunImpl();
+        }
+
+        private static void RunImpl()
+        {
             var world = new GamblersWorld();
             IGamblersPolicy policy = new UniformRandomGamblersPolicy();
             var rewarder = new GamblersWorldRewarder();
             
             var values = new GamblersValueTable(world);
 
-            for (var i = 0; i < 100; i++)
-            {
-                // todo: this currently evaluates with many iterations. change to value iteration,
-                // see how it affects convergence rate
-                values.Evaluate(policy, rewarder);
-                policy = GreedyGamblersPolicy.Create(world, values, rewarder);
-            }
-            
-            Console.WriteLine("Policy:");
-            (policy as GreedyGamblersPolicy)?.Print();
-            Console.WriteLine();
+            values.Evaluate(policy, rewarder, 10);
             Console.WriteLine("Values:");
             values.Print();
+            values.Evaluate(policy, rewarder);
+            Console.WriteLine("Values:");
+            values.Print();
+
+            policy = GreedyGamblersPolicy.Create(world, values, rewarder);
+            Console.WriteLine("Greedy policy:");
+            ((GreedyGamblersPolicy) policy)?.Print();
+
+            values.Evaluate(policy, rewarder);
+            Console.WriteLine("Values:");
+            values.Print();
+
+            policy = GreedyGamblersPolicy.Create(world, values, rewarder);
+            Console.WriteLine("Greedy policy:");
+            ((GreedyGamblersPolicy) policy)?.Print();
+
+            // for (var i = 0; i < 100; i++)
+            // {
+            //     // todo: this currently evaluates with many iterations. change to value iteration,
+            //     // see how it affects convergence rate
+            //     values.Evaluate(policy, rewarder);
+            //     policy = GreedyGamblersPolicy.Create(world, values, rewarder);
+            // }
+            //
+            // Console.WriteLine("Policy:");
+            // (policy as GreedyGamblersPolicy)?.Print();
+            // Console.WriteLine();
+            // Console.WriteLine("Values:");
+            // values.Print();
+        }
+
+        private static void Test()
+        {
+            var world = new GamblersWorld();
+            Assert("world has 101 states", world.AllStates().Count() == 101);
+            Assert("0 possible actions when $0 in hand", !world.AvailableActions(new GamblersWorldState(0)).Any());
+            Assert("6 possible actions when $5 in hand", world.AvailableActions(new GamblersWorldState(5)).Count() == 6);
+            Assert("0 possible actions when $100 in hand", !world.AvailableActions(new GamblersWorldState(100)).Any());
+
+            for (var i = 0; i < 101; i++)
+            {
+                var possibleStates = world.PossibleStates(new GamblersWorldState(i), new GamblersWorldAction(1)).ToList();
+                Assert("2 possible states on an action", possibleStates.Count == 2);
+                Assert("probability of states sums to 1", possibleStates.Sum(s => s.Item2) == 1.0);
+                Assert("probability of losing is 0.6", possibleStates.Single(s => s.Item1.DollarsInHand == i - 1).Item2 == 0.6);
+            }
+        }
+
+        private static void Assert(string description, bool condition)
+        {
+            if (!condition)
+            {
+                Console.WriteLine("Failed: " + description);
+            }
         }
     }
 
@@ -45,6 +95,8 @@ namespace dp
 
         public IEnumerable<GamblersWorldAction> AvailableActions(GamblersWorldState state)
         {
+            if (state.IsTerminal) return Enumerable.Empty<GamblersWorldAction>();
+
             var maxStake = Math.Min(state.DollarsInHand, 100 - state.DollarsInHand);
 
             return Enumerable.Range(0, maxStake + 1).Select(i => new GamblersWorldAction(i));
@@ -215,12 +267,14 @@ namespace dp
         public GamblersValueTable(GamblersWorld world)
         {
             _world = world;
-            _values = new double[world.AllStates().Count()];
+            _values = new double[101];
+            _values[100] = 1.0;
         }
 
         // todo: change this to value iteration (interleave evaluation and improvement)
-        public void Evaluate(IGamblersPolicy policy, IGamblersWorldRewarder rewarder)
+        public void Evaluate(IGamblersPolicy policy, IGamblersWorldRewarder rewarder, int sweepLimit = -1)
         {
+            var numSweeps = 0;
             var largestValueChange = 0.0;
 
             do
@@ -238,12 +292,17 @@ namespace dp
                     if (valueChange > largestValueChange) largestValueChange = valueChange;
                 }
 
+                if (sweepLimit > 0 && ++numSweeps == sweepLimit) break;
+
             } while (largestValueChange > 0.000001);
         }
 
         private double CalculateValue(
             GamblersWorldState state, IGamblersPolicy policy, IGamblersWorldRewarder rewarder)
         {
+            if (state.DollarsInHand == 0) return 0.0;
+            if (state.DollarsInHand == 100) return 1.0;
+
             var newValue = 0.0;
 
             foreach (var action in _world.AvailableActions(state))
