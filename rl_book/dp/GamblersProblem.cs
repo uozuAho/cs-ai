@@ -1,5 +1,4 @@
 ﻿using System;
-using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
 
@@ -10,28 +9,24 @@ namespace dp
         public static void Run()
         {
             var world = new GamblersWorld();
-            var randomPolicy = new UniformRandomGamblersPolicy();
+            IGamblersPolicy policy = new UniformRandomGamblersPolicy();
             var rewarder = new GamblersWorldRewarder();
             
             var values = new GamblersValueTable(world);
+
+            for (var i = 0; i < 100; i++)
+            {
+                // todo: this currently evaluates with many iterations. change to value iteration,
+                // see how it affects convergence rate
+                values.Evaluate(policy, rewarder);
+                policy = GreedyGamblersPolicy.Create(world, values, rewarder);
+            }
             
-            // manually iterate a couple of times - optimal policy is greedy wrt
-            // initial random policy values
-            
-            values.Evaluate(randomPolicy, rewarder);
+            Console.WriteLine("Policy:");
+            (policy as GreedyGamblersPolicy)?.Print();
+            Console.WriteLine();
+            Console.WriteLine("Values:");
             values.Print();
-            //
-            // var greedyPolicy = GreedyPolicy.Create(world, values, rewarder);
-            //
-            // values.Evaluate(greedyPolicy, rewarder);
-            // values.Print();
-            //
-            // greedyPolicy = GreedyPolicy.Create(world, values, rewarder);
-            //
-            // values.Evaluate(greedyPolicy, rewarder);
-            // values.Print();
-            //
-            // greedyPolicy.Print();
         }
     }
 
@@ -86,6 +81,21 @@ namespace dp
         {
             Stake = stake;
         }
+
+        public bool Equals(GamblersWorldAction other)
+        {
+            return Stake == other.Stake;
+        }
+
+        public override bool Equals(object obj)
+        {
+            return obj is GamblersWorldAction other && Equals(other);
+        }
+
+        public override int GetHashCode()
+        {
+            return Stake;
+        }
     }
 
     internal interface IGamblersPolicy
@@ -100,6 +110,79 @@ namespace dp
             if (action.Stake > state.DollarsInHand) return 0.0;
 
             return 1.0 / (state.DollarsInHand + 1);
+        }
+    }
+
+    internal class GreedyGamblersPolicy : IGamblersPolicy
+    {
+        // private readonly Dictionary<GamblersWorldState, GamblersWorldAction> _actions;
+        private readonly int[] _actions;
+
+        private GreedyGamblersPolicy()
+        {
+            // _actions = new Dictionary<GamblersWorldState, GamblersWorldAction>();
+            _actions = new int[101];
+        }
+
+        public static GreedyGamblersPolicy Create(
+            GamblersWorld world,
+            GamblersValueTable valueTable,
+            IGamblersWorldRewarder rewarder)
+        {
+            var greedyPolicy = new GreedyGamblersPolicy();
+
+            foreach (var state in world.AllStates())
+            {
+                // greedyPolicy._actions[state] = FindBestAction(world, state, valueTable, rewarder);
+                var bestAction = FindBestAction(world, state, valueTable, rewarder);
+                greedyPolicy._actions[state.DollarsInHand] = bestAction.Stake;
+            }
+
+            return greedyPolicy;
+        }
+
+        public double PAction(in GamblersWorldState state, in GamblersWorldAction action)
+        {
+            return action.Stake == _actions[state.DollarsInHand] ? 1 : 0;
+        }
+
+        private static GamblersWorldAction FindBestAction(
+            GamblersWorld world,
+            GamblersWorldState state,
+            GamblersValueTable valueTable,
+            IGamblersWorldRewarder rewarder)
+        {
+            var maxActionValue = double.MinValue;
+            var maxAction = new GamblersWorldAction(0);
+
+            foreach (var action in world.AvailableActions(state))
+            {
+                var actionValue = 0.0;
+
+                foreach (var (nextState, pNextState) in world.PossibleStates(state, action))
+                {
+                    var nextStateValue = valueTable.Value(nextState);
+                    var reward = rewarder.Reward(state, nextState, action);
+
+                    actionValue += pNextState * (reward + nextStateValue);
+                }
+
+                if (actionValue > maxActionValue)
+                {
+                    maxActionValue = actionValue;
+                    maxAction = action;
+                }
+            }
+
+            return maxAction;
+        }
+
+        public void Print()
+        {
+            for (var i = 0; i < _actions.Length; i++)
+            {
+                Console.WriteLine($"{i:000}: {_actions[i]}");
+            }
         }
     }
 
@@ -155,7 +238,7 @@ namespace dp
                     if (valueChange > largestValueChange) largestValueChange = valueChange;
                 }
 
-            } while (largestValueChange > 0.0001);
+            } while (largestValueChange > 0.000001);
         }
 
         private double CalculateValue(
@@ -178,7 +261,7 @@ namespace dp
             return newValue;
         }
 
-        private double Value(GamblersWorldState state)
+        public double Value(GamblersWorldState state)
         {
             return _values[state.DollarsInHand];
         }
@@ -187,7 +270,7 @@ namespace dp
         {
             for (var i = 0; i < _values.Length; i++)
             {
-                Console.WriteLine($"{i:00}: {_values[i]}");
+                Console.WriteLine($"{i:000}: {_values[i]}");
             }
         }
     }
