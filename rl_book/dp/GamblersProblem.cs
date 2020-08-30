@@ -19,7 +19,7 @@ namespace dp
             // initial random policy values
             
             values.Evaluate(randomPolicy, rewarder);
-            // values.Print();
+            values.Print();
             //
             // var greedyPolicy = GreedyPolicy.Create(world, values, rewarder);
             //
@@ -90,22 +90,40 @@ namespace dp
 
     internal interface IGamblersPolicy
     {
+        double PAction(in GamblersWorldState state, in GamblersWorldAction action);
     }
 
     internal class UniformRandomGamblersPolicy : IGamblersPolicy
     {
+        public double PAction(in GamblersWorldState state, in GamblersWorldAction action)
+        {
+            if (action.Stake > state.DollarsInHand) return 0.0;
 
+            return 1.0 / (state.DollarsInHand + 1);
+        }
     }
 
     internal interface IGamblersWorldRewarder
     {
+        double Reward(
+            in GamblersWorldState oldState,
+            in GamblersWorldState newState,
+            in GamblersWorldAction action);
     }
 
-    internal class GamblersWorldRewarder
+    internal class GamblersWorldRewarder : IGamblersWorldRewarder
     {
+        public double Reward(
+            in GamblersWorldState oldState,
+            in GamblersWorldState newState,
+            in GamblersWorldAction action)
+        {
+            if (oldState.IsTerminal) return 0.0;
+            if (newState.DollarsInHand == 100) return 1;
+            return 0;
+        }
     }
 
-    // todo: extract generic value table from this and grid world
     internal class GamblersValueTable
     {
         private readonly GamblersWorld _world;
@@ -118,7 +136,7 @@ namespace dp
         }
 
         // todo: change this to value iteration (interleave evaluation and improvement)
-        public void Evaluate(IGamblersPolicy randomPolicy, IGamblersWorldRewarder rewarder)
+        public void Evaluate(IGamblersPolicy policy, IGamblersWorldRewarder rewarder)
         {
             var largestValueChange = 0.0;
 
@@ -131,7 +149,7 @@ namespace dp
                     var originalValue = Value(state);
                     var newValue = CalculateValue(state, policy, rewarder);
 
-                    _values[state.Position1D] = newValue;
+                    _values[state.DollarsInHand] = newValue;
 
                     var valueChange = Math.Abs(originalValue - newValue);
                     if (valueChange > largestValueChange) largestValueChange = valueChange;
@@ -147,10 +165,14 @@ namespace dp
 
             foreach (var action in _world.AvailableActions(state))
             {
-                // todo: handle multiple possible states
-                var nextState = _world.PossibleStates(state, action);
-                var reward = rewarder.Reward(state, action);
-                newValue += policy.PAction(state, action) * (reward + Value(nextState));
+                foreach (var (nextState, pNextState) in _world.PossibleStates(state, action))
+                {
+                    var reward = rewarder.Reward(state, nextState, action);
+                    newValue += 
+                        policy.PAction(state, action)
+                        * pNextState
+                        * (reward + Value(nextState));
+                }
             }
 
             return newValue;
@@ -159,6 +181,14 @@ namespace dp
         private double Value(GamblersWorldState state)
         {
             return _values[state.DollarsInHand];
+        }
+
+        public void Print()
+        {
+            for (var i = 0; i < _values.Length; i++)
+            {
+                Console.WriteLine($"{i:00}: {_values[i]}");
+            }
         }
     }
 }

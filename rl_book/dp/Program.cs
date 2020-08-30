@@ -5,7 +5,8 @@
         static void Main(string[] args)
         {
             // PolicyEvaluation.Run();
-            PolicyIteration.Run();
+            // PolicyIteration.Run();
+            GamblersProblem.Run();
         }
     }
 }
