@@ -15,23 +15,19 @@ namespace dp
         private static void RunImpl()
         {
             const double probabilityOfHeads = 0.4;
-            const int dollarsToWin = 5;
+            const int dollarsToWin = 3;
 
             var world = new GamblersWorld(probabilityOfHeads, dollarsToWin);
-            IGamblersPolicy policy = new UniformRandomGamblersPolicy();
             var rewarder = new GamblersWorldRewarder(world);
             var values = new GamblersValueTable(world);
 
-            for (var i = 0; i < 5; i++)
-            {
-                values.Evaluate(policy, rewarder, 1);
-                Console.WriteLine("Values:");
-                values.Print();
-            }
+            Console.WriteLine("Random policy");
+            IGamblersPolicy policy = new UniformRandomGamblersPolicy();
+            EvaluatePolicy(world, policy);
 
-            values.Evaluate(policy, rewarder);
-            Console.WriteLine("Values:");
-            values.Print();
+            Console.WriteLine("Always $1 policy");
+            policy = new AlwaysStake1DollarPolicy();
+            EvaluatePolicy(world, policy);
 
             // policy = GreedyGamblersPolicy.Create(world, values, rewarder);
             // Console.WriteLine("Greedy policy:");
@@ -58,6 +54,22 @@ namespace dp
             // Console.WriteLine();
             // Console.WriteLine("Values:");
             // values.Print();
+        }
+
+        private static void EvaluatePolicy(GamblersWorld world, IGamblersPolicy policy)
+        {
+            var rewarder = new GamblersWorldRewarder(world);
+            var values = new GamblersValueTable(world);
+
+            values.Evaluate(policy, rewarder, 1);
+            Console.WriteLine("Values:");
+            values.Print();
+            values.Evaluate(policy, rewarder, 1);
+            Console.WriteLine("Values:");
+            values.Print();
+            values.Evaluate(policy, rewarder, 1);
+            Console.WriteLine("Values:");
+            values.Print();
         }
 
         private static void Test()
@@ -187,15 +199,21 @@ namespace dp
         }
     }
 
+    internal class AlwaysStake1DollarPolicy : IGamblersPolicy
+    {
+        public double PAction(in GamblersWorldState state, in GamblersWorldAction action)
+        {
+            return action.Stake == 1 ? 1.0 : 0;
+        }
+    }
+
     internal class GreedyGamblersPolicy : IGamblersPolicy
     {
-        // private readonly Dictionary<GamblersWorldState, GamblersWorldAction> _actions;
         private readonly int[] _actions;
 
-        private GreedyGamblersPolicy()
+        private GreedyGamblersPolicy(GamblersWorld world)
         {
-            // _actions = new Dictionary<GamblersWorldState, GamblersWorldAction>();
-            _actions = new int[101];
+            _actions = new int[world.AllStates().Count()];
         }
 
         public static GreedyGamblersPolicy Create(
@@ -203,11 +221,10 @@ namespace dp
             GamblersValueTable valueTable,
             IGamblersWorldRewarder rewarder)
         {
-            var greedyPolicy = new GreedyGamblersPolicy();
+            var greedyPolicy = new GreedyGamblersPolicy(world);
 
             foreach (var state in world.AllStates())
             {
-                // greedyPolicy._actions[state] = FindBestAction(world, state, valueTable, rewarder);
                 var bestAction = FindBestAction(world, state, valueTable, rewarder);
                 greedyPolicy._actions[state.DollarsInHand] = bestAction.Stake;
             }
@@ -255,7 +272,7 @@ namespace dp
         {
             for (var i = 0; i < _actions.Length; i++)
             {
-                Console.WriteLine($"{i:000}: {_actions[i]}");
+                Console.WriteLine($"{i}: {_actions[i]}");
             }
         }
     }
