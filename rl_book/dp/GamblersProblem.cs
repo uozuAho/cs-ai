@@ -14,7 +14,10 @@ namespace dp
 
         private static void RunImpl()
         {
-            var world = new GamblersWorld();
+            const double probabilityOfHeads = 0.4;
+            const int dollarsToWin = 100;
+
+            var world = new GamblersWorld(probabilityOfHeads, dollarsToWin);
             IGamblersPolicy policy = new UniformRandomGamblersPolicy();
             var rewarder = new GamblersWorldRewarder();
             
@@ -56,15 +59,22 @@ namespace dp
 
         private static void Test()
         {
-            var world = new GamblersWorld();
-            Assert("world has 101 states", world.AllStates().Count() == 101);
-            Assert("0 possible actions when $0 in hand", !world.AvailableActions(new GamblersWorldState(0)).Any());
-            Assert("6 possible actions when $5 in hand", world.AvailableActions(new GamblersWorldState(5)).Count() == 6);
-            Assert("0 possible actions when $100 in hand", !world.AvailableActions(new GamblersWorldState(100)).Any());
+            const double probabilityOfHeads = 0.4;
 
-            for (var i = 0; i < 101; i++)
+            for (var dollarsToWin = 5; dollarsToWin < 10; dollarsToWin++)
             {
-                var possibleStates = world.PossibleStates(new GamblersWorldState(i), new GamblersWorldAction(1)).ToList();
+                var world = new GamblersWorld(probabilityOfHeads, dollarsToWin);
+                Assert($"world has {dollarsToWin + 1} states", world.AllStates().Count() == dollarsToWin + 1);
+                Assert("0 possible actions when $0 in hand", !world.AvailableActions(new GamblersWorldState(0)).Any());
+                Assert("4 possible actions when $3 in hand", world.AvailableActions(new GamblersWorldState(3)).Count() == 4);
+                Assert("0 possible actions when $goal in hand", !world.AvailableActions(new GamblersWorldState(dollarsToWin)).Any());
+            }
+
+            var world2 = new GamblersWorld(probabilityOfHeads, 100);
+
+            for (int i = 0; i < 100; i++)
+            {
+                var possibleStates = world2.PossibleStates(new GamblersWorldState(i), new GamblersWorldAction(1)).ToList();
                 Assert("2 possible states on an action", possibleStates.Count == 2);
                 Assert("probability of states sums to 1", possibleStates.Sum(s => s.Item2) == 1.0);
                 Assert("probability of losing is 0.6", possibleStates.Single(s => s.Item1.DollarsInHand == i - 1).Item2 == 0.6);
@@ -82,13 +92,20 @@ namespace dp
 
     internal class GamblersWorld
     {
-        private const double ProbabilityOfHeads = 0.4;
+        private readonly double _probabilityOfHeads;
+        private readonly int _dollarsToWin;
         private List<GamblersWorldState> _allStates;
+
+        public GamblersWorld(double probabilityOfHeads, int dollarsToWin)
+        {
+            _probabilityOfHeads = probabilityOfHeads;
+            _dollarsToWin = dollarsToWin;
+        }
 
         public IEnumerable<GamblersWorldState> AllStates()
         {
             return _allStates ??= Enumerable
-                .Range(0, 101)
+                .Range(0, _dollarsToWin + 1)
                 .Select(i => new GamblersWorldState(i))
                 .ToList();
         }
@@ -97,7 +114,7 @@ namespace dp
         {
             if (state.IsTerminal) return Enumerable.Empty<GamblersWorldAction>();
 
-            var maxStake = Math.Min(state.DollarsInHand, 100 - state.DollarsInHand);
+            var maxStake = Math.Min(state.DollarsInHand, _dollarsToWin - state.DollarsInHand);
 
             return Enumerable.Range(0, maxStake + 1).Select(i => new GamblersWorldAction(i));
         }
@@ -106,10 +123,10 @@ namespace dp
             PossibleStates(GamblersWorldState state, GamblersWorldAction action)
         {
             yield return new Tuple<GamblersWorldState, double>(
-                new GamblersWorldState(state.DollarsInHand + action.Stake), ProbabilityOfHeads);
+                new GamblersWorldState(state.DollarsInHand + action.Stake), _probabilityOfHeads);
 
             yield return new Tuple<GamblersWorldState, double>(
-                new GamblersWorldState(state.DollarsInHand - action.Stake), 1.0 - ProbabilityOfHeads);
+                new GamblersWorldState(state.DollarsInHand - action.Stake), 1.0 - _probabilityOfHeads);
         }
     }
 
