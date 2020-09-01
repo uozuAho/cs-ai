@@ -15,32 +15,35 @@ namespace dp
         private static void RunImpl()
         {
             const double probabilityOfHeads = 0.4;
-            const int dollarsToWin = 100;
+            const int dollarsToWin = 5;
 
             var world = new GamblersWorld(probabilityOfHeads, dollarsToWin);
             IGamblersPolicy policy = new UniformRandomGamblersPolicy();
-            var rewarder = new GamblersWorldRewarder();
-            
+            var rewarder = new GamblersWorldRewarder(world);
             var values = new GamblersValueTable(world);
 
-            values.Evaluate(policy, rewarder, 10);
-            Console.WriteLine("Values:");
-            values.Print();
-            values.Evaluate(policy, rewarder);
-            Console.WriteLine("Values:");
-            values.Print();
-
-            policy = GreedyGamblersPolicy.Create(world, values, rewarder);
-            Console.WriteLine("Greedy policy:");
-            ((GreedyGamblersPolicy) policy)?.Print();
+            for (var i = 0; i < 5; i++)
+            {
+                values.Evaluate(policy, rewarder, 1);
+                Console.WriteLine("Values:");
+                values.Print();
+            }
 
             values.Evaluate(policy, rewarder);
             Console.WriteLine("Values:");
             values.Print();
 
-            policy = GreedyGamblersPolicy.Create(world, values, rewarder);
-            Console.WriteLine("Greedy policy:");
-            ((GreedyGamblersPolicy) policy)?.Print();
+            // policy = GreedyGamblersPolicy.Create(world, values, rewarder);
+            // Console.WriteLine("Greedy policy:");
+            // ((GreedyGamblersPolicy) policy)?.Print();
+            //
+            // values.Evaluate(policy, rewarder);
+            // Console.WriteLine("Values:");
+            // values.Print();
+            //
+            // policy = GreedyGamblersPolicy.Create(world, values, rewarder);
+            // Console.WriteLine("Greedy policy:");
+            // ((GreedyGamblersPolicy) policy)?.Print();
 
             // for (var i = 0; i < 100; i++)
             // {
@@ -92,29 +95,33 @@ namespace dp
 
     internal class GamblersWorld
     {
+        public readonly int DollarsToWin;
+
         private readonly double _probabilityOfHeads;
-        private readonly int _dollarsToWin;
         private List<GamblersWorldState> _allStates;
 
         public GamblersWorld(double probabilityOfHeads, int dollarsToWin)
         {
             _probabilityOfHeads = probabilityOfHeads;
-            _dollarsToWin = dollarsToWin;
+            DollarsToWin = dollarsToWin;
         }
+
+        public bool IsTerminal(GamblersWorldState state) =>
+            state.DollarsInHand == 0 || state.DollarsInHand == DollarsToWin;
 
         public IEnumerable<GamblersWorldState> AllStates()
         {
             return _allStates ??= Enumerable
-                .Range(0, _dollarsToWin + 1)
+                .Range(0, DollarsToWin + 1)
                 .Select(i => new GamblersWorldState(i))
                 .ToList();
         }
 
         public IEnumerable<GamblersWorldAction> AvailableActions(GamblersWorldState state)
         {
-            if (state.IsTerminal) return Enumerable.Empty<GamblersWorldAction>();
+            if (IsTerminal(state)) return Enumerable.Empty<GamblersWorldAction>();
 
-            var maxStake = Math.Min(state.DollarsInHand, _dollarsToWin - state.DollarsInHand);
+            var maxStake = Math.Min(state.DollarsInHand, DollarsToWin - state.DollarsInHand);
 
             return Enumerable.Range(0, maxStake + 1).Select(i => new GamblersWorldAction(i));
         }
@@ -133,8 +140,6 @@ namespace dp
     internal readonly struct GamblersWorldState
     {
         public int DollarsInHand { get; }
-
-        public bool IsTerminal => DollarsInHand == 0 || DollarsInHand == 100;
 
         public GamblersWorldState(int dollarsInHand)
         {
@@ -265,13 +270,20 @@ namespace dp
 
     internal class GamblersWorldRewarder : IGamblersWorldRewarder
     {
+        private readonly GamblersWorld _world;
+
+        public GamblersWorldRewarder(GamblersWorld world)
+        {
+            _world = world;
+        }
+
         public double Reward(
             in GamblersWorldState oldState,
             in GamblersWorldState newState,
             in GamblersWorldAction action)
         {
-            if (oldState.IsTerminal) return 0.0;
-            if (newState.DollarsInHand == 100) return 1;
+            if (_world.IsTerminal(oldState)) return 0.0;
+            if (newState.DollarsInHand == _world.DollarsToWin) return 1;
             return 0;
         }
     }
@@ -284,8 +296,8 @@ namespace dp
         public GamblersValueTable(GamblersWorld world)
         {
             _world = world;
-            _values = new double[101];
-            _values[100] = 1.0;
+            _values = new double[_world.AllStates().Count()];
+            _values[_world.DollarsToWin] = 1.0;
         }
 
         // todo: change this to value iteration (interleave evaluation and improvement)
@@ -318,7 +330,7 @@ namespace dp
             GamblersWorldState state, IGamblersPolicy policy, IGamblersWorldRewarder rewarder)
         {
             if (state.DollarsInHand == 0) return 0.0;
-            if (state.DollarsInHand == 100) return 1.0;
+            if (state.DollarsInHand == _world.DollarsToWin) return 1.0;
 
             var newValue = 0.0;
 
@@ -346,7 +358,7 @@ namespace dp
         {
             for (var i = 0; i < _values.Length; i++)
             {
-                Console.WriteLine($"{i:000}: {_values[i]}");
+                Console.WriteLine($"{i}: {_values[i]}");
             }
         }
     }
