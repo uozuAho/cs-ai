@@ -7,7 +7,7 @@
             // GridWorldPolicyEvaluation.Run();
             // GridWorldPolicyIteration.Run();
             // GamblersProblem.Run();
-            ValueTableTester.Test();
+            ValueTableTester.TestUsingGridWorld();
         }
     }
 }

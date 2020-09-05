@@ -24,11 +24,16 @@ namespace dp
     /// Grid world problem of the DP chapter of the RL book. 4x4 grid, where 0,0
     /// and 3,3 are the terminal states.
     /// </summary>
-    internal class GridWorld
+    internal class GridWorld : IProblem<GridWorldState, GridWorldAction>
     {
         public IEnumerable<GridWorldAction> AvailableActions(GridWorldState state)
         {
             return (GridWorldAction[])Enum.GetValues(typeof(GridWorldAction));
+        }
+
+        public IEnumerable<(GridWorldState, double)> PossibleStates(GridWorldState state, GridWorldAction action)
+        {
+            yield return (NextState(state, action), 1.0);
         }
 
         public IEnumerable<GridWorldState> AllStates()
@@ -100,7 +105,7 @@ namespace dp
         double PAction(GridWorldState state, GridWorldAction action);
     }
 
-    internal class UniformRandomGridWorldPolicy : IGridWorldPolicy
+    internal class UniformRandomGridWorldPolicy : IGridWorldPolicy, IPolicy<GridWorldState, GridWorldAction>
     {
         public double PAction(GridWorldState state, GridWorldAction action)
         {
@@ -113,11 +118,20 @@ namespace dp
         double Reward(GridWorldState state, GridWorldAction action);
     }
 
-    internal class NegativeAtNonTerminalStatesGridWorldRewarder : IGridWorldRewarder
+    internal class NegativeAtNonTerminalStatesGridWorldRewarder :
+        IGridWorldRewarder,
+        IGenericRewarder<GridWorldState, GridWorldAction>
     {
         public double Reward(GridWorldState state, GridWorldAction action)
         {
             if (state.IsTerminal) return 0;
+
+            return -1;
+        }
+
+        public double Reward(GridWorldState state, GridWorldState nextState, GridWorldAction action)
+        {
+            if (nextState.IsTerminal) return 0;
 
             return -1;
         }
