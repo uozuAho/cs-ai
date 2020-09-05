@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Linq;
 using dp.GamblersProblem;
+using dp.GridWorld;
 
 namespace dp
 {
@@ -39,7 +40,7 @@ namespace dp
         
         public static void TestUsingGridWorld()
         {
-            var gridWorld = new GridWorld();
+            var gridWorld = new GridWorld.GridWorld();
             var rewarder = new NegativeAtNonTerminalStatesGridWorldRewarder();
             var policy = new UniformRandomGridWorldPolicy();
         
