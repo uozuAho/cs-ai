@@ -20,12 +20,12 @@ namespace dp
             values.Evaluate(randomPolicy, rewarder);
             values.Print();
 
-            var greedyPolicy = GreedyPolicy.Create(world, values, rewarder);
+            var greedyPolicy = GreedyGridWorldPolicy.Create(world, values, rewarder);
 
             values.Evaluate(greedyPolicy, rewarder);
             values.Print();
 
-            greedyPolicy = GreedyPolicy.Create(world, values, rewarder);
+            greedyPolicy = GreedyGridWorldPolicy.Create(world, values, rewarder);
 
             values.Evaluate(greedyPolicy, rewarder);
             values.Print();
@@ -34,21 +34,21 @@ namespace dp
         }
     }
 
-    internal class GreedyPolicy : IGridWorldPolicy
+    internal class GreedyGridWorldPolicy : IGridWorldPolicy
     {
         private readonly Dictionary<GridWorldState, GridWorldAction> _actions;
 
-        private GreedyPolicy()
+        private GreedyGridWorldPolicy()
         {
             _actions = new Dictionary<GridWorldState, GridWorldAction>();
         }
 
-        public static GreedyPolicy Create(
+        public static GreedyGridWorldPolicy Create(
             GridWorld world,
             GridWorldValueTable gridWorldValueTable,
             IGridWorldRewarder gridWorldRewarder)
         {
-            var greedyPolicy = new GreedyPolicy();
+            var greedyPolicy = new GreedyGridWorldPolicy();
 
             foreach (var state in world.AllStates())
             {

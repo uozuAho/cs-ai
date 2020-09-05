@@ -4,7 +4,7 @@ using System.Linq;
 
 namespace dp
 {
-    internal class GenericValueTableTester
+    internal class ValueTableTester
     {
         public static void Test()
         {
@@ -16,7 +16,7 @@ namespace dp
             var policy = new UniformRandomGamblersPolicy();
 
             var gamblersValues = new GamblersValueTable(gamblersWorld);
-            var genericValues = new GenericValueTable<GamblersWorldState, GamblersWorldAction>(gamblersWorld);
+            var genericValues = new ValueTable<GamblersWorldState, GamblersWorldAction>(gamblersWorld);
 
             gamblersValues.Evaluate(policy, rewarder);
             genericValues.Evaluate(policy, rewarder);
@@ -43,7 +43,7 @@ namespace dp
         //     var policy = new UniformRandomGridWorldPolicy();
         //
         //     var gridValues = new GridWorldValueTable(gridWorld);
-        //     var genericValues = new GenericValueTable<GridWorldState, GridWorldAction>(gridWorld);
+        //     var genericValues = new ValueTable<GridWorldState, GridWorldAction>(gridWorld);
         //
         //     gridValues.Evaluate(policy, rewarder);
         //     genericValues.Evaluate(policy, rewarder);
@@ -64,13 +64,13 @@ namespace dp
         // }
     }
 
-    internal class GenericValueTable<TState, TAction>
+    internal class ValueTable<TState, TAction>
     {
         private readonly IProblem<TState, TAction> _problem;
 
         private readonly Dictionary<TState, double> _values;
 
-        public GenericValueTable(IProblem<TState, TAction> problem)
+        public ValueTable(IProblem<TState, TAction> problem)
         {
             _problem = problem;
             _values = problem.AllStates().ToDictionary(s => s, s => 0.0);

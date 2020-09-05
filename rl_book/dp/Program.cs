@@ -4,10 +4,10 @@
     {
         static void Main(string[] args)
         {
-            GridWorldPolicyEvaluation.Run();
-            GridWorldPolicyIteration.Run();
+            // GridWorldPolicyEvaluation.Run();
+            // GridWorldPolicyIteration.Run();
             // GamblersProblem.Run();
-            // GenericValueTableTester.Test2();
+            ValueTableTester.Test();
         }
     }
 }
