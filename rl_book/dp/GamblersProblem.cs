@@ -105,7 +105,7 @@ namespace dp
         }
     }
 
-    internal class GamblersWorld
+    internal class GamblersWorld : IProblem<GamblersWorldState, GamblersWorldAction>
     {
         public readonly int DollarsToWin;
 
@@ -138,14 +138,18 @@ namespace dp
             return Enumerable.Range(0, maxStake + 1).Select(i => new GamblersWorldAction(i));
         }
 
-        public IEnumerable<Tuple<GamblersWorldState, double>>
+        public IEnumerable<(GamblersWorldState, double)>
             PossibleStates(GamblersWorldState state, GamblersWorldAction action)
         {
-            yield return new Tuple<GamblersWorldState, double>(
-                new GamblersWorldState(state.DollarsInHand + action.Stake), _probabilityOfHeads);
+            yield return (
+                new GamblersWorldState(state.DollarsInHand + action.Stake),
+                _probabilityOfHeads
+            );
 
-            yield return new Tuple<GamblersWorldState, double>(
-                new GamblersWorldState(state.DollarsInHand - action.Stake), 1.0 - _probabilityOfHeads);
+            yield return (
+                new GamblersWorldState(state.DollarsInHand - action.Stake),
+                1.0 - _probabilityOfHeads
+            );
         }
     }
 
@@ -186,12 +190,12 @@ namespace dp
 
     internal interface IGamblersPolicy
     {
-        double PAction(in GamblersWorldState state, in GamblersWorldAction action);
+        double PAction(GamblersWorldState state, GamblersWorldAction action);
     }
 
-    internal class UniformRandomGamblersPolicy : IGamblersPolicy
+    internal class UniformRandomGamblersPolicy : IGamblersPolicy, IPolicy<GamblersWorldState, GamblersWorldAction>
     {
-        public double PAction(in GamblersWorldState state, in GamblersWorldAction action)
+        public double PAction(GamblersWorldState state, GamblersWorldAction action)
         {
             if (action.Stake > state.DollarsInHand) return 0.0;
 
@@ -201,7 +205,7 @@ namespace dp
 
     internal class AlwaysStake1DollarPolicy : IGamblersPolicy
     {
-        public double PAction(in GamblersWorldState state, in GamblersWorldAction action)
+        public double PAction(GamblersWorldState state, GamblersWorldAction action)
         {
             return action.Stake == 1 ? 1.0 : 0;
         }
@@ -232,7 +236,7 @@ namespace dp
             return greedyPolicy;
         }
 
-        public double PAction(in GamblersWorldState state, in GamblersWorldAction action)
+        public double PAction(GamblersWorldState state, GamblersWorldAction action)
         {
             return action.Stake == _actions[state.DollarsInHand] ? 1 : 0;
         }
@@ -280,12 +284,14 @@ namespace dp
     internal interface IGamblersWorldRewarder
     {
         double Reward(
-            in GamblersWorldState oldState,
-            in GamblersWorldState newState,
-            in GamblersWorldAction action);
+            GamblersWorldState oldState,
+            GamblersWorldState newState,
+            GamblersWorldAction action);
     }
 
-    internal class GamblersWorldRewarder : IGamblersWorldRewarder
+    internal class GamblersWorldRewarder :
+        IGamblersWorldRewarder,
+        IGenericRewarder<GamblersWorldState, GamblersWorldAction>
     {
         private readonly GamblersWorld _world;
 
@@ -295,9 +301,9 @@ namespace dp
         }
 
         public double Reward(
-            in GamblersWorldState oldState,
-            in GamblersWorldState newState,
-            in GamblersWorldAction action)
+            GamblersWorldState oldState,
+            GamblersWorldState newState,
+            GamblersWorldAction action)
         {
             if (_world.IsTerminal(oldState)) return 0.0;
             if (newState.DollarsInHand == _world.DollarsToWin) return 1;

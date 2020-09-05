@@ -6,7 +6,8 @@
         {
             // PolicyEvaluation.Run();
             // PolicyIteration.Run();
-            GamblersProblem.Run();
+            // GamblersProblem.Run();
+            GenericValueTableTester.Test();
         }
     }
 }
