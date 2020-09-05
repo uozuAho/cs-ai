@@ -4,15 +4,15 @@ using System.Linq;
 
 namespace dp
 {
-    internal class PolicyEvaluation
+    internal class GridWorldPolicyEvaluation
     {
         public static void Run()
         {
             var world = new GridWorld();
-            var policy = new UniformRandomPolicy();
-            var rewarder = new NegativeAtNonTerminalStatesRewarder();
+            var policy = new UniformRandomGridWorldPolicy();
+            var rewarder = new NegativeAtNonTerminalStatesGridWorldRewarder();
 
-            var values = new ValueTable(world);
+            var values = new GridWorldValueTable(world);
 
             values.Print();
             values.Evaluate(policy, rewarder);
@@ -26,17 +26,9 @@ namespace dp
     /// </summary>
     internal class GridWorld
     {
-        public enum Action
+        public IEnumerable<GridWorldAction> AvailableActions(GridWorldState state)
         {
-            Up,
-            Down,
-            Left,
-            Right
-        }
-
-        public IEnumerable<Action> AvailableActions(GridWorldState state)
-        {
-            return (Action[])Enum.GetValues(typeof(Action));
+            return (GridWorldAction[])Enum.GetValues(typeof(GridWorldAction));
         }
 
         public IEnumerable<GridWorldState> AllStates()
@@ -47,7 +39,7 @@ namespace dp
             }
         }
 
-        public GridWorldState NextState(GridWorldState state, Action action)
+        public GridWorldState NextState(GridWorldState state, GridWorldAction action)
         {
             if (state.IsTerminal) return state;
 
@@ -59,16 +51,16 @@ namespace dp
 
             switch (action)
             {
-                case Action.Up:
+                case GridWorldAction.Up:
                     if (y > 0) newY--;
                     break;
-                case Action.Down:
+                case GridWorldAction.Down:
                     if (y < 3) newY++;
                     break;
-                case Action.Left:
+                case GridWorldAction.Left:
                     if (x > 0) newX--;
                     break;
-                case Action.Right:
+                case GridWorldAction.Right:
                     if (x < 3) newX++;
                     break;
             }
@@ -92,30 +84,38 @@ namespace dp
         }
     }
 
+    public enum GridWorldAction
+    {
+        Up,
+        Down,
+        Left,
+        Right
+    }
+
     internal interface IGridWorldPolicy
     {
         /// <summary>
         /// probability of the action from the given state
         /// </summary>
-        double PAction(GridWorldState state, GridWorld.Action action);
+        double PAction(GridWorldState state, GridWorldAction action);
     }
 
-    internal class UniformRandomPolicy : IGridWorldPolicy
+    internal class UniformRandomGridWorldPolicy : IGridWorldPolicy
     {
-        public double PAction(GridWorldState state, GridWorld.Action action)
+        public double PAction(GridWorldState state, GridWorldAction action)
         {
             return 0.25;
         }
     }
 
-    interface IRewarder
+    interface IGridWorldRewarder
     {
-        double Reward(GridWorldState state, GridWorld.Action action);
+        double Reward(GridWorldState state, GridWorldAction action);
     }
 
-    internal class NegativeAtNonTerminalStatesRewarder : IRewarder
+    internal class NegativeAtNonTerminalStatesGridWorldRewarder : IGridWorldRewarder
     {
-        public double Reward(GridWorldState state, GridWorld.Action action)
+        public double Reward(GridWorldState state, GridWorldAction action)
         {
             if (state.IsTerminal) return 0;
 
@@ -123,12 +123,12 @@ namespace dp
         }
     }
 
-    internal class ValueTable
+    internal class GridWorldValueTable
     {
         private readonly GridWorld _world;
         private readonly double[] _values;
 
-        public ValueTable(GridWorld world)
+        public GridWorldValueTable(GridWorld world)
         {
             _world = world;
             _values = new double[world.AllStates().Count()];
@@ -139,7 +139,7 @@ namespace dp
             return _values[state.Position1D];
         }
 
-        public void Evaluate(IGridWorldPolicy policy, IRewarder rewarder)
+        public void Evaluate(IGridWorldPolicy policy, IGridWorldRewarder gridWorldRewarder)
         {
             var largestValueChange = 0.0;
 
@@ -150,7 +150,7 @@ namespace dp
                 foreach (var state in _world.AllStates())
                 {
                     var originalValue = Value(state);
-                    var newValue = CalculateValue(state, policy, rewarder);
+                    var newValue = CalculateValue(state, policy, gridWorldRewarder);
 
                     _values[state.Position1D] = newValue;
 
@@ -176,14 +176,14 @@ namespace dp
             Console.WriteLine();
         }
 
-        private double CalculateValue(GridWorldState state, IGridWorldPolicy policy, IRewarder rewarder)
+        private double CalculateValue(GridWorldState state, IGridWorldPolicy policy, IGridWorldRewarder gridWorldRewarder)
         {
             var newValue = 0.0;
 
             foreach (var action in _world.AvailableActions(state))
             {
                 var nextState = _world.NextState(state, action);
-                var reward = rewarder.Reward(state, action);
+                var reward = gridWorldRewarder.Reward(state, action);
                 newValue += policy.PAction(state, action) * (reward + Value(nextState));
             }
 

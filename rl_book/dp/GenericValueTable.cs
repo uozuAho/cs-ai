@@ -35,6 +35,33 @@ namespace dp
 
             Console.WriteLine("PASS: All values match!");
         }
+        //
+        // public static void Test2()
+        // {
+        //     var gridWorld = new GridWorld();
+        //     var rewarder = new NegativeAtNonTerminalStatesGridWorldRewarder();
+        //     var policy = new UniformRandomGridWorldPolicy();
+        //
+        //     var gridValues = new GridWorldValueTable(gridWorld);
+        //     var genericValues = new GenericValueTable<GridWorldState, GridWorldAction>(gridWorld);
+        //
+        //     gridValues.Evaluate(policy, rewarder);
+        //     genericValues.Evaluate(policy, rewarder);
+        //
+        //     foreach (var state in gridWorld.AllStates())
+        //     {
+        //         var genericValue = genericValues.Value(state);
+        //         var gamblerValue = genericValues.Value(state);
+        //
+        //         if (Math.Abs(genericValue - genericValue) > double.Epsilon)
+        //         {
+        //             throw new Exception($"values not equal for state {state}. " +
+        //                                 $"generic: {genericValue}, gambler: {gamblerValue}");
+        //         }
+        //     }
+        //
+        //     Console.WriteLine("PASS: All values match!");
+        // }
     }
 
     internal class GenericValueTable<TState, TAction>

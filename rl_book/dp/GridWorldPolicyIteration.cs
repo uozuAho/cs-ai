@@ -4,15 +4,15 @@ using System.Linq;
 
 namespace dp
 {
-    class PolicyIteration
+    class GridWorldPolicyIteration
     {
         public static void Run()
         {
             var world = new GridWorld();
-            var randomPolicy = new UniformRandomPolicy();
-            var rewarder = new NegativeAtNonTerminalStatesRewarder();
+            var randomPolicy = new UniformRandomGridWorldPolicy();
+            var rewarder = new NegativeAtNonTerminalStatesGridWorldRewarder();
 
-            var values = new ValueTable(world);
+            var values = new GridWorldValueTable(world);
 
             // manually iterate a couple of times - optimal policy is greedy wrt
             // initial random policy values
@@ -36,29 +36,29 @@ namespace dp
 
     internal class GreedyPolicy : IGridWorldPolicy
     {
-        private readonly Dictionary<GridWorldState, GridWorld.Action> _actions;
+        private readonly Dictionary<GridWorldState, GridWorldAction> _actions;
 
         private GreedyPolicy()
         {
-            _actions = new Dictionary<GridWorldState, GridWorld.Action>();
+            _actions = new Dictionary<GridWorldState, GridWorldAction>();
         }
 
         public static GreedyPolicy Create(
             GridWorld world,
-            ValueTable valueTable,
-            IRewarder rewarder)
+            GridWorldValueTable gridWorldValueTable,
+            IGridWorldRewarder gridWorldRewarder)
         {
             var greedyPolicy = new GreedyPolicy();
 
             foreach (var state in world.AllStates())
             {
-                greedyPolicy._actions[state] = FindBestAction(world, state, valueTable, rewarder);
+                greedyPolicy._actions[state] = FindBestAction(world, state, gridWorldValueTable, gridWorldRewarder);
             }
 
             return greedyPolicy;
         }
 
-        public double PAction(GridWorldState state, GridWorld.Action action)
+        public double PAction(GridWorldState state, GridWorldAction action)
         {
             return action == _actions[state] ? 1 : 0;
         }
@@ -79,20 +79,20 @@ namespace dp
             Console.WriteLine();
         }
 
-        private static GridWorld.Action FindBestAction(
+        private static GridWorldAction FindBestAction(
             GridWorld world,
             GridWorldState state,
-            ValueTable valueTable,
-            IRewarder rewarder)
+            GridWorldValueTable gridWorldValueTable,
+            IGridWorldRewarder gridWorldRewarder)
         {
             var max = double.MinValue;
-            var maxAction = GridWorld.Action.Down;
+            var maxAction = GridWorldAction.Down;
 
             foreach (var action in world.AvailableActions(state))
             {
                 var nextState = world.NextState(state, action);
-                var nextStateValue = valueTable.Value(nextState);
-                var reward = rewarder.Reward(state, action);
+                var nextStateValue = gridWorldValueTable.Value(nextState);
+                var reward = gridWorldRewarder.Reward(state, action);
 
                 if (reward + nextStateValue > max)
                 {
