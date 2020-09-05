@@ -1,4 +1,6 @@
-﻿namespace dp
+﻿using dp.GamblersProblem;
+
+namespace dp
 {
     class Program
     {
@@ -6,8 +8,8 @@
         {
             // GridWorldPolicyEvaluation.Run();
             // GridWorldPolicyIteration.Run();
-            // GamblersProblem.Run();
-            ValueTableTester.TestUsingGridWorld();
+            GamblersProblemExample.Run();
+            // ValueTableTester.TestUsingGridWorld();
         }
     }
 }
