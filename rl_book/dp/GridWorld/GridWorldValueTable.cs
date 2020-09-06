@@ -38,7 +38,7 @@ namespace dp.GridWorld
                     if (valueChange > largestValueChange) largestValueChange = valueChange;
                 }
 
-            } while (largestValueChange > 0.0001);
+            } while (largestValueChange > 0.000001);
         }
 
         public void Print()
@@ -56,7 +56,10 @@ namespace dp.GridWorld
             Console.WriteLine();
         }
 
-        private double CalculateValue(GridWorldState state, IGridWorldPolicy policy, IGridWorldRewarder gridWorldRewarder)
+        private double CalculateValue(
+            GridWorldState state,
+            IGridWorldPolicy policy,
+            IGridWorldRewarder gridWorldRewarder)
         {
             var newValue = 0.0;
 

@@ -7,9 +7,9 @@ namespace dp
     {
         static void Main(string[] args)
         {
-            // GridWorldPolicyEvaluation.Run();
+            GridWorldPolicyEvaluation.Run();
             // GridWorldPolicyIteration.Run();
-            GamblersProblemExample.Run();
+            // GamblersProblemExample.Run();
         }
     }
 }
