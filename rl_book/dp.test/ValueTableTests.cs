@@ -1,15 +1,11 @@
 using System;
+using dp.GamblersProblem;
 using NUnit.Framework;
 
 namespace dp.test
 {
     public class ValueTableTests
     {
-        [SetUp]
-        public void Setup()
-        {
-        }
-
         [Test]
         public void Evaluates_to_same_values_as_gamblers_value_table()
         {
@@ -26,19 +22,25 @@ namespace dp.test
             gamblersValues.Evaluate(policy, rewarder);
             genericValues.Evaluate(policy, rewarder);
 
-            foreach (var state in gamblersWorld.AllStates())
+            Assert.That(() => AllValuesAreEqual(gamblersWorld, genericValues, gamblersValues));
+        }
+
+        private static bool AllValuesAreEqual(
+            GamblersWorld world,
+            ValueTable<GamblersWorldState, GamblersWorldAction> genericValues,
+            GamblersValueTable gamblersValues)
+        {
+            foreach (var state in world.AllStates())
             {
                 var genericValue = genericValues.Value(state);
                 var gamblerValue = genericValues.Value(state);
 
-                if (Math.Abs(genericValue - genericValue) > double.Epsilon)
-                {
-                    throw new Exception($"values not equal for state {state}. " +
-                                        $"generic: {genericValue}, gambler: {gamblerValue}");
-                }
+                Assert.AreEqual(genericValue, gamblerValue, double.Epsilon,
+                    $"values not equal for state {state}. " +
+                    $"generic: {genericValue}, gambler: {gamblerValue}");
             }
 
-            Console.WriteLine("PASS: All values match!");
+            return true;
         }
     }
 }

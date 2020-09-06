@@ -1,6 +1,6 @@
 ﻿namespace dp.GamblersProblem
 {
-    internal class GamblersWorldRewarder :
+    public class GamblersWorldRewarder :
         IGamblersWorldRewarder,
         IGenericRewarder<GamblersWorldState, GamblersWorldAction>
     {

@@ -1,6 +1,6 @@
 ﻿namespace dp.GamblersProblem
 {
-    internal readonly struct GamblersWorldState
+    public readonly struct GamblersWorldState
     {
         public int DollarsInHand { get; }
 

@@ -4,7 +4,7 @@ using System.Linq;
 
 namespace dp.GamblersProblem
 {
-    internal class GamblersWorld : IProblem<GamblersWorldState, GamblersWorldAction>
+    public class GamblersWorld : IProblem<GamblersWorldState, GamblersWorldAction>
     {
         public readonly int DollarsToWin;
 

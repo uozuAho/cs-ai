@@ -66,7 +66,7 @@ namespace dp
         }
     }
 
-    internal class ValueTable<TState, TAction>
+    public class ValueTable<TState, TAction>
     {
         private readonly IProblem<TState, TAction> _problem;
 
@@ -134,7 +134,7 @@ namespace dp
         }
     }
 
-    internal interface IProblem<TState, TAction>
+    public interface IProblem<TState, TAction>
     {
         IEnumerable<TState> AllStates();
         IEnumerable<TAction> AvailableActions(TState state);
@@ -145,12 +145,12 @@ namespace dp
         IEnumerable<(TState, double)> PossibleStates(TState state, TAction action);
     }
 
-    internal interface IPolicy<in TState, in TAction>
+    public interface IPolicy<in TState, in TAction>
     {
         double PAction(TState state, TAction action);
     }
 
-    internal interface IGenericRewarder<in TState, in TAction>
+    public interface IGenericRewarder<in TState, in TAction>
     {
         double Reward(TState state, TState nextState, TAction action);
     }

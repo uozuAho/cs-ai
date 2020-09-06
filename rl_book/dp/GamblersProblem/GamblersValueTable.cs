@@ -3,7 +3,7 @@ using System.Linq;
 
 namespace dp.GamblersProblem
 {
-    internal class GamblersValueTable
+    public class GamblersValueTable
     {
         private readonly GamblersWorld _world;
         private readonly double[] _values;
