@@ -1,4 +1,3 @@
-using System;
 using dp.GamblersProblem;
 using NUnit.Framework;
 
@@ -25,15 +24,45 @@ namespace dp.test
             Assert.That(() => AllValuesAreEqual(gamblersWorld, genericValues, gamblersValues));
         }
 
+        // [Test]
+        // public static void Evaluates_to_same_values_as_gridworld_value_table()
+        // {
+        //     var gridWorld = new GridWorld.GridWorld();
+        //     var rewarder = new NegativeAtNonTerminalStatesGridWorldRewarder();
+        //     var policy = new UniformRandomGridWorldPolicy();
+        //
+        //     var gridValues = new GridWorldValueTable(gridWorld);
+        //     var genericValues = new ValueTable<GridWorldState, GridWorldAction>(gridWorld);
+        //
+        //     gridValues.Evaluate(policy, rewarder);
+        //     genericValues.Evaluate(policy, rewarder);
+        //
+        //     Assert.That(() => AllValuesAreEqual(gridWorld, genericValues, gridValues));
+        //
+        //     // foreach (var state in gridWorld.AllStates())
+        //     // {
+        //     //     var genericValue = genericValues.Value(state);
+        //     //     var gamblerValue = genericValues.Value(state);
+        //     //
+        //     //     if (Math.Abs(genericValue - genericValue) > double.Epsilon)
+        //     //     {
+        //     //         throw new Exception($"values not equal for state {state}. " +
+        //     //                             $"generic: {genericValue}, gambler: {gamblerValue}");
+        //     //     }
+        //     // }
+        //
+        //     // Console.WriteLine("PASS: All values match!");
+        // }
+
         private static bool AllValuesAreEqual(
-            GamblersWorld world,
+            IProblem<GamblersWorldState, GamblersWorldAction> problem,
             ValueTable<GamblersWorldState, GamblersWorldAction> genericValues,
             GamblersValueTable gamblersValues)
         {
-            foreach (var state in world.AllStates())
+            foreach (var state in problem.AllStates())
             {
                 var genericValue = genericValues.Value(state);
-                var gamblerValue = genericValues.Value(state);
+                var gamblerValue = gamblersValues.Value(state);
 
                 Assert.AreEqual(genericValue, gamblerValue, double.Epsilon,
                     $"values not equal for state {state}. " +
