@@ -1,4 +1,5 @@
-﻿using dp.Examples.GridWorld;
+﻿using dp.Examples.GamblersProblem;
+using dp.Examples.GridWorld;
 
 namespace dp
 {
@@ -7,8 +8,8 @@ namespace dp
         static void Main(string[] args)
         {
             GridWorldPolicyEvaluation.Run();
-            // GridWorldPolicyIteration.Run();
-            // GamblersProblemExample.Run();
+            GridWorldPolicyIteration.Run();
+            GamblersProblemExample.Run();
         }
     }
 }

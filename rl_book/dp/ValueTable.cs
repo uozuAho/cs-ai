@@ -16,6 +16,11 @@ namespace dp
             _values = problem.AllStates().ToDictionary(s => s, s => 0.0);
         }
 
+        public double Value(TState state)
+        {
+            return _values[state];
+        }
+
         public void Evaluate(
             IPolicy<TState, TAction> policy,
             IRewarder<TState, TAction> rewarder,
@@ -65,31 +70,5 @@ namespace dp
 
             return newValue;
         }
-
-        public double Value(TState state)
-        {
-            return _values[state];
-        }
-    }
-
-    public interface IProblem<TState, TAction>
-    {
-        IEnumerable<TState> AllStates();
-        IEnumerable<TAction> AvailableActions(TState state);
-
-        /// <summary>
-        /// Returns all possible states and their probability from the given state and action
-        /// </summary>
-        IEnumerable<(TState, double)> PossibleStates(TState state, TAction action);
-    }
-
-    public interface IPolicy<in TState, in TAction>
-    {
-        double PAction(TState state, TAction action);
-    }
-
-    public interface IRewarder<in TState, in TAction>
-    {
-        double Reward(TState state, TState nextState, TAction action);
     }
 }
