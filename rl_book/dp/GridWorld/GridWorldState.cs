@@ -1,6 +1,6 @@
 ﻿namespace dp.GridWorld
 {
-    internal readonly struct GridWorldState
+    public readonly struct GridWorldState
     {
         /// <summary>
         /// Position of the agent in the grid world. 0 is 0,0, 15 is 3,3

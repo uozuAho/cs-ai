@@ -1,6 +1,6 @@
 ﻿namespace dp.GridWorld
 {
-    internal class NegativeAtNonTerminalStatesGridWorldRewarder :
+    public class NegativeAtNonTerminalStatesGridWorldRewarder :
         IGridWorldRewarder,
         IGenericRewarder<GridWorldState, GridWorldAction>
     {

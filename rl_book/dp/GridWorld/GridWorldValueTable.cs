@@ -3,7 +3,7 @@ using System.Linq;
 
 namespace dp.GridWorld
 {
-    internal class GridWorldValueTable
+    public class GridWorldValueTable
     {
         private readonly GridWorld _world;
         private readonly double[] _values;
