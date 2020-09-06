@@ -1,6 +1,6 @@
-﻿namespace dp.GamblersProblem
+﻿namespace dp.Examples.GamblersProblem
 {
-    internal class UniformRandomGamblersPolicy : IGamblersPolicy, IPolicy<GamblersWorldState, GamblersWorldAction>
+    public class UniformRandomGamblersPolicy : IGamblersPolicy, IPolicy<GamblersWorldState, GamblersWorldAction>
     {
         public double PAction(GamblersWorldState state, GamblersWorldAction action)
         {

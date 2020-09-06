@@ -1,6 +1,6 @@
-﻿namespace dp.GamblersProblem
+﻿namespace dp.Examples.GamblersProblem
 {
-    internal interface IGamblersWorldRewarder
+    public interface IGamblersWorldRewarder
     {
         double Reward(
             GamblersWorldState oldState,

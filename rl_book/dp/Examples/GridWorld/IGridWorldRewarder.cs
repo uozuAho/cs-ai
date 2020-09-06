@@ -1,6 +1,6 @@
-﻿namespace dp.GridWorld
+﻿namespace dp.Examples.GridWorld
 {
-    interface IGridWorldRewarder
+    public interface IGridWorldRewarder
     {
         double Reward(GridWorldState state, GridWorldAction action);
     }

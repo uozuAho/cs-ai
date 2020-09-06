@@ -1,6 +1,6 @@
-﻿namespace dp.GridWorld
+﻿namespace dp.Examples.GridWorld
 {
-    internal interface IGridWorldPolicy
+    public interface IGridWorldPolicy
     {
         /// <summary>
         /// probability of the action from the given state

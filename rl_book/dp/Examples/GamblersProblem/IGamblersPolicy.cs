@@ -1,6 +1,6 @@
-﻿namespace dp.GamblersProblem
+﻿namespace dp.Examples.GamblersProblem
 {
-    internal interface IGamblersPolicy
+    public interface IGamblersPolicy
     {
         double PAction(GamblersWorldState state, GamblersWorldAction action);
     }

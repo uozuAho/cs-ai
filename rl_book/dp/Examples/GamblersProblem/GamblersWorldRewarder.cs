@@ -1,8 +1,8 @@
-﻿namespace dp.GamblersProblem
+﻿namespace dp.Examples.GamblersProblem
 {
-    internal class GamblersWorldRewarder :
+    public class GamblersWorldRewarder :
         IGamblersWorldRewarder,
-        IGenericRewarder<GamblersWorldState, GamblersWorldAction>
+        IRewarder<GamblersWorldState, GamblersWorldAction>
     {
         private readonly GamblersWorld _world;
 

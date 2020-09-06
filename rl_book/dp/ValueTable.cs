@@ -1,72 +1,10 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
-using dp.GamblersProblem;
-using dp.GridWorld;
 
 namespace dp
 {
-    internal class ValueTableTester
-    {
-        public static void TestUsingGamblersWorld()
-        {
-            const double probabilityOfHeads = 0.4;
-            const int dollarsToWin = 100;
-
-            var gamblersWorld = new GamblersWorld(probabilityOfHeads, dollarsToWin);
-            var rewarder = new GamblersWorldRewarder(gamblersWorld);
-            var policy = new UniformRandomGamblersPolicy();
-
-            var gamblersValues = new GamblersValueTable(gamblersWorld);
-            var genericValues = new ValueTable<GamblersWorldState, GamblersWorldAction>(gamblersWorld);
-
-            gamblersValues.Evaluate(policy, rewarder);
-            genericValues.Evaluate(policy, rewarder);
-
-            foreach (var state in gamblersWorld.AllStates())
-            {
-                var genericValue = genericValues.Value(state);
-                var gamblerValue = genericValues.Value(state);
-
-                if (Math.Abs(genericValue - genericValue) > double.Epsilon)
-                {
-                    throw new Exception($"values not equal for state {state}. " +
-                                        $"generic: {genericValue}, gambler: {gamblerValue}");
-                }
-            }
-
-            Console.WriteLine("PASS: All values match!");
-        }
-        
-        public static void TestUsingGridWorld()
-        {
-            var gridWorld = new GridWorld.GridWorld();
-            var rewarder = new NegativeAtNonTerminalStatesGridWorldRewarder();
-            var policy = new UniformRandomGridWorldPolicy();
-        
-            var gridValues = new GridWorldValueTable(gridWorld);
-            var genericValues = new ValueTable<GridWorldState, GridWorldAction>(gridWorld);
-        
-            gridValues.Evaluate(policy, rewarder);
-            genericValues.Evaluate(policy, rewarder);
-        
-            foreach (var state in gridWorld.AllStates())
-            {
-                var genericValue = genericValues.Value(state);
-                var gamblerValue = genericValues.Value(state);
-        
-                if (Math.Abs(genericValue - genericValue) > double.Epsilon)
-                {
-                    throw new Exception($"values not equal for state {state}. " +
-                                        $"generic: {genericValue}, gambler: {gamblerValue}");
-                }
-            }
-        
-            Console.WriteLine("PASS: All values match!");
-        }
-    }
-
-    internal class ValueTable<TState, TAction>
+    public class ValueTable<TState, TAction>
     {
         private readonly IProblem<TState, TAction> _problem;
 
@@ -78,9 +16,14 @@ namespace dp
             _values = problem.AllStates().ToDictionary(s => s, s => 0.0);
         }
 
+        public double Value(TState state)
+        {
+            return _values[state];
+        }
+
         public void Evaluate(
             IPolicy<TState, TAction> policy,
-            IGenericRewarder<TState, TAction> rewarder,
+            IRewarder<TState, TAction> rewarder,
             int sweepLimit = -1)
         {
             var numSweeps = 0;
@@ -109,7 +52,7 @@ namespace dp
         private double CalculateValue(
             TState state,
             IPolicy<TState, TAction> policy,
-            IGenericRewarder<TState, TAction> rewarder)
+            IRewarder<TState, TAction> rewarder)
         {
             var newValue = 0.0;
 
@@ -127,31 +70,5 @@ namespace dp
 
             return newValue;
         }
-
-        public double Value(TState state)
-        {
-            return _values[state];
-        }
-    }
-
-    internal interface IProblem<TState, TAction>
-    {
-        IEnumerable<TState> AllStates();
-        IEnumerable<TAction> AvailableActions(TState state);
-
-        /// <summary>
-        /// Returns all possible states and their probability from the given state and action
-        /// </summary>
-        IEnumerable<(TState, double)> PossibleStates(TState state, TAction action);
-    }
-
-    internal interface IPolicy<in TState, in TAction>
-    {
-        double PAction(TState state, TAction action);
-    }
-
-    internal interface IGenericRewarder<in TState, in TAction>
-    {
-        double Reward(TState state, TState nextState, TAction action);
     }
 }

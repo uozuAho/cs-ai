@@ -1,13 +1,13 @@
 ﻿using System;
 using System.Collections.Generic;
 
-namespace dp.GridWorld
+namespace dp.Examples.GridWorld
 {
     /// <summary>
     /// Grid world problem of the DP chapter of the RL book. 4x4 grid, where 0,0
     /// and 3,3 are the terminal states.
     /// </summary>
-    internal class GridWorld : IProblem<GridWorldState, GridWorldAction>
+    public class GridWorld : IProblem<GridWorldState, GridWorldAction>
     {
         public IEnumerable<GridWorldAction> AvailableActions(GridWorldState state)
         {

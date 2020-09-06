@@ -1,7 +1,7 @@
 ﻿using System;
 using System.Linq;
 
-namespace dp.GamblersProblem
+namespace dp.Examples.GamblersProblem
 {
     class GamblersProblemExample
     {
@@ -14,15 +14,15 @@ namespace dp.GamblersProblem
         private static void RunImpl()
         {
             const double probabilityOfHeads = 0.4;
-            const int dollarsToWin = 3;
+            const int dollarsToWin = 10;
 
             var world = new GamblersWorld(probabilityOfHeads, dollarsToWin);
             var rewarder = new GamblersWorldRewarder(world);
             var values = new GamblersValueTable(world);
 
-            Console.WriteLine("Random policy");
+            // Console.WriteLine("Random policy");
             IGamblersPolicy policy = new UniformRandomGamblersPolicy();
-            EvaluatePolicy(world, policy);
+            // EvaluatePolicy(world, policy);
 
             Console.WriteLine("Always $1 policy");
             policy = new AlwaysStake1DollarPolicy();
@@ -60,15 +60,15 @@ namespace dp.GamblersProblem
             var rewarder = new GamblersWorldRewarder(world);
             var values = new GamblersValueTable(world);
 
-            values.Evaluate(policy, rewarder, 1);
+            values.Evaluate(policy, rewarder);
             Console.WriteLine("Values:");
             values.Print();
-            values.Evaluate(policy, rewarder, 1);
-            Console.WriteLine("Values:");
-            values.Print();
-            values.Evaluate(policy, rewarder, 1);
-            Console.WriteLine("Values:");
-            values.Print();
+            // values.Evaluate(policy, rewarder, 1);
+            // Console.WriteLine("Values:");
+            // values.Print();
+            // values.Evaluate(policy, rewarder, 1);
+            // Console.WriteLine("Values:");
+            // values.Print();
         }
 
         private static void Test()

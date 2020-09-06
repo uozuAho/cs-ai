@@ -1,4 +1,4 @@
-﻿namespace dp.GridWorld
+﻿namespace dp.Examples.GridWorld
 {
     internal class GridWorldPolicyEvaluation
     {
@@ -8,11 +8,10 @@
             var policy = new UniformRandomGridWorldPolicy();
             var rewarder = new NegativeAtNonTerminalStatesGridWorldRewarder();
 
-            var values = new GridWorldValueTable(world);
+            var gridValues = new GridWorldValueTable(world);
 
-            values.Print();
-            values.Evaluate(policy, rewarder);
-            values.Print();
+            gridValues.Evaluate(policy, rewarder);
+            gridValues.Print();
         }
     }
 }

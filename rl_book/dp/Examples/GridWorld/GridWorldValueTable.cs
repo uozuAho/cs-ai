@@ -1,9 +1,9 @@
 ﻿using System;
 using System.Linq;
 
-namespace dp.GridWorld
+namespace dp.Examples.GridWorld
 {
-    internal class GridWorldValueTable
+    public class GridWorldValueTable
     {
         private readonly GridWorld _world;
         private readonly double[] _values;
@@ -19,8 +19,12 @@ namespace dp.GridWorld
             return _values[state.Position1D];
         }
 
-        public void Evaluate(IGridWorldPolicy policy, IGridWorldRewarder gridWorldRewarder)
+        public void Evaluate(
+            IGridWorldPolicy policy,
+            IGridWorldRewarder gridWorldRewarder,
+            int sweepLimit = -1)
         {
+            var sweep = 0;
             var largestValueChange = 0.0;
 
             do
@@ -38,7 +42,9 @@ namespace dp.GridWorld
                     if (valueChange > largestValueChange) largestValueChange = valueChange;
                 }
 
-            } while (largestValueChange > 0.0001);
+                if (sweepLimit > 0 && ++sweep == sweepLimit) break;
+
+            } while (largestValueChange > 0.000001);
         }
 
         public void Print()
@@ -56,7 +62,10 @@ namespace dp.GridWorld
             Console.WriteLine();
         }
 
-        private double CalculateValue(GridWorldState state, IGridWorldPolicy policy, IGridWorldRewarder gridWorldRewarder)
+        private double CalculateValue(
+            GridWorldState state,
+            IGridWorldPolicy policy,
+            IGridWorldRewarder gridWorldRewarder)
         {
             var newValue = 0.0;
 

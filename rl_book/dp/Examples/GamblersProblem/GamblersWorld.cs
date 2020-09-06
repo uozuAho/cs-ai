@@ -2,9 +2,9 @@
 using System.Collections.Generic;
 using System.Linq;
 
-namespace dp.GamblersProblem
+namespace dp.Examples.GamblersProblem
 {
-    internal class GamblersWorld : IProblem<GamblersWorldState, GamblersWorldAction>
+    public class GamblersWorld : IProblem<GamblersWorldState, GamblersWorldAction>
     {
         public readonly int DollarsToWin;
 

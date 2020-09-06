@@ -1,8 +1,8 @@
-﻿namespace dp.GridWorld
+﻿namespace dp.Examples.GridWorld
 {
-    internal class NegativeAtNonTerminalStatesGridWorldRewarder :
+    public class NegativeAtNonTerminalStatesGridWorldRewarder :
         IGridWorldRewarder,
-        IGenericRewarder<GridWorldState, GridWorldAction>
+        IRewarder<GridWorldState, GridWorldAction>
     {
         public double Reward(GridWorldState state, GridWorldAction action)
         {
@@ -13,7 +13,7 @@
 
         public double Reward(GridWorldState state, GridWorldState nextState, GridWorldAction action)
         {
-            if (nextState.IsTerminal) return 0;
+            if (state.IsTerminal) return 0;
 
             return -1;
         }
