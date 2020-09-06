@@ -8,5 +8,10 @@
         {
             DollarsInHand = dollarsInHand;
         }
+
+        public override string ToString()
+        {
+            return $"{DollarsInHand}";
+        }
     }
 }

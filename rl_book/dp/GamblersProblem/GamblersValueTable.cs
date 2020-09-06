@@ -44,9 +44,6 @@ namespace dp.GamblersProblem
         private double CalculateValue(
             GamblersWorldState state, IGamblersPolicy policy, IGamblersWorldRewarder rewarder)
         {
-            if (state.DollarsInHand == 0) return 0.0;
-            if (state.DollarsInHand == _world.DollarsToWin) return 1.0;
-
             var newValue = 0.0;
 
             foreach (var action in _world.AvailableActions(state))

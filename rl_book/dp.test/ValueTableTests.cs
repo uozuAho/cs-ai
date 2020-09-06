@@ -1,3 +1,4 @@
+using System;
 using dp.GamblersProblem;
 using NUnit.Framework;
 
@@ -64,7 +65,7 @@ namespace dp.test
                 var genericValue = genericValues.Value(state);
                 var gamblerValue = gamblersValues.Value(state);
 
-                Assert.AreEqual(genericValue, gamblerValue, double.Epsilon,
+                Assert.AreEqual(genericValue, gamblerValue, 0.01,
                     $"values not equal for state {state}. " +
                     $"generic: {genericValue}, gambler: {gamblerValue}");
             }

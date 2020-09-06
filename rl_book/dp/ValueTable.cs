@@ -1,41 +1,9 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
-using dp.GamblersProblem;
-using dp.GridWorld;
 
 namespace dp
 {
-    internal class ValueTableTester
-    {
-        public static void TestUsingGridWorld()
-        {
-            var gridWorld = new GridWorld.GridWorld();
-            var rewarder = new NegativeAtNonTerminalStatesGridWorldRewarder();
-            var policy = new UniformRandomGridWorldPolicy();
-        
-            var gridValues = new GridWorldValueTable(gridWorld);
-            var genericValues = new ValueTable<GridWorldState, GridWorldAction>(gridWorld);
-        
-            gridValues.Evaluate(policy, rewarder);
-            genericValues.Evaluate(policy, rewarder);
-        
-            foreach (var state in gridWorld.AllStates())
-            {
-                var genericValue = genericValues.Value(state);
-                var gamblerValue = genericValues.Value(state);
-        
-                if (Math.Abs(genericValue - genericValue) > double.Epsilon)
-                {
-                    throw new Exception($"values not equal for state {state}. " +
-                                        $"generic: {genericValue}, gambler: {gamblerValue}");
-                }
-            }
-        
-            Console.WriteLine("PASS: All values match!");
-        }
-    }
-
     public class ValueTable<TState, TAction>
     {
         private readonly IProblem<TState, TAction> _problem;
