@@ -1,4 +1,6 @@
-﻿namespace dp.GridWorld
+﻿using System;
+
+namespace dp.GridWorld
 {
     internal class GridWorldPolicyEvaluation
     {
@@ -8,11 +10,41 @@
             var policy = new UniformRandomGridWorldPolicy();
             var rewarder = new NegativeAtNonTerminalStatesGridWorldRewarder();
 
-            var values = new GridWorldValueTable(world);
+            var gridValues = new GridWorldValueTable(world);
+            var genericValues = new ValueTable<GridWorldState, GridWorldAction>(world);
 
-            values.Print();
-            values.Evaluate(policy, rewarder);
-            values.Print();
+            Console.WriteLine("values:");
+            foreach (var state in world.AllStates())
+            {
+                var genericValue = genericValues.Value(state);
+                var gridValue = gridValues.Value(state);
+
+                Console.WriteLine($"state: {state}, generic: {genericValue}, grid: {gridValue}");
+            }
+
+            gridValues.Evaluate(policy, rewarder, 1);
+            genericValues.Evaluate(policy, rewarder, 1);
+
+            Console.WriteLine("values:");
+            foreach (var state in world.AllStates())
+            {
+                var genericValue = genericValues.Value(state);
+                var gridValue = gridValues.Value(state);
+
+                Console.WriteLine($"state: {state}, generic: {genericValue}, grid: {gridValue}");
+            }
+
+            gridValues.Evaluate(policy, rewarder, 1);
+            genericValues.Evaluate(policy, rewarder, 1);
+
+            Console.WriteLine("values:");
+            foreach (var state in world.AllStates())
+            {
+                var genericValue = genericValues.Value(state);
+                var gridValue = gridValues.Value(state);
+
+                Console.WriteLine($"state: {state}, generic: {genericValue}, grid: {gridValue}");
+            }
         }
     }
 }

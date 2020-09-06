@@ -19,8 +19,12 @@ namespace dp.GridWorld
             return _values[state.Position1D];
         }
 
-        public void Evaluate(IGridWorldPolicy policy, IGridWorldRewarder gridWorldRewarder)
+        public void Evaluate(
+            IGridWorldPolicy policy,
+            IGridWorldRewarder gridWorldRewarder,
+            int sweepLimit = -1)
         {
+            var sweep = 0;
             var largestValueChange = 0.0;
 
             do
@@ -37,6 +41,8 @@ namespace dp.GridWorld
                     var valueChange = Math.Abs(originalValue - newValue);
                     if (valueChange > largestValueChange) largestValueChange = valueChange;
                 }
+
+                if (sweepLimit > 0 && ++sweep == sweepLimit) break;
 
             } while (largestValueChange > 0.000001);
         }

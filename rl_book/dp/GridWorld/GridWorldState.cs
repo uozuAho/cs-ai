@@ -13,5 +13,10 @@
         {
             Position1D = position1D;
         }
+
+        public override string ToString()
+        {
+            return $"{Position1D}";
+        }
     }
 }

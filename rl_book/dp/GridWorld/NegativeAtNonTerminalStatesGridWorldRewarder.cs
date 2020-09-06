@@ -13,7 +13,7 @@
 
         public double Reward(GridWorldState state, GridWorldState nextState, GridWorldAction action)
         {
-            if (nextState.IsTerminal) return 0;
+            if (state.IsTerminal) return 0;
 
             return -1;
         }
