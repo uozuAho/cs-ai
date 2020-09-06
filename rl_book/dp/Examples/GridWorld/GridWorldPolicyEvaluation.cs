@@ -1,6 +1,6 @@
 ﻿using System;
 
-namespace dp.GridWorld
+namespace dp.Examples.GridWorld
 {
     internal class GridWorldPolicyEvaluation
     {

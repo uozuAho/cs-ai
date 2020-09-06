@@ -1,4 +1,4 @@
-﻿namespace dp.GamblersProblem
+﻿namespace dp.Examples.GamblersProblem
 {
     public interface IGamblersWorldRewarder
     {

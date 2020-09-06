@@ -1,7 +1,7 @@
 ﻿using System;
 using System.Linq;
 
-namespace dp.GamblersProblem
+namespace dp.Examples.GamblersProblem
 {
     class GamblersProblemExample
     {

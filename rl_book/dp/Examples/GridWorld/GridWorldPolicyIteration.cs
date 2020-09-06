@@ -1,4 +1,4 @@
-﻿namespace dp.GridWorld
+﻿namespace dp.Examples.GridWorld
 {
     class GridWorldPolicyIteration
     {

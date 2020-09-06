@@ -2,7 +2,7 @@
 using System.Collections.Generic;
 using System.Linq;
 
-namespace dp.GridWorld
+namespace dp.Examples.GridWorld
 {
     internal class GreedyGridWorldPolicy : IGridWorldPolicy
     {

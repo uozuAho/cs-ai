@@ -1,5 +1,4 @@
-﻿using dp.GamblersProblem;
-using dp.GridWorld;
+﻿using dp.Examples.GridWorld;
 
 namespace dp
 {

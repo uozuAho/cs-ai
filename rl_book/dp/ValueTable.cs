@@ -18,7 +18,7 @@ namespace dp
 
         public void Evaluate(
             IPolicy<TState, TAction> policy,
-            IGenericRewarder<TState, TAction> rewarder,
+            IRewarder<TState, TAction> rewarder,
             int sweepLimit = -1)
         {
             var numSweeps = 0;
@@ -47,7 +47,7 @@ namespace dp
         private double CalculateValue(
             TState state,
             IPolicy<TState, TAction> policy,
-            IGenericRewarder<TState, TAction> rewarder)
+            IRewarder<TState, TAction> rewarder)
         {
             var newValue = 0.0;
 
@@ -88,7 +88,7 @@ namespace dp
         double PAction(TState state, TAction action);
     }
 
-    public interface IGenericRewarder<in TState, in TAction>
+    public interface IRewarder<in TState, in TAction>
     {
         double Reward(TState state, TState nextState, TAction action);
     }

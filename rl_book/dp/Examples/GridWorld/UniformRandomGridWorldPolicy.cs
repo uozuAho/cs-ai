@@ -1,4 +1,4 @@
-﻿namespace dp.GridWorld
+﻿namespace dp.Examples.GridWorld
 {
     public class UniformRandomGridWorldPolicy : IGridWorldPolicy, IPolicy<GridWorldState, GridWorldAction>
     {

@@ -1,7 +1,7 @@
 ﻿using System;
 using System.Linq;
 
-namespace dp.GridWorld
+namespace dp.Examples.GridWorld
 {
     public class GridWorldValueTable
     {

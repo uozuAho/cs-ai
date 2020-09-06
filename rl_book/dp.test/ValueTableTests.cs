@@ -1,6 +1,6 @@
 using System;
-using dp.GamblersProblem;
-using dp.GridWorld;
+using dp.Examples.GamblersProblem;
+using dp.Examples.GridWorld;
 using NUnit.Framework;
 
 namespace dp.test
@@ -29,7 +29,7 @@ namespace dp.test
         [Test]
         public static void Evaluates_to_same_values_as_gridworld_value_table()
         {
-            var gridWorld = new GridWorld.GridWorld();
+            var gridWorld = new GridWorld();
             var rewarder = new NegativeAtNonTerminalStatesGridWorldRewarder();
             var policy = new UniformRandomGridWorldPolicy();
         

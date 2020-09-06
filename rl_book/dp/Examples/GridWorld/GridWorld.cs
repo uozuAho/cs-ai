@@ -1,7 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 
-namespace dp.GridWorld
+namespace dp.Examples.GridWorld
 {
     /// <summary>
     /// Grid world problem of the DP chapter of the RL book. 4x4 grid, where 0,0
