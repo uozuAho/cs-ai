@@ -1,5 +1,4 @@
 ﻿using System;
-using System.Linq;
 
 namespace dp.Examples.GamblersProblem
 {
@@ -7,7 +6,6 @@ namespace dp.Examples.GamblersProblem
     {
         public static void Run()
         {
-            Test();
             RunImpl();
         }
 
@@ -69,38 +67,6 @@ namespace dp.Examples.GamblersProblem
             // values.Evaluate(policy, rewarder, 1);
             // Console.WriteLine("Values:");
             // values.Print();
-        }
-
-        private static void Test()
-        {
-            const double probabilityOfHeads = 0.4;
-
-            for (var dollarsToWin = 5; dollarsToWin < 10; dollarsToWin++)
-            {
-                var world = new GamblersWorld(probabilityOfHeads, dollarsToWin);
-                Assert($"world has {dollarsToWin + 1} states", world.AllStates().Count() == dollarsToWin + 1);
-                Assert("0 possible actions when $0 in hand", !world.AvailableActions(new GamblersWorldState(0)).Any());
-                Assert("4 possible actions when $3 in hand", world.AvailableActions(new GamblersWorldState(3)).Count() == 4);
-                Assert("0 possible actions when $goal in hand", !world.AvailableActions(new GamblersWorldState(dollarsToWin)).Any());
-            }
-
-            var world2 = new GamblersWorld(probabilityOfHeads, 100);
-
-            for (int i = 0; i < 100; i++)
-            {
-                var possibleStates = world2.PossibleStates(new GamblersWorldState(i), new GamblersWorldAction(1)).ToList();
-                Assert("2 possible states on an action", possibleStates.Count == 2);
-                Assert("probability of states sums to 1", possibleStates.Sum(s => s.Item2) == 1.0);
-                Assert("probability of losing is 0.6", possibleStates.Single(s => s.Item1.DollarsInHand == i - 1).Item2 == 0.6);
-            }
-        }
-
-        private static void Assert(string description, bool condition)
-        {
-            if (!condition)
-            {
-                Console.WriteLine("Failed: " + description);
-            }
         }
     }
 }
