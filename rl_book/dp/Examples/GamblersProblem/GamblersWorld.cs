@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Diagnostics;
 using System.Linq;
 
 namespace dp.Examples.GamblersProblem
@@ -34,12 +35,14 @@ namespace dp.Examples.GamblersProblem
 
             var maxStake = Math.Min(state.DollarsInHand, DollarsToWin - state.DollarsInHand);
 
-            return Enumerable.Range(0, maxStake + 1).Select(i => new GamblersWorldAction(i));
+            return Enumerable.Range(1, maxStake).Select(i => new GamblersWorldAction(i));
         }
 
         public IEnumerable<(GamblersWorldState, double)>
             PossibleStates(GamblersWorldState state, GamblersWorldAction action)
         {
+            Debug.Assert(action.Stake <= state.DollarsInHand);
+
             yield return (
                 new GamblersWorldState(state.DollarsInHand + action.Stake),
                 _probabilityOfHeads

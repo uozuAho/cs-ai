@@ -12,45 +12,52 @@ namespace dp.Examples.GamblersProblem
         private static void RunImpl()
         {
             const double probabilityOfHeads = 0.4;
-            const int dollarsToWin = 10;
+            const int dollarsToWin = 100;
 
             var world = new GamblersWorld(probabilityOfHeads, dollarsToWin);
             var rewarder = new GamblersWorldRewarder(world);
             var values = new GamblersValueTable(world);
 
             // Console.WriteLine("Random policy");
-            IGamblersPolicy policy = new UniformRandomGamblersPolicy();
+            // IGamblersPolicy policy = new UniformRandomGamblersPolicy();
             // EvaluatePolicy(world, policy);
-
-            Console.WriteLine("Always $1 policy");
-            policy = new AlwaysStake1DollarPolicy();
-            EvaluatePolicy(world, policy);
-
-            // policy = GreedyGamblersPolicy.Create(world, values, rewarder);
-            // Console.WriteLine("Greedy policy:");
-            // ((GreedyGamblersPolicy) policy)?.Print();
             //
-            // values.Evaluate(policy, rewarder);
-            // Console.WriteLine("Values:");
-            // values.Print();
+            // Console.WriteLine("Always $1 policy");
+            // policy = new AlwaysStake1DollarPolicy();
+            // EvaluatePolicy(world, policy);
             //
             // policy = GreedyGamblersPolicy.Create(world, values, rewarder);
-            // Console.WriteLine("Greedy policy:");
+            // Console.WriteLine("Greedy policy built from always $1 policy:");
+            // EvaluatePolicy(world, policy);
+            // Console.WriteLine("Greedy policy stakes:");
             // ((GreedyGamblersPolicy) policy)?.Print();
 
-            // for (var i = 0; i < 100; i++)
-            // {
-            //     // todo: this currently evaluates with many iterations. change to value iteration,
-            //     // see how it affects convergence rate
-            //     values.Evaluate(policy, rewarder);
-            //     policy = GreedyGamblersPolicy.Create(world, values, rewarder);
-            // }
-            //
-            // Console.WriteLine("Policy:");
-            // (policy as GreedyGamblersPolicy)?.Print();
-            // Console.WriteLine();
-            // Console.WriteLine("Values:");
-            // values.Print();
+            var (optimalPolicy, optimalValues) = FindOptimalPolicy(world, rewarder);
+            Console.WriteLine("Optimal policy values:");
+            optimalValues.Print();
+            Console.WriteLine("Optimal policy stakes:");
+            ((GreedyGamblersPolicy)optimalPolicy)?.Print();
+        }
+
+        private static (IGamblersPolicy, GamblersValueTable) FindOptimalPolicy(
+            GamblersWorld world, GamblersWorldRewarder rewarder)
+        {
+            const int sweepsPerPolicyUpdate = 50;
+            var values = new GamblersValueTable(world);
+            IGamblersPolicy policy = new UniformRandomGamblersPolicy();
+
+            // todo: iterate until greedy policy doesn't change (?)
+            for (var i = 0; i < 100; i++)
+            {
+                values.Evaluate(policy, rewarder, sweepsPerPolicyUpdate);
+                // Console.WriteLine("values:");
+                // values.Print();
+                policy = GreedyGamblersPolicy.Create(world, values, rewarder);
+                // Console.WriteLine("greedy stakes:");
+                // ((GreedyGamblersPolicy)policy)?.Print();
+            }
+
+            return (policy, values);
         }
 
         private static void EvaluatePolicy(GamblersWorld world, IGamblersPolicy policy)
@@ -61,12 +68,6 @@ namespace dp.Examples.GamblersProblem
             values.Evaluate(policy, rewarder);
             Console.WriteLine("Values:");
             values.Print();
-            // values.Evaluate(policy, rewarder, 1);
-            // Console.WriteLine("Values:");
-            // values.Print();
-            // values.Evaluate(policy, rewarder, 1);
-            // Console.WriteLine("Values:");
-            // values.Print();
         }
     }
 }

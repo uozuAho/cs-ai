@@ -20,10 +20,10 @@ namespace dp.test
 
         [TestCase(1, 0, 0)]
         [TestCase(10, 0, 0)]
-        [TestCase(10, 1, 2)]
-        [TestCase(10, 2, 3)]
-        [TestCase(10, 8, 3)]
-        [TestCase(10, 9, 2)]
+        [TestCase(10, 1, 1)]
+        [TestCase(10, 2, 2)]
+        [TestCase(10, 8, 2)]
+        [TestCase(10, 9, 1)]
         [TestCase(10, 10, 0)]
         public void Number_of_possible_actions(int dollarsToWin, int dollarsInHand, int numPossibleActions)
         {

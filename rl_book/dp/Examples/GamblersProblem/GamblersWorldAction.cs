@@ -23,5 +23,10 @@
         {
             return Stake;
         }
+
+        public override string ToString()
+        {
+            return $"{Stake}";
+        }
     }
 }
