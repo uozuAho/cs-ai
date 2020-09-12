@@ -11,12 +11,16 @@ namespace dp.Examples.GamblersProblem
 
         private readonly double _probabilityOfHeads;
         private List<GamblersWorldState> _allStates;
+        private readonly Random _random;
 
         public GamblersWorld(double probabilityOfHeads, int dollarsToWin)
         {
             _probabilityOfHeads = probabilityOfHeads;
             DollarsToWin = dollarsToWin;
+            _random = new Random();
         }
+
+        public bool IsWin(in GamblersWorldState state) => state.DollarsInHand == DollarsToWin;
 
         public bool IsTerminal(GamblersWorldState state) =>
             state.DollarsInHand == 0 || state.DollarsInHand == DollarsToWin;
@@ -52,6 +56,15 @@ namespace dp.Examples.GamblersProblem
                 new GamblersWorldState(state.DollarsInHand - action.Stake),
                 1.0 - _probabilityOfHeads
             );
+        }
+
+        public GamblersWorldState NextState(GamblersWorldState state, GamblersWorldAction action)
+        {
+            Debug.Assert(action.Stake <= state.DollarsInHand);
+
+            return _random.NextDouble() < _probabilityOfHeads
+                ? new GamblersWorldState(state.DollarsInHand + action.Stake)
+                : new GamblersWorldState(state.DollarsInHand - action.Stake);
         }
     }
 }

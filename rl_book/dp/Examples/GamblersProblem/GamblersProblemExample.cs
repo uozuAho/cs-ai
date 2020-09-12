@@ -6,12 +6,40 @@ namespace dp.Examples.GamblersProblem
     {
         public static void Run()
         {
-            RunImpl();
+            // UseDpToFindPolicies();
+            PlayGamesWithPolicies();
         }
 
-        private static void RunImpl()
+        private static void PlayGamesWithPolicies()
         {
-            const double probabilityOfHeads = 0.4;
+            var probabilityOfHeads = 0.2;
+            int dollarsToWin = 100;
+
+            var world = new GamblersWorld(probabilityOfHeads, dollarsToWin);
+
+            // Console.WriteLine("random policy:");
+            // PlayGamesWithPolicy(world, new UniformRandomGamblersPolicy());
+
+            // Console.WriteLine("random policy:");
+            // PlayGamesWithPolicy(world, new AlwaysStake1DollarPolicy());
+
+            Console.WriteLine("always stake max policy:");
+            PlayGamesWithPolicy(world, new AlwaysStakeMaxPolicy(world));
+
+            // var (optimalPolicy, _) = FindOptimalPolicy(world, new GamblersWorldRewarder(world));
+            // Console.WriteLine("optimal policy:");
+            // PlayGamesWithPolicy(world, optimalPolicy);
+        }
+
+        private static void PlayGamesWithPolicy(GamblersWorld world, IGamblersPolicy policy)
+        {
+            var player = new GamblersProblemPlayer(world, policy);
+            player.Play();
+        }
+
+        private static void UseDpToFindPolicies()
+        {
+            const double probabilityOfHeads = 0.2;
             const int dollarsToWin = 100;
 
             var world = new GamblersWorld(probabilityOfHeads, dollarsToWin);
