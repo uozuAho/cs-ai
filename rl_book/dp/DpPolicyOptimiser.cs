@@ -5,15 +5,12 @@ namespace dp
 {
     class DpPolicyOptimiser
     {
-        private const int EvaluationSweepsPerPolicyUpdate = 1;
-
         /// <summary>
         /// Uses value iteration to find the optimal policy and values for the given problem
         /// </summary>
         public static (IDeterministicPolicy<TState, TAction>, ValueTable<TState, TAction>)
-            FindOptimalPolicy<TState, TAction>(
-                IProblem<TState, TAction> problem,
-                IRewarder<TState, TAction> rewarder)
+            FindOptimalPolicy<TState, TAction>(IProblem<TState, TAction> problem,
+                IRewarder<TState, TAction> rewarder, int evaluationSweepsPerPolicyUpdate = 1)
         {
             const int maxIterations = 100;
             var values = new ValueTable<TState, TAction>(problem);
@@ -22,7 +19,7 @@ namespace dp
 
             for (var i = 0; i < maxIterations; i++)
             {
-                values.Evaluate(greedyPolicy ?? initialPolicy, rewarder, EvaluationSweepsPerPolicyUpdate);
+                values.Evaluate(greedyPolicy ?? initialPolicy, rewarder, evaluationSweepsPerPolicyUpdate);
 
                 var newGreedyPolicy = GreedyPolicy<TState, TAction>.Create(problem, values, rewarder);
 

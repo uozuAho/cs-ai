@@ -15,12 +15,14 @@ namespace dp.Examples.GamblersProblem
         {
             const double probabilityOfHeads = 0.4;
             const int dollarsToWin = 100;
+            const int evaluationSweepsPerPolicyUpdate = 1;
 
             var world = new GamblersWorld(probabilityOfHeads, dollarsToWin);
             var rewarder = new GamblersWorldRewarder(world);
 
             Console.WriteLine("Policy optimiser:");
-            var (policy, values) = DpPolicyOptimiser.FindOptimalPolicy(world, rewarder);
+            var (policy, values) = DpPolicyOptimiser
+                .FindOptimalPolicy(world, rewarder, evaluationSweepsPerPolicyUpdate);
             Console.WriteLine("Optimal policy values:");
             PrintAllValues(world, values);
             Console.WriteLine("Optimal policy stakes:");

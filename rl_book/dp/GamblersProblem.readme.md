@@ -33,4 +33,20 @@ for stake in 0..max_stake:
 
 Uncomment `GamblersProblemExample.Run();` in `Program.cs` and run the
 project. You should see the values and an optimal policy printed out. Play around
-with the 
+with `probabilityOfHeads`, `dollarsToWin` and `evaluationSweepsPerPolicyUpdate`.
+
+Notice that a high number of `evaluationSweepsPerPolicyUpdate` requires more
+computation, and will not find a better policy that a lower number of sweeps.
+
+
+# Notes
+
+The RL book states that betting zero is a valid action, however I found that
+when doing this, the optimal policy ended up betting zero for almost all states.
+
+It turns out that for an unfair coin, an optimal policy is to bet as much as
+possible. There are other optimal policies, but the general idea is to minimise
+the total number of bets, since the probability of winning diminishes with the
+total number of bets. For an unfair coin in your advantage, always betting $1 is
+an optimal policy, since the probability of winning increases with the number of
+coin flips.
