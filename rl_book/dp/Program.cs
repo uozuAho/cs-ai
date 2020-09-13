@@ -1,11 +1,15 @@
-﻿namespace dp
+﻿using dp.Examples.GamblersProblem;
+using dp.Examples.GridWorld;
+
+namespace dp
 {
     class Program
     {
         static void Main(string[] args)
         {
-            // PolicyEvaluation.Run();
-            PolicyIteration.Run();
+            // GridWorldPolicyEvaluation.Run();
+            // GridWorldPolicyIteration.Run();
+            GamblersProblemExample.Run();
         }
     }
 }
