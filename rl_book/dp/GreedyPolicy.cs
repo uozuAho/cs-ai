@@ -45,6 +45,14 @@ namespace dp
                 .FirstOrDefault(action => PAction(state, action) >= approxOne);
         }
 
+        public bool HasSameActionsAs(IDeterminatePolicy<TState, TAction> otherPolicy)
+        {
+            if (otherPolicy == null) return false;
+
+            return _actions.Keys.All(state =>
+                _actions[state].Equals(otherPolicy.Action(state)));
+        }
+
         private static TAction FindBestAction(
             IProblem<TState, TAction> problem,
             TState state,

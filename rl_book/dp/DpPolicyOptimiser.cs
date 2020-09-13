@@ -1,10 +1,11 @@
-﻿using System.Linq;
+﻿using System;
+using System.Linq;
 
 namespace dp
 {
     class DpPolicyOptimiser
     {
-        private const int EvaluationSweepsPerPolicyUpdate = 5;
+        private const int EvaluationSweepsPerPolicyUpdate = 1;
 
         /// <summary>
         /// Uses value iteration to find the optimal policy and values for the given problem
@@ -14,17 +15,31 @@ namespace dp
                 IProblem<TState, TAction> problem,
                 IRewarder<TState, TAction> rewarder)
         {
+            const int maxIterations = 100;
             var values = new ValueTable<TState, TAction>(problem);
             IPolicy<TState, TAction> policy = new UniformRandomPolicy<TState, TAction>(problem);
+            IDeterminatePolicy<TState, TAction> greedyPolicy = null;
 
-            // todo: iterate until greedy policy doesn't change (?)
-            for (var i = 0; i < 100; i++)
+            for (var i = 0; i < maxIterations; i++)
             {
                 values.Evaluate(policy, rewarder, EvaluationSweepsPerPolicyUpdate);
-                policy = GreedyPolicy<TState, TAction>.Create(problem, values, rewarder);
+                var newGreedyPolicy = GreedyPolicy<TState, TAction>.Create(problem, values, rewarder);
+
+                if (newGreedyPolicy.HasSameActionsAs(greedyPolicy))
+                {
+                    Console.WriteLine($"Found optimal policy at iteration {i}");
+                    break;
+                }
+
+                greedyPolicy = newGreedyPolicy;
+
+                if (i == maxIterations - 1)
+                {
+                    Console.WriteLine($"Policy iteration did not converge by iteration {i}");
+                }
             }
 
-            return (policy as IDeterminatePolicy<TState, TAction>, values);
+            return (greedyPolicy, values);
         }
     }
 
