@@ -10,19 +10,20 @@ namespace dp
         /// <summary>
         /// Uses value iteration to find the optimal policy and values for the given problem
         /// </summary>
-        public static (IDeterminatePolicy<TState, TAction>, ValueTable<TState, TAction>)
+        public static (IDeterministicPolicy<TState, TAction>, ValueTable<TState, TAction>)
             FindOptimalPolicy<TState, TAction>(
                 IProblem<TState, TAction> problem,
                 IRewarder<TState, TAction> rewarder)
         {
             const int maxIterations = 100;
             var values = new ValueTable<TState, TAction>(problem);
-            IPolicy<TState, TAction> policy = new UniformRandomPolicy<TState, TAction>(problem);
-            IDeterminatePolicy<TState, TAction> greedyPolicy = null;
+            IPolicy<TState, TAction> initialPolicy = new UniformRandomPolicy<TState, TAction>(problem);
+            IDeterministicPolicy<TState, TAction> greedyPolicy = null;
 
             for (var i = 0; i < maxIterations; i++)
             {
-                values.Evaluate(policy, rewarder, EvaluationSweepsPerPolicyUpdate);
+                values.Evaluate(greedyPolicy ?? initialPolicy, rewarder, EvaluationSweepsPerPolicyUpdate);
+
                 var newGreedyPolicy = GreedyPolicy<TState, TAction>.Create(problem, values, rewarder);
 
                 if (newGreedyPolicy.HasSameActionsAs(greedyPolicy))

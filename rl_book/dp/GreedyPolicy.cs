@@ -4,7 +4,7 @@ using System.Linq;
 namespace dp
 {
     internal class GreedyPolicy<TState, TAction>
-        : IPolicy<TState, TAction>, IDeterminatePolicy<TState, TAction>
+        : IPolicy<TState, TAction>, IDeterministicPolicy<TState, TAction>
     {
         private readonly IProblem<TState, TAction> _problem;
         private readonly Dictionary<TState, TAction> _actions;
@@ -45,7 +45,7 @@ namespace dp
                 .FirstOrDefault(action => PAction(state, action) >= approxOne);
         }
 
-        public bool HasSameActionsAs(IDeterminatePolicy<TState, TAction> otherPolicy)
+        public bool HasSameActionsAs(IDeterministicPolicy<TState, TAction> otherPolicy)
         {
             if (otherPolicy == null) return false;
 
@@ -89,7 +89,7 @@ namespace dp
         }
     }
 
-    internal interface IDeterminatePolicy<TState, TAction>
+    internal interface IDeterministicPolicy<TState, TAction> : IPolicy<TState, TAction>
     {
         TAction Action(TState state);
     }

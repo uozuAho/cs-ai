@@ -2,7 +2,10 @@
 
 namespace dp.Examples.GamblersProblem
 {
-    class AlwaysStakeMaxPolicy : IGamblersPolicy
+    class AlwaysStakeMaxPolicy :
+        IGamblersPolicy,
+        IPolicy<GamblersWorldState, GamblersWorldAction>,
+        IDeterministicPolicy<GamblersWorldState, GamblersWorldAction>
     {
         private readonly GamblersWorld _world;
 
@@ -13,9 +16,19 @@ namespace dp.Examples.GamblersProblem
 
         public double PAction(GamblersWorldState state, GamblersWorldAction action)
         {
-            var stake = Math.Min(state.DollarsInHand, _world.DollarsToWin - state.DollarsInHand);
+            var stake = MaxStake(state);
 
             return action.Stake == stake ? 1 : 0;
+        }
+
+        public GamblersWorldAction Action(GamblersWorldState state)
+        {
+            return new GamblersWorldAction(MaxStake(state));
+        }
+
+        private int MaxStake(GamblersWorldState state)
+        {
+            return Math.Min(state.DollarsInHand, _world.DollarsToWin - state.DollarsInHand);
         }
     }
 }

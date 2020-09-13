@@ -27,3 +27,10 @@ for stake in 0..max_stake:
     value += prob_action * p(heads) * (reward + value(next_state(heads)))
            + prob_action * p(tails) * (reward + value(next_state(tails)))
 ```
+
+
+# Run the example
+
+Uncomment `GamblersProblemExample.Run();` in `Program.cs` and run the
+project. You should see the values and an optimal policy printed out. Play around
+with the 

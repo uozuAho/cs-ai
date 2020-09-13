@@ -7,22 +7,44 @@ namespace dp.Examples.GamblersProblem
         public static void Run()
         {
             UseDpToFindOptimalPolicy();
+            // EvaluatePolicyValues();
             // PlayGamesWithPolicies();
         }
 
         private static void UseDpToFindOptimalPolicy()
         {
-            const double probabilityOfHeads = 0.49;
+            const double probabilityOfHeads = 0.4;
             const int dollarsToWin = 100;
 
             var world = new GamblersWorld(probabilityOfHeads, dollarsToWin);
             var rewarder = new GamblersWorldRewarder(world);
 
+            Console.WriteLine("Policy optimiser:");
             var (policy, values) = DpPolicyOptimiser.FindOptimalPolicy(world, rewarder);
             Console.WriteLine("Optimal policy values:");
             PrintAllValues(world, values);
             Console.WriteLine("Optimal policy stakes:");
             PrintPolicyActions(world, policy);
+        }
+
+        private static void EvaluatePolicyValues()
+        {
+            const double probabilityOfHeads = 0.4;
+            const int dollarsToWin = 100;
+
+            var world = new GamblersWorld(probabilityOfHeads, dollarsToWin);
+            var rewarder = new GamblersWorldRewarder(world);
+
+            Console.WriteLine("Optimal policy:");
+            var (policy, values) = DpPolicyOptimiser.FindOptimalPolicy(world, rewarder);
+            var evalValues = new ValueTable<GamblersWorldState, GamblersWorldAction>(world);
+            evalValues.Evaluate(policy, rewarder);
+            PrintPolicyActions(world, policy);
+            PrintAllValues(world, values);
+
+            // Console.WriteLine("Always stake max policy:");
+            // var policy = new AlwaysStakeMaxPolicy(world);
+            // PrintPolicyActionsAndValues(world, policy, rewarder);
         }
 
         private static void PlayGamesWithPolicies()
@@ -64,7 +86,7 @@ namespace dp.Examples.GamblersProblem
 
         private static void PrintPolicyActions(
             GamblersWorld world,
-            IDeterminatePolicy<GamblersWorldState, GamblersWorldAction> policy)
+            IDeterministicPolicy<GamblersWorldState, GamblersWorldAction> policy)
         {
             foreach (var state in world.AllStates())
             {
