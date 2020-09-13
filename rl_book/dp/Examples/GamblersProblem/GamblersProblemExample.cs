@@ -6,8 +6,23 @@ namespace dp.Examples.GamblersProblem
     {
         public static void Run()
         {
-            // UseDpToFindPolicies();
-            PlayGamesWithPolicies();
+            UseDpToFindOptimalPolicy();
+            // PlayGamesWithPolicies();
+        }
+
+        private static void UseDpToFindOptimalPolicy()
+        {
+            const double probabilityOfHeads = 0.49;
+            const int dollarsToWin = 100;
+
+            var world = new GamblersWorld(probabilityOfHeads, dollarsToWin);
+            var rewarder = new GamblersWorldRewarder(world);
+
+            var (policy, values) = DpPolicyOptimiser.FindOptimalPolicy(world, rewarder);
+            Console.WriteLine("Optimal policy values:");
+            PrintAllValues(world, values);
+            Console.WriteLine("Optimal policy stakes:");
+            PrintPolicyActions(world, policy);
         }
 
         private static void PlayGamesWithPolicies()
@@ -37,65 +52,24 @@ namespace dp.Examples.GamblersProblem
             player.Play();
         }
 
-        private static void UseDpToFindPolicies()
+        private static void PrintAllValues(
+            GamblersWorld world,
+            ValueTable<GamblersWorldState, GamblersWorldAction> values)
         {
-            const double probabilityOfHeads = 0.2;
-            const int dollarsToWin = 100;
-
-            var world = new GamblersWorld(probabilityOfHeads, dollarsToWin);
-            var rewarder = new GamblersWorldRewarder(world);
-            var values = new GamblersValueTable(world);
-
-            // Console.WriteLine("Random policy");
-            // IGamblersPolicy policy = new UniformRandomGamblersPolicy();
-            // EvaluatePolicy(world, policy);
-            //
-            // Console.WriteLine("Always $1 policy");
-            // policy = new AlwaysStake1DollarPolicy();
-            // EvaluatePolicy(world, policy);
-            //
-            // policy = GreedyGamblersPolicy.Create(world, values, rewarder);
-            // Console.WriteLine("Greedy policy built from always $1 policy:");
-            // EvaluatePolicy(world, policy);
-            // Console.WriteLine("Greedy policy stakes:");
-            // ((GreedyGamblersPolicy) policy)?.Print();
-
-            var (optimalPolicy, optimalValues) = FindOptimalPolicy(world, rewarder);
-            Console.WriteLine("Optimal policy values:");
-            optimalValues.Print();
-            Console.WriteLine("Optimal policy stakes:");
-            ((GreedyGamblersPolicy)optimalPolicy)?.Print();
-        }
-
-        private static (IGamblersPolicy, GamblersValueTable) FindOptimalPolicy(
-            GamblersWorld world, GamblersWorldRewarder rewarder)
-        {
-            const int sweepsPerPolicyUpdate = 50;
-            var values = new GamblersValueTable(world);
-            IGamblersPolicy policy = new UniformRandomGamblersPolicy();
-
-            // todo: iterate until greedy policy doesn't change (?)
-            for (var i = 0; i < 100; i++)
+            foreach (var state in world.AllStates())
             {
-                values.Evaluate(policy, rewarder, sweepsPerPolicyUpdate);
-                // Console.WriteLine("values:");
-                // values.Print();
-                policy = GreedyGamblersPolicy.Create(world, values, rewarder);
-                // Console.WriteLine("greedy stakes:");
-                // ((GreedyGamblersPolicy)policy)?.Print();
+                Console.WriteLine($"{state}: {values.Value(state)}");
             }
-
-            return (policy, values);
         }
 
-        private static void EvaluatePolicy(GamblersWorld world, IGamblersPolicy policy)
+        private static void PrintPolicyActions(
+            GamblersWorld world,
+            IDeterminatePolicy<GamblersWorldState, GamblersWorldAction> policy)
         {
-            var rewarder = new GamblersWorldRewarder(world);
-            var values = new GamblersValueTable(world);
-
-            values.Evaluate(policy, rewarder);
-            Console.WriteLine("Values:");
-            values.Print();
+            foreach (var state in world.AllStates())
+            {
+                Console.WriteLine($"{state}: {policy.Action(state)}");
+            }
         }
     }
 }

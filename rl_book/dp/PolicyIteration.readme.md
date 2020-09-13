@@ -36,3 +36,12 @@ while policy_changed:
 In this example, we first choose a random policy and evaluate it. Then we pick a
 greedy policy wrt the evaluated values, which finds the optimal policy
 immediately.
+
+
+# Run the example
+
+Uncomment `GridWorldPolicyIteration.Run();` in `Program.cs` and run the project.
+The example starts with a random policy, evaluates it, then creates a greedy
+policy from the resulting value table. This finds an optimal policy in a single
+step. Note that finding the optimal policy immediately isn't guaranteed, only an
+improvement over the previous policy.

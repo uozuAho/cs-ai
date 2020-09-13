@@ -31,3 +31,10 @@ This is an episodic problem, so does not need to be discounted ($\gamma = 0$)
 Therefore, each update loop simplifies to:
 
 $V(s) \leftarrow \sum_a{0.25}*[V(s') - 1]$
+
+
+# Run the example
+
+Uncomment `GridWorldPolicyEvaluation.Run();` in `Program.cs` and run the
+project. You should see the values for each state printed in the console. The
+current example uses a custom value table built from the above analysis.

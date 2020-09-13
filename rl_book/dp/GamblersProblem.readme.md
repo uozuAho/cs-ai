@@ -1,8 +1,5 @@
 # Finding the optimal policy for the gambler's problem
 
-# todo
-- use the 'optimal' policy to see if win rate is 40%?
-
 A gambler (our agent) can bet on the outcome of a coin toss. If the coin lands
 heads up, the gambler wins the amount of money it bet on the toss. If the coin
 lands tails up, the gambler loses the money it bet. The game ends when the
