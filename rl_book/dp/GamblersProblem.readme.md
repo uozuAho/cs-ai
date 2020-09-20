@@ -1,5 +1,21 @@
 # Finding the optimal policy for the gambler's problem
 
+Using value iteration, find the optimal policy for the gambler's problem. Value
+iteration is a method of incrementally improving a policy in a loop:
+
+- Evaluate the value of all states of the current policy
+- Improve the policy by greedily choosing actions that result in higher-value
+  states
+
+Note that the 'value' iteration part is where the evaluation step of the above
+loop does not run to convergence. Instead, it is only run a few times before the
+next policy improvement step. This results in much faster convergence on an
+optimal policy, than if each incremental policy were exhaustively evaluated at
+each step.
+
+
+# The problem
+
 A gambler (our agent) can bet on the outcome of a coin toss. If the coin lands
 heads up, the gambler wins the amount of money it bet on the toss. If the coin
 lands tails up, the gambler loses the money it bet. The game ends when the

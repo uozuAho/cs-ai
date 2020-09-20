@@ -1,5 +1,8 @@
 # Policy evaluation with Dynamic Programming (DP)
 
+Uses dynamic programming to estimate the 'value' of each state of a problem. The
+value is the total reward expected to be seen, starting from that state.
+
 # The problem
 
 A 'grid world' where there are two terminal states. The reward for each move is

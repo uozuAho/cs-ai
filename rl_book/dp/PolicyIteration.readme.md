@@ -1,5 +1,9 @@
 # Policy iteration
 
+Using dynamic programming, find the optimal policy for a given problem. The
+optimal policy is one that ensures the maximum possible reward from any starting
+state.
+
 Uses the same 'grid world' problem from
 [policy evaluation](PolicyEvaluation.readme.md).
 
