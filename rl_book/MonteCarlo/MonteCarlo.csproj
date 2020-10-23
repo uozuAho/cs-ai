@@ -6,10 +6,7 @@
   </PropertyGroup>
 
   <ItemGroup>
-    <PackageReference Include="morelinq" Version="3.3.2" />
-  </ItemGroup>
-
-  <ItemGroup>
+    <ProjectReference Include="..\..\games\blackjack\Blackjack\Blackjack.csproj" />
     <ProjectReference Include="..\RLCommon\RLCommon.csproj" />
   </ItemGroup>
 
