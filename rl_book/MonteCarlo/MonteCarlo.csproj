@@ -6,6 +6,7 @@
   </PropertyGroup>
 
   <ItemGroup>
+    <ProjectReference Include="..\..\games\blackjack\Blackjack\Blackjack.csproj" />
     <ProjectReference Include="..\RLCommon\RLCommon.csproj" />
   </ItemGroup>
 

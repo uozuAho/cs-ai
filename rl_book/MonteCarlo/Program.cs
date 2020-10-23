@@ -1,5 +1,6 @@
 ﻿using System;
-using dp;
+using System.Collections.Generic;
+using Blackjack;
 
 namespace MonteCarlo
 {
@@ -8,6 +9,8 @@ namespace MonteCarlo
         static void Main(string[] args)
         {
             Console.WriteLine("Hello World!");
+
+            // I ended up doing this in python, see https://github.com/uozuAho/rl_montecarlo_blackjack
 
             /*
             def estimate_V(policy, gamma):
@@ -32,9 +35,9 @@ namespace MonteCarlo
             */
         }
 
-        // static void EvaluatePolicy(IPolicy<,> policy, double gamma)
-        // {
-        //
-        // }
+        static void EvaluatePolicy()
+        {
+            var values = new Dictionary<BlackjackState, double>();
+        }
     }
 }
