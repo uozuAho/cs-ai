@@ -6,7 +6,7 @@ namespace TicTacToe.Console
 {
     public class TicTacToeConsoleRunner
     {
-        private ITextInput _userInput;
+        private readonly ITextInput _userInput;
 
         public TicTacToeConsoleRunner(ITextInput userInput)
         {
@@ -74,10 +74,10 @@ namespace TicTacToe.Console
             System.Console.WriteLine($"The winner is: {game.Winner()}!");
         }
 
-        private static int PromptForNumberOfGames()
+        private int PromptForNumberOfGames()
         {
             Print("How many games? (more than 5 runs headless)");
-            return int.Parse(ReadLine());
+            return 1; //_userInput
         }
 
         private static IPlayer PromptForPlayer1(PlayerRegister register)
