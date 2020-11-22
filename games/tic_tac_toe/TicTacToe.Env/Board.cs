@@ -2,7 +2,7 @@
 using System.Linq;
 using System.Text;
 
-namespace TicTacToe.Env
+namespace TicTacToe.Game
 {
     public class Board : IBoard
     {

@@ -35,9 +35,9 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "TicTacToe.Console", "games\
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "TicTacToe.E2eTests", "games\tic_tac_toe\TicTacToe.E2eTests\TicTacToe.E2eTests.csproj", "{D157DDB7-1233-4EC1-97A8-A6ACB7A22BAB}"
 EndProject
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "TicTacToe.Env", "games\tic_tac_toe\TicTacToe.Env\TicTacToe.Env.csproj", "{31508C65-587C-4C33-A142-51FBF6473EF8}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "TicTacToe.Game", "games\tic_tac_toe\TicTacToe.Env\TicTacToe.Game.csproj", "{31508C65-587C-4C33-A142-51FBF6473EF8}"
 EndProject
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "TicTacToe.Env.Test", "games\tic_tac_toe\TicTacToe.Env.Test\TicTacToe.Env.Test.csproj", "{04780C3E-4319-4973-9717-35878459D44E}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "TicTacToe.Game.Test", "games\tic_tac_toe\TicTacToe.Env.Test\TicTacToe.Game.Test.csproj", "{04780C3E-4319-4973-9717-35878459D44E}"
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "rl_book", "rl_book", "{21C76C21-306E-4EC5-84C7-5CF3BD27EA33}"
 EndProject

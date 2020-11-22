@@ -1,5 +1,5 @@
 using System.Collections.Generic;
-using TicTacToe.Env;
+using TicTacToe.Game;
 
 namespace TicTacToe.E2eTests
 {

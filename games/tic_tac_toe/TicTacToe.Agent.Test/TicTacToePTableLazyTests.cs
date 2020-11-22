@@ -1,4 +1,4 @@
-﻿using TicTacToe.Env;
+﻿using TicTacToe.Game;
 
 namespace TicTacToe.Agent.Test
 {

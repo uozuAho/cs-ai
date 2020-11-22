@@ -1,4 +1,4 @@
-﻿namespace TicTacToe.Env
+﻿namespace TicTacToe.Game
 {
     public interface IGameStateObserver
     {

@@ -3,7 +3,7 @@ using System.Linq;
 using NSubstitute;
 using NUnit.Framework;
 
-namespace TicTacToe.Env.Test
+namespace TicTacToe.Game.Test
 {
     public class TicTacToeGameTests
     {

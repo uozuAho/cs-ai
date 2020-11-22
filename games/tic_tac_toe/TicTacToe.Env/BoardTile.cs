@@ -1,6 +1,6 @@
 ﻿using System;
 
-namespace TicTacToe.Env
+namespace TicTacToe.Game
 {
     public enum BoardTile
     {

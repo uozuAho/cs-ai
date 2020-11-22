@@ -1,6 +1,6 @@
 using System;
 using NUnit.Framework;
-using TicTacToe.Env;
+using TicTacToe.Game;
 
 namespace TicTacToe.Agent.Test
 {

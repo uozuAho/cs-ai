@@ -1,6 +1,6 @@
 ﻿using System.Collections.Generic;
 using System.Linq;
-using TicTacToe.Env;
+using TicTacToe.Game;
 
 namespace TicTacToe.Console
 {

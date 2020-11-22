@@ -1,7 +1,7 @@
 ﻿using System.Collections.Generic;
 using NSubstitute;
 using NUnit.Framework;
-using TicTacToe.Env;
+using TicTacToe.Game;
 
 namespace TicTacToe.Agent.Test
 {

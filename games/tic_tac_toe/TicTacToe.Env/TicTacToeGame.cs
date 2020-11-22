@@ -2,7 +2,7 @@
 using System.Collections.Generic;
 using System.Linq;
 
-namespace TicTacToe.Env
+namespace TicTacToe.Game
 {
     public class TicTacToeGame : ITicTacToeGame
     {
