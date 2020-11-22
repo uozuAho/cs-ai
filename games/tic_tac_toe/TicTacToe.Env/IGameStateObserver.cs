@@ -1,6 +1,4 @@
-﻿using TicTacToe.Env;
-
-namespace TicTacToe.Agent
+﻿namespace TicTacToe.Env
 {
     public interface IGameStateObserver
     {
