@@ -9,7 +9,7 @@ namespace TicTacToe.Console
     {
         public static int Main(string[] args)
         {
-            var runner = new TicTacToeConsoleRunner();
+            var runner = new TicTacToeConsoleRunner(new ConsoleTextInput());
             runner.Run();
 
             return 0;

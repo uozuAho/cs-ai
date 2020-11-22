@@ -6,6 +6,13 @@ namespace TicTacToe.Console
 {
     public class TicTacToeConsoleRunner
     {
+        private ITextInput _userInput;
+
+        public TicTacToeConsoleRunner(ITextInput userInput)
+        {
+            _userInput = userInput;
+        }
+
         public void Run()
         {
             var register = new PlayerRegister();
