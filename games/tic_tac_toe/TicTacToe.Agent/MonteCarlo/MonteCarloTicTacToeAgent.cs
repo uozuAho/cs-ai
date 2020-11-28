@@ -1,5 +1,4 @@
-﻿using System;
-using System.Linq;
+﻿using System.Linq;
 using TicTacToe.Game;
 
 namespace TicTacToe.Agent.MonteCarlo
@@ -9,12 +8,9 @@ namespace TicTacToe.Agent.MonteCarlo
         public BoardTile Tile { get; }
         public TicTacToePolicy CurrentPolicy { get; set; } = new TicTacToePolicy();
 
-        private Random _rng;
-
         public MonteCarloTicTacToeAgent(BoardTile tile)
         {
             Tile = tile;
-            _rng = new Random();
         }
 
         public TicTacToeAction GetAction(ITicTacToeGame game)
@@ -24,7 +20,7 @@ namespace TicTacToe.Agent.MonteCarlo
 
         public void Train(ITicTacToeGame game)
         {
-            for (var i = 0; i < 1; i++)
+            for (var i = 0; i < 1000; i++)
             {
                 ImprovePolicy(game, new ActionValues(), new Returns());
             }
@@ -33,10 +29,10 @@ namespace TicTacToe.Agent.MonteCarlo
         private void ImprovePolicy(ITicTacToeGame game, ActionValues actionValues, Returns returns)
         {
             var reward_sum = 0;
-            var exploring_policy = new ExploringStartPolicy(this);
+            var exploringPolicy = new ExploringStartPolicy(this);
 
             // temp to get test passing
-            CurrentPolicy.AddAction(game.Board, new TicTacToeAction());
+            CurrentPolicy.AddAction(game.Board, exploringPolicy.GetAction(game));
 
             // var episode = bj.Episode(list(bj.generate_random_episode(exploring_policy)));
             // foreach (var t in reversed(range(episode.length() - 1)))
