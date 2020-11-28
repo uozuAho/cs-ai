@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections.Generic;
 using System.Linq;
 using TicTacToe.Game;
 
@@ -7,6 +8,7 @@ namespace TicTacToe.Agent
     public class MonteCarloTicTacToeAgent : IPlayer
     {
         public BoardTile Tile { get; }
+        public TicTacToePolicy CurrentPolicy { get; set; } = new TicTacToePolicy();
 
         private Random _rng;
 
@@ -23,7 +25,7 @@ namespace TicTacToe.Agent
 
         public void Train(ITicTacToeGame game)
         {
-            for (int i = 0; i < 1; i++)
+            for (var i = 0; i < 1; i++)
             {
                 ImprovePolicy(game, new ActionValues(), new Returns());
             }
@@ -33,6 +35,7 @@ namespace TicTacToe.Agent
         {
             var reward_sum = 0;
             var exploring_policy = new ExploringStartPolicy(this);
+            CurrentPolicy.States.Add(game.Board.AsString());
             // var episode = bj.Episode(list(bj.generate_random_episode(exploring_policy)));
             // foreach (var t in reversed(range(episode.length() - 1)))
             // {
@@ -48,6 +51,11 @@ namespace TicTacToe.Agent
             //     }
             // }
         }
+    }
+
+    public class TicTacToePolicy
+    {
+        public List<string> States { get; set; } = new List<string>();
     }
 
     internal class ExploringStartPolicy : IPlayer

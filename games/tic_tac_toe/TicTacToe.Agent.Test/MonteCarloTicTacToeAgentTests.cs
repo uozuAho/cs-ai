@@ -23,6 +23,8 @@ namespace TicTacToe.Agent.Test
             var game = new TicTacToeGame(new Board(), mcAgent, new FirstAvailableSlotAgent(BoardTile.O));
 
             mcAgent.Train(game);
+
+            Assert.IsNotEmpty(mcAgent.CurrentPolicy.States);
         }
     }
 }
