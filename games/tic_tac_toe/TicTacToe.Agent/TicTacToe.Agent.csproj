@@ -5,6 +5,7 @@
   </PropertyGroup>
 
   <ItemGroup>
+    <ProjectReference Include="..\..\..\ailib\ailib.csproj" />
     <ProjectReference Include="..\TicTacToe.Env\TicTacToe.Game.csproj" />
   </ItemGroup>
 
