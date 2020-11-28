@@ -32,7 +32,8 @@ namespace TicTacToe.Agent.MonteCarlo
             var exploringPolicy = new ExploringStartPolicy(this);
 
             // temp to get test passing
-            CurrentPolicy.AddAction(game.Board, exploringPolicy.GetAction(game));
+            game.DoNextTurn();
+            CurrentPolicy.AddAction(game.Board, new TicTacToeAction());
 
             // var episode = bj.Episode(list(bj.generate_random_episode(exploring_policy)));
             // foreach (var t in reversed(range(episode.length() - 1)))
