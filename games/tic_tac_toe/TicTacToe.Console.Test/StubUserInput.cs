@@ -1,3 +1,4 @@
+using System;
 using System.Collections.Generic;
 
 namespace TicTacToe.Console.Test
@@ -16,6 +17,10 @@ namespace TicTacToe.Console.Test
 
         public string ReadLine()
         {
+            if (_lines.Count == 0)
+            {
+                throw new InvalidOperationException("No input available");
+            }
             return _lines.Dequeue();
         }
     }

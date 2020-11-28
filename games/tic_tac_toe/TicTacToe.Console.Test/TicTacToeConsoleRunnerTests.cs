@@ -17,7 +17,7 @@ namespace TicTacToe.Console.Test
         }
 
         [Test]
-        public void TwoFirstAvailableSlotAgents_PlayUntilGameIsOver()
+        public void TwoFirstAvailableSlotAgents_PlayOneCompleteGame()
         {
             _user.WillEnterLines("b", "b", "1");
 
@@ -42,6 +42,24 @@ namespace TicTacToe.Console.Test
             _output.ExpectLine(-3, "x..");
             _output.ExpectLine(-2, "");
             _output.ExpectLine(-1, "The winner is: X!");
+        }
+
+        [Test]
+        public void TwoFirstAvailableSlotAgents_PlayMoreThan5GamesHeadless()
+        {
+            const int numGames = 6;
+            _user.WillEnterLines("b", "b", $"{numGames}");
+
+            // act
+            _ticTacToeRunner.Run();
+
+            // assert
+            _output.ReadToEnd();
+
+            const int expectedNumXWins = numGames;
+            const int expectedNumOWins = 0;
+            _output.ExpectLine(-1, $"After {numGames} games, x wins, o wins: " +
+                                   $"{expectedNumXWins}, {expectedNumOWins}");
         }
     }
 }

@@ -38,20 +38,13 @@ namespace TicTacToe.Console
 
         private void RunHeadless(int numGames, IPlayer player1, IPlayer player2)
         {
-            const int batchSize = 1000;
-            var numBatches = numGames / batchSize;
             var runner = new HeadlessRunner(player1, player2);
 
-            for (var i = 0; i < numBatches; i++)
-            {
-                runner.PlayGames(batchSize);
-                var xWins = runner.NumberOfWins(BoardTile.X, 100);
-                var oWins = runner.NumberOfWins(BoardTile.O, 100);
-                Print($"last {batchSize} games, x wins, o wins: {xWins}, {oWins}");
-                Print("");
-                Print("press a key to continue...");
-                ReadLine();
-            }
+            runner.PlayGames(numGames);
+
+            var totalXWins = runner.NumberOfWins(BoardTile.X);
+            var totalOWins = runner.NumberOfWins(BoardTile.O);
+            Print($"After {runner.NumberOfGames} games, x wins, o wins: {totalXWins}, {totalOWins}");
         }
 
         private void RunInteractiveGames(int numGames, IPlayer player1, IPlayer player2)
@@ -80,7 +73,7 @@ namespace TicTacToe.Console
         private int PromptForNumberOfGames()
         {
             Print("How many games? (more than 5 runs headless)");
-            return 1; //_userInput
+            return int.Parse(ReadLine());
         }
 
         private IPlayer PromptForPlayer1(PlayerRegister register)

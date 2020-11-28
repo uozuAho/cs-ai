@@ -17,6 +17,8 @@ namespace TicTacToe.Console
             _winnerRecord = new List<BoardTile?>();
         }
 
+        public int NumberOfGames => _winnerRecord.Count;
+
         public void PlayGames(int numberOfGames)
         {
             for (var i = 0; i < numberOfGames; i++)
@@ -24,6 +26,11 @@ namespace TicTacToe.Console
                 var game = RunSingleGame(_player1, _player2);
                 _winnerRecord.Add(game.Winner());
             }
+        }
+
+        public int NumberOfWins(BoardTile tile)
+        {
+            return _winnerRecord.Count(winner => winner == tile);
         }
 
         public int NumberOfWins(BoardTile tile, int lastNGames)
