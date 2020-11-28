@@ -1,5 +1,4 @@
 ﻿using System;
-using System.Collections.Generic;
 using System.Linq;
 using TicTacToe.Game;
 
@@ -51,32 +50,5 @@ namespace TicTacToe.Agent.MonteCarlo
             //     }
             // }
         }
-    }
-
-    public class TicTacToePolicy
-    {
-        public List<string> States { get; set; } = new List<string>();
-    }
-
-    internal class ExploringStartPolicy : IPlayer
-    {
-        public BoardTile Tile { get; }
-
-        public ExploringStartPolicy(IPlayer policy)
-        {
-        }
-
-        public TicTacToeAction GetAction(ITicTacToeGame game)
-        {
-            throw new NotImplementedException();
-        }
-    }
-
-    internal class Returns
-    {
-    }
-
-    internal class ActionValues
-    {
     }
 }
