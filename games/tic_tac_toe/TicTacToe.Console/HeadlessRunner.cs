@@ -33,13 +33,6 @@ namespace TicTacToe.Console
             return _winnerRecord.Count(winner => winner == tile);
         }
 
-        public int NumberOfWins(BoardTile tile, int lastNGames)
-        {
-            return _winnerRecord
-                .TakeLast(lastNGames)
-                .Count(winner => winner == tile);
-        }
-
         private static TicTacToeGame RunSingleGame(IPlayer player1, IPlayer player2)
         {
             var game = new TicTacToeGame(new Board(), player1, player2);
