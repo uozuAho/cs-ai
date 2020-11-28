@@ -13,6 +13,10 @@ namespace ailib.Utils
 
         public static T Choice<T>(this Random random, IReadOnlyList<T> items)
         {
+            if (items == null || items.Count == 0)
+            {
+                throw new ArgumentException("must have at least one item");
+            }
             var idx = random.Next(0, items.Count - 1);
             return items[idx];
         }

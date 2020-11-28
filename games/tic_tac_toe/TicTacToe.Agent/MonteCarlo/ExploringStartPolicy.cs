@@ -4,7 +4,7 @@ using TicTacToe.Game;
 
 namespace TicTacToe.Agent.MonteCarlo
 {
-    internal class ExploringStartPolicy : IPlayer
+    public class ExploringStartPolicy : IPlayer
     {
         public BoardTile Tile => _innerPolicy.Tile;
 
