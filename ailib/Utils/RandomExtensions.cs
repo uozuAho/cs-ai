@@ -17,7 +17,7 @@ namespace ailib.Utils
             {
                 throw new ArgumentException("must have at least one item");
             }
-            var idx = random.Next(0, items.Count - 1);
+            var idx = random.Next(0, items.Count);
             return items[idx];
         }
 

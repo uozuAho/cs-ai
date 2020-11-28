@@ -20,10 +20,11 @@ namespace TicTacToe.Agent.Test.MonteCarlo
             });
             var innerPolicy = Substitute.For<IPlayer>();
 
-            var firstActions = Enumerable.Range(0, 10)
-                .Select(_ => new ExploringStartPolicy(innerPolicy).GetAction(game));
+            var distinctFirstActions = Enumerable.Range(0, 10)
+                .Select(_ => new ExploringStartPolicy(innerPolicy).GetAction(game))
+                .Distinct();
 
-            Assert.Greater(1, firstActions.Distinct().Count());
+            Assert.Greater(distinctFirstActions.Count(), 1);
         }
     }
 }
