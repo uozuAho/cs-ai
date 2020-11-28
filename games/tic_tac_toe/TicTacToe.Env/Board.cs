@@ -23,6 +23,11 @@ namespace TicTacToe.Game
             _tiles = tiles;
         }
 
+        public static Board CreateEmptyBoard()
+        {
+            return new Board();
+        }
+
         public static Board CreateFromString(string values)
         {
             if (values.Length != 9) throw new ArgumentException("Must have 9 characters");
