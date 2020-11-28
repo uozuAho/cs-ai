@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Text;
+using TicTacToe.Console.Test;
 using TicTacToe.Game;
 
 namespace TicTacToe.Console
@@ -7,10 +8,12 @@ namespace TicTacToe.Console
     public class TicTacToeConsoleRunner
     {
         private readonly ITextInput _userInput;
+        private readonly ITextOutput _userOutput;
 
-        public TicTacToeConsoleRunner(ITextInput userInput)
+        public TicTacToeConsoleRunner(ITextInput userInput, ITextOutput userOutput)
         {
             _userInput = userInput;
+            _userOutput = userOutput;
         }
 
         public void Run()
