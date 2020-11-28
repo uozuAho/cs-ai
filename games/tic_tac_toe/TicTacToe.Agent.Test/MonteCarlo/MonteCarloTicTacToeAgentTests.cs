@@ -1,4 +1,5 @@
-﻿using NUnit.Framework;
+﻿using System.Linq;
+using NUnit.Framework;
 using TicTacToe.Agent.MonteCarlo;
 using TicTacToe.Game;
 
@@ -26,6 +27,7 @@ namespace TicTacToe.Agent.Test.MonteCarlo
             mcAgent.Train(game);
 
             Assert.IsNotEmpty(mcAgent.CurrentPolicy.States);
+            mcAgent.CurrentPolicy.Action(mcAgent.CurrentPolicy.States.First());
         }
     }
 }

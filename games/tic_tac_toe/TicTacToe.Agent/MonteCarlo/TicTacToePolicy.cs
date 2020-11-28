@@ -1,9 +1,23 @@
 ﻿using System.Collections.Generic;
+using System.Linq;
+using TicTacToe.Game;
 
 namespace TicTacToe.Agent.MonteCarlo
 {
     public class TicTacToePolicy
     {
-        public List<string> States { get; set; } = new List<string>();
+        private readonly Dictionary<string, TicTacToeAction> _actionMap = new Dictionary<string, TicTacToeAction>();
+
+        public IEnumerable<string> States => _actionMap.Keys.Select(k => k);
+
+        public TicTacToeAction Action(string state)
+        {
+            return _actionMap[state];
+        }
+
+        public void AddAction(IBoard state, TicTacToeAction action)
+        {
+            _actionMap[state.AsString()] = action;
+        }
     }
 }
