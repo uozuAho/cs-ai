@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Linq;
 using NUnit.Framework;
 using TicTacToe.Agent.MonteCarlo;
 using TicTacToe.Game;
@@ -7,12 +8,18 @@ namespace TicTacToe.Agent.Test.MonteCarlo
 {
     public class TicTacToeEnvironmentTests
     {
+        private TicTacToeEnvironment _env;
+
+        [SetUp]
+        public void Setup()
+        {
+            _env = new TicTacToeEnvironment();
+        }
+
         [Test]
         public void Reset_ClearsBoard()
         {
-            var env = new TicTacToeEnvironment();
-
-            var observation = env.Reset();
+            var observation = _env.Reset();
 
             Assert.True(Board.CreateEmptyBoard().IsSameStateAs(observation.Board));
         }
@@ -20,15 +27,12 @@ namespace TicTacToe.Agent.Test.MonteCarlo
         [Test]
         public void Step_ModifiesBoard()
         {
-            var env = new TicTacToeEnvironment();
-            env.Reset();
-
             var placeXAtTopLeft = new TicTacToeAction {Position = 0, Tile = BoardTile.X};
             var expectedBoard = Board.CreateEmptyBoard();
             expectedBoard.Update(placeXAtTopLeft);
 
             // act
-            var observation = env.Step(placeXAtTopLeft);
+            var observation = _env.Step(placeXAtTopLeft);
 
             // assert
             Assert.AreEqual(expectedBoard.AsString(), observation.Board.AsString());
@@ -37,41 +41,38 @@ namespace TicTacToe.Agent.Test.MonteCarlo
         [Test]
         public void PlacingTileOnNonEmptySquare_Throws()
         {
-            var env = new TicTacToeEnvironment();
-            env.SetState(Board.CreateFromString("x  " +
-                                                "   " +
-                                                "   "));
+            _env.SetState(Board.CreateFromString("x  " +
+                                                 "   " +
+                                                 "   "));
 
             var placeXAtTopLeft = new TicTacToeAction { Position = 0, Tile = BoardTile.X };
 
-            Assert.Throws<InvalidOperationException>(() => env.Step(placeXAtTopLeft));
+            Assert.Throws<InvalidOperationException>(() => _env.Step(placeXAtTopLeft));
         }
 
         [Test]
         public void CreatingInvalidState_Throws()
         {
-            var env = new TicTacToeEnvironment();
-            env.SetState(Board.CreateFromString("x  " +
-                                                "   " +
-                                                "   "));
+            _env.SetState(Board.CreateFromString("x  " +
+                                                 "   " +
+                                                 "   "));
 
             var placeXAtTopLeft = new TicTacToeAction { Position = 1, Tile = BoardTile.X };
 
-            Assert.Throws<InvalidOperationException>(() => env.Step(placeXAtTopLeft));
+            Assert.Throws<InvalidOperationException>(() => _env.Step(placeXAtTopLeft));
         }
 
         [Test]
         public void RewardIs1_ForWin()
         {
-            var env = new TicTacToeEnvironment();
-            env.SetState(Board.CreateFromString("xx " +
-                                                "oo " +
-                                                "   "));
+            _env.SetState(Board.CreateFromString("xx " +
+                                                 "oo " +
+                                                 "   "));
 
             var placeXAtTopRight = new TicTacToeAction { Position = 2, Tile = BoardTile.X };
 
             // act
-            var observation = env.Step(placeXAtTopRight);
+            var observation = _env.Step(placeXAtTopRight);
 
             // assert
             Assert.AreEqual(1, observation.Reward);
@@ -80,15 +81,14 @@ namespace TicTacToe.Agent.Test.MonteCarlo
         [Test]
         public void RewardIsNegative1_ForLoss()
         {
-            var env = new TicTacToeEnvironment();
-            env.SetState(Board.CreateFromString("xx " +
-                                                "oo " +
-                                                "   "));
+            _env.SetState(Board.CreateFromString("xx " +
+                                                 "oo " +
+                                                 "   "));
 
             var placeOAtMiddleRight = new TicTacToeAction { Position = 5, Tile = BoardTile.O };
 
             // act
-            var observation = env.Step(placeOAtMiddleRight);
+            var observation = _env.Step(placeOAtMiddleRight);
 
             // assert
             Assert.AreEqual(-1, observation.Reward);
@@ -97,16 +97,30 @@ namespace TicTacToe.Agent.Test.MonteCarlo
         [Test]
         public void RewardIs0_WhenGameIsNotOver()
         {
-            var env = new TicTacToeEnvironment();
-            env.Reset();
-
             var placeOAtMiddleRight = new TicTacToeAction { Position = 5, Tile = BoardTile.O };
 
             // act
-            var observation = env.Step(placeOAtMiddleRight);
+            var observation = _env.Step(placeOAtMiddleRight);
 
             // assert
             Assert.AreEqual(0, observation.Reward);
+        }
+
+        [Test]
+        public void NewEnv_Has9AvailableActions()
+        {
+            Assert.AreEqual(9, _env.AvailableActions().Count());
+        }
+
+        // env assumes agent uses X tiles
+        // note that playing these available actions will result in invalid states
+        [TestCase("x        ")]
+        [TestCase("xox      ")]
+        public void AvailableActions_AreAlwaysX(string board)
+        {
+            _env.SetState(Board.CreateFromString(board));
+
+            Assert.True(_env.AvailableActions().All(a => a.Tile == BoardTile.X));
         }
     }
 }

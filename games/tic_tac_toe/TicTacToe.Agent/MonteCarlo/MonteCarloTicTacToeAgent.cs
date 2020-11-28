@@ -1,4 +1,5 @@
-﻿using System.Linq;
+﻿using System.Collections.Generic;
+using System.Linq;
 using TicTacToe.Game;
 
 namespace TicTacToe.Agent.MonteCarlo
@@ -32,9 +33,10 @@ namespace TicTacToe.Agent.MonteCarlo
             var exploringPolicy = new ExploringStartPolicy(this);
 
             // temp to get test passing
-            game.DoNextTurn();
-            CurrentPolicy.AddAction(game.Board, new TicTacToeAction());
+            // game.DoNextTurn();
+            // CurrentPolicy.AddAction(game.Board, new TicTacToeAction());
 
+            // var episode = CreateEpisode(exploringPolicy);
             // var episode = bj.Episode(list(bj.generate_random_episode(exploring_policy)));
             // foreach (var t in reversed(range(episode.length() - 1)))
             // {
@@ -50,5 +52,19 @@ namespace TicTacToe.Agent.MonteCarlo
             //     }
             // }
         }
+
+        // private List<TicTacToeObservation> CreateEpisode(IPlayer policy)
+        // {
+        //     var env = new TicTacToeEnvironment();
+        //
+        //     var lastObservation = env.Reset();
+        //     var observations = new List<TicTacToeObservation> {lastObservation};
+        //
+        //     while (!lastObservation.IsDone)
+        //     {
+        //         lastObservation = env.Step(GetAction(env.AvailableActions()));
+        //         observations.Add(lastObservation);
+        //     }
+        // }
     }
 }

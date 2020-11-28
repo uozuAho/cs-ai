@@ -1,11 +1,18 @@
 ﻿using System;
+using System.Collections.Generic;
 using TicTacToe.Game;
 
 namespace TicTacToe.Agent.MonteCarlo
 {
+    // agent always has X tiles
     public class TicTacToeEnvironment
     {
         private Board _board;
+
+        public TicTacToeEnvironment()
+        {
+            Reset();
+        }
 
         public TicTacToeObservation Reset()
         {
@@ -42,6 +49,21 @@ namespace TicTacToe.Agent.MonteCarlo
                 Board = _board,
                 Reward = reward
             };
+        }
+
+        public IEnumerable<TicTacToeAction> AvailableActions()
+        {
+            for (var pos = 0; pos < 9; pos++)
+            {
+                if (_board.GetTileAt(pos) == BoardTile.Empty)
+                {
+                    yield return new TicTacToeAction
+                    {
+                        Position = pos,
+                        Tile = BoardTile.X
+                    };
+                }
+            }
         }
     }
 }
