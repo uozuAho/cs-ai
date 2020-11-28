@@ -1,7 +1,6 @@
 using System.Collections.Generic;
-using TicTacToe.Game;
 
-namespace TicTacToe.E2eTests
+namespace TicTacToe.Game.Test.Utils
 {
     public class TestPlayer : IPlayer
     {

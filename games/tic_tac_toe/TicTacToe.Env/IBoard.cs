@@ -1,4 +1,4 @@
-﻿namespace TicTacToe.Env
+﻿namespace TicTacToe.Game
 {
     /// <summary>
     /// Tic tac toe board

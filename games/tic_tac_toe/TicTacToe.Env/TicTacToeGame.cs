@@ -1,9 +1,8 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
-using TicTacToe.Agent;
 
-namespace TicTacToe.Env
+namespace TicTacToe.Game
 {
     public class TicTacToeGame : ITicTacToeGame
     {

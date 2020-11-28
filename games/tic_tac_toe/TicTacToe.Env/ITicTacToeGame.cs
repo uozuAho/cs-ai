@@ -1,6 +1,6 @@
 ﻿using System.Collections.Generic;
 
-namespace TicTacToe.Env
+namespace TicTacToe.Game
 {
     public interface ITicTacToeGame
     {

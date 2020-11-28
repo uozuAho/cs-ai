@@ -2,7 +2,7 @@
 using System.Collections.Generic;
 using System.Diagnostics;
 using System.Linq;
-using TicTacToe.Env;
+using TicTacToe.Game;
 
 namespace TicTacToe.Agent
 {
