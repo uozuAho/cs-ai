@@ -19,6 +19,12 @@ namespace TicTacToe.Console.Test
         [Test]
         public void TwoFirstAvailableSlotAgents_PlayUntilGameIsOver()
         {
+            _user.WillEnterLines("b", "b", "1");
+
+            // act
+            _ticTacToeRunner.Run();
+
+            // assert
             _output.ExpectLines(
                 "Player choices:",
                 "  a: ConsoleInputPlayer",
@@ -29,11 +35,7 @@ namespace TicTacToe.Console.Test
                 "Choose player 2 (o)",
                 "How many games? (more than 5 runs headless)");
 
-            _user.WillEnterLines("b", "b", "1");
-
-            _output.IgnoreLinesUntil("The winner is: X!");
-
-            // _ticTacToeRunner.Run();
+            _output.ReadToEnd();
         }
     }
 }

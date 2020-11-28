@@ -2,9 +2,9 @@
 {
     public class ConsoleTextInput : ITextInput
     {
-        public int GetInt()
+        public string ReadLine()
         {
-            return int.Parse(System.Console.ReadLine());
+            return System.Console.ReadLine();
         }
     }
 }

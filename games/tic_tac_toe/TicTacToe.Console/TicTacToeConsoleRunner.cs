@@ -36,7 +36,7 @@ namespace TicTacToe.Console
             }
         }
 
-        private static void RunHeadless(int numGames, IPlayer player1, IPlayer player2)
+        private void RunHeadless(int numGames, IPlayer player1, IPlayer player2)
         {
             const int batchSize = 1000;
             var numBatches = numGames / batchSize;
@@ -54,7 +54,7 @@ namespace TicTacToe.Console
             }
         }
 
-        private static void RunInteractiveGames(int numGames, IPlayer player1, IPlayer player2)
+        private void RunInteractiveGames(int numGames, IPlayer player1, IPlayer player2)
         {
             for (var i = 0; i < numGames; i++)
             {
@@ -62,7 +62,7 @@ namespace TicTacToe.Console
             }
         }
 
-        private static void RunSingleGame(IPlayer player1, IPlayer player2)
+        private void RunSingleGame(IPlayer player1, IPlayer player2)
         {
             var game = new TicTacToeGame(new Board(), player1, player2);
 
@@ -74,7 +74,7 @@ namespace TicTacToe.Console
 
             Print(RenderBoard(game.Board));
 
-            System.Console.WriteLine($"The winner is: {game.Winner()}!");
+            Print($"The winner is: {game.Winner()}!");
         }
 
         private int PromptForNumberOfGames()
@@ -83,21 +83,21 @@ namespace TicTacToe.Console
             return 1; //_userInput
         }
 
-        private static IPlayer PromptForPlayer1(PlayerRegister register)
+        private IPlayer PromptForPlayer1(PlayerRegister register)
         {
             Print("Choose player 1 (x)");
             var input = ReadLine();
             return register.NewPlayer(input, BoardTile.X);
         }
 
-        private static IPlayer PromptForPlayer2(PlayerRegister register)
+        private IPlayer PromptForPlayer2(PlayerRegister register)
         {
             Print("Choose player 2 (o)");
             var input = ReadLine();
             return register.NewPlayer(input, BoardTile.O);
         }
 
-        private static void ShowAvailablePlayers(PlayerRegister register)
+        private void ShowAvailablePlayers(PlayerRegister register)
         {
             Print("Player choices:");
             foreach (var description in register.AvailablePlayers())
@@ -106,14 +106,14 @@ namespace TicTacToe.Console
             }
         }
 
-        private static void Print(string message)
+        private void Print(string message)
         {
-            System.Console.WriteLine(message);
+            _userOutput.PrintLine(message);
         }
 
-        private static string ReadLine()
+        private string ReadLine()
         {
-            return System.Console.ReadLine();
+            return _userInput.ReadLine();
         }
 
         private static string RenderBoard(IBoard board)
