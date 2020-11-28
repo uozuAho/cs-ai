@@ -29,5 +29,19 @@ namespace TicTacToe.Agent.Test.MonteCarlo
             Assert.IsNotEmpty(mcAgent.CurrentPolicy.States);
             mcAgent.CurrentPolicy.Action(mcAgent.CurrentPolicy.States.First());
         }
+
+        [Test]
+        public void Train_ExploresAllPossibleStarts()
+        {
+            var mcAgent = new MonteCarloTicTacToeAgent(BoardTile.X);
+            var opponent = new FirstAvailableSlotAgent(BoardTile.O);
+
+            var game = new TicTacToeGame(new Board(), mcAgent, opponent);
+
+            mcAgent.Train(game);
+
+            var states = mcAgent.CurrentPolicy.States.ToHashSet();
+            Assert.True(states.Contains("x        "));
+        }
     }
 }
