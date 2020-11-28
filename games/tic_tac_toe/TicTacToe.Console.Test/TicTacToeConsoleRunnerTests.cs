@@ -36,7 +36,12 @@ namespace TicTacToe.Console.Test
                 "How many games? (more than 5 runs headless)");
 
             _output.ReadToEnd();
-            var lastLine = _output.NumberOfLines() - 1;
+
+            _output.ExpectLine(-5, "xox");
+            _output.ExpectLine(-4, "oxo");
+            _output.ExpectLine(-3, "x..");
+            _output.ExpectLine(-2, "");
+            _output.ExpectLine(-1, "The winner is: X!");
         }
     }
 }

@@ -1,3 +1,4 @@
+using System;
 using System.Collections.Generic;
 using NUnit.Framework;
 
@@ -10,7 +11,10 @@ namespace TicTacToe.Console.Test
 
         public void PrintLine(string line)
         {
-            _capturedLines.Add(line);
+            foreach (var l in line.Split(Environment.NewLine))
+            {
+                _capturedLines.Add(l);
+            }
         }
 
         public void ExpectLine(string line)
@@ -38,6 +42,20 @@ namespace TicTacToe.Console.Test
         public int NumberOfLines()
         {
             return _capturedLines.Count;
+        }
+
+        /// <summary>
+        /// Expect the numbered line to equal the given string
+        /// </summary>
+        /// <param name="lineNumber">0-indexed line number. Negative reads from the end of all lines</param>
+        /// <param name="line"></param>
+        public void ExpectLine(int lineNumber, string line)
+        {
+            var positiveLineNumber = lineNumber < 0
+                ? _capturedLines.Count + lineNumber
+                : lineNumber;
+            var actualLine = _capturedLines[positiveLineNumber];
+            Assert.AreEqual(line, actualLine, $"at line {lineNumber}");
         }
 
         private bool AllLinesRead()
