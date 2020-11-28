@@ -13,7 +13,7 @@ namespace TicTacToe.Console.Test
         {
             _user = new StubUserInput();
             _output = new TestUserOutput();
-            _ticTacToeRunner = new TicTacToeConsoleRunner(_user, _output);
+            _ticTacToeRunner = new TicTacToeConsoleRunner(_user, _output, new PlayerRegister());
         }
 
         [Test]
