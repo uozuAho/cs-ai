@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using TicTacToe.Game;
 
-namespace TicTacToe.Agent
+namespace TicTacToe.Agent.MonteCarlo
 {
     public class MonteCarloTicTacToeAgent : IPlayer
     {
