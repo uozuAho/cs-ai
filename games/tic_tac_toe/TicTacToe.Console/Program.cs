@@ -8,6 +8,7 @@
                 new ConsoleTextInput(),
                 new ConsoleTextOutput(),
                 new PlayerRegister());
+
             runner.Run();
 
             return 0;
