@@ -1,4 +1,5 @@
-﻿using TicTacToe.Game;
+﻿using System.Linq;
+using TicTacToe.Game;
 
 namespace TicTacToe.Agent
 {
@@ -13,7 +14,7 @@ namespace TicTacToe.Agent
 
         public TicTacToeAction GetAction(ITicTacToeGame game)
         {
-            return new TicTacToeAction {Position = 0, Tile = Tile};
+            return game.GetAvailableActions().First();
         }
     }
 }
