@@ -1,30 +1,49 @@
 ﻿using System.Collections.Generic;
+using System.Linq;
 
 namespace TicTacToe.Agent.MonteCarlo
 {
     internal class Episode
     {
-        public List<TicTacToeObservation> Observations { get; private set; }
+        public List<EpisodeStep> Steps { get; private set; }
 
         public static Episode Generate(ITicTacToeAgent agent, ITicTacToeAgent opponent)
         {
-            return new Episode {Observations = CreateEpisode(agent, opponent)};
+            return new Episode {Steps = GenerateEpisode(agent, opponent).ToList()};
         }
 
-        private static List<TicTacToeObservation> CreateEpisode(ITicTacToeAgent agent, ITicTacToeAgent opponent)
+        private static IEnumerable<EpisodeStep> GenerateEpisode(ITicTacToeAgent agent, ITicTacToeAgent opponent)
         {
             var env = new TicTacToeEnvironment(opponent);
 
-            var lastObservation = env.Reset();
-            var observations = new List<TicTacToeObservation> { lastObservation };
+            var board = env.Reset();
+            var done = false;
+            var lastReward = 0.0;
 
-            while (!lastObservation.IsDone)
+            while (!done)
             {
-                lastObservation = env.Step(agent.GetAction(env, lastObservation));
-                observations.Add(lastObservation);
+                var action = agent.GetAction(env, board);
+
+                yield return new EpisodeStep
+                {
+                    Reward = lastReward,
+                    State = board,
+                    Action = action
+                };
+
+                var step = env.Step(action);
+
+                board = step.Board;
+                lastReward = step.Reward;
+                done = step.IsDone;
             }
 
-            return observations;
+            yield return new EpisodeStep
+            {
+                Reward = lastReward,
+                State = board,
+                Action = null
+            };
         }
     }
 }

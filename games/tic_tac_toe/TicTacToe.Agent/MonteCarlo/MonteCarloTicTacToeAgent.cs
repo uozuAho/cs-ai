@@ -21,7 +21,7 @@ namespace TicTacToe.Agent.MonteCarlo
 
         public TicTacToeAction GetAction(TicTacToeEnvironment environment)
         {
-            return environment.AvailableActions().First();
+            return environment.ActionSpace().First();
         }
 
         public void Train(ITicTacToeAgent opponent)
@@ -42,7 +42,7 @@ namespace TicTacToe.Agent.MonteCarlo
             // CurrentPolicy.AddAction(opponent.Board, new TicTacToeAction());
 
             var episode = Episode.Generate(exploringPolicy, opponent);
-            CurrentPolicy.AddAction(episode.Observations[1].Board, new TicTacToeAction());
+            CurrentPolicy.AddAction(episode.Steps[1].State, new TicTacToeAction());
             // var episode = bj.Episode(list(bj.generate_random_episode(exploring_policy)));
             // foreach (var t in reversed(range(episode.length() - 1)))
             // {

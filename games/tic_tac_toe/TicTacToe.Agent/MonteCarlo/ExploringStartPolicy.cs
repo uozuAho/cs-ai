@@ -22,7 +22,7 @@ namespace TicTacToe.Agent.MonteCarlo
         public TicTacToeAction GetAction(TicTacToeEnvironment environment)
         {
             var action = _isFirstAction
-                ? _rng.Choice(environment.AvailableActions())
+                ? _rng.Choice(environment.ActionSpace())
                 : _innerAgent.GetAction(environment);
 
             _isFirstAction = false;
@@ -30,11 +30,15 @@ namespace TicTacToe.Agent.MonteCarlo
             return action;
         }
 
-        public TicTacToeAction GetAction(
-            TicTacToeEnvironment environment,
-            TicTacToeObservation lastObservation)
+        public TicTacToeAction GetAction(TicTacToeEnvironment environment, IBoard board)
         {
-            return GetAction(environment);
+            var action = _isFirstAction
+                ? _rng.Choice(environment.ActionSpace())
+                : _innerAgent.GetAction(environment);
+
+            _isFirstAction = false;
+
+            return action;
         }
     }
 }

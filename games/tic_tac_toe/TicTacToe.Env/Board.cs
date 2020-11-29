@@ -8,6 +8,7 @@ namespace TicTacToe.Game
     public class Board : IBoard
     {
         public BoardTile CurrentPlayer { get; set; } = BoardTile.X;
+        public bool IsGameOver => Winner().HasValue || IsFull();
 
         private readonly BoardTile[] _tiles;
 

@@ -18,7 +18,7 @@ namespace TicTacToe.Agent.Test.MonteCarlo
             _opponent = Substitute.For<ITicTacToeAgent>();
             _opponent.GetAction(
                 Arg.Any<TicTacToeEnvironment>(),
-                Arg.Any<TicTacToeObservation>())
+                Arg.Any<IBoard>())
                 .Returns(new TicTacToeAction
             {
                 Position = 0,
@@ -31,9 +31,9 @@ namespace TicTacToe.Agent.Test.MonteCarlo
         [Test]
         public void Reset_ClearsBoard()
         {
-            var observation = _env.Reset();
+            var board = _env.Reset();
 
-            Assert.True(Board.CreateEmptyBoard().IsSameStateAs(observation.Board));
+            Assert.True(Board.CreateEmptyBoard().IsSameStateAs(board));
         }
 
         [Test]
@@ -42,7 +42,7 @@ namespace TicTacToe.Agent.Test.MonteCarlo
             var placeXAtTopLeft = new TicTacToeAction {Position = 0, Tile = BoardTile.X};
             var placeOAtTopMiddle = new TicTacToeAction {Position = 1, Tile = BoardTile.O};
 
-            _opponent.GetAction(Arg.Any<TicTacToeEnvironment>(), Arg.Any<TicTacToeObservation>())
+            _opponent.GetAction(Arg.Any<TicTacToeEnvironment>(), Arg.Any<IBoard>())
                 .Returns(placeOAtTopMiddle);
 
             var expectedBoard = Board.CreateEmptyBoard();
@@ -130,7 +130,7 @@ namespace TicTacToe.Agent.Test.MonteCarlo
         [Test]
         public void NewEnv_Has9AvailableActions()
         {
-            Assert.AreEqual(9, _env.AvailableActions().Count());
+            Assert.AreEqual(9, _env.ActionSpace().Count());
         }
 
         // env assumes agent uses X tiles
@@ -141,7 +141,7 @@ namespace TicTacToe.Agent.Test.MonteCarlo
         {
             _env.SetState(Board.CreateFromString(board));
 
-            Assert.True(_env.AvailableActions().All(a => a.Tile == BoardTile.X));
+            Assert.True(_env.ActionSpace().All(a => a.Tile == BoardTile.X));
         }
     }
 }

@@ -4,6 +4,6 @@ namespace TicTacToe.Agent.MonteCarlo
 {
     public interface ITicTacToeAgent
     {
-        TicTacToeAction GetAction(TicTacToeEnvironment environment, TicTacToeObservation lastObservation);
+        TicTacToeAction GetAction(TicTacToeEnvironment environment, IBoard board);
     }
 }

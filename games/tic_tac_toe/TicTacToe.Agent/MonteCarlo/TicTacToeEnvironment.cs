@@ -4,7 +4,10 @@ using TicTacToe.Game;
 
 namespace TicTacToe.Agent.MonteCarlo
 {
-    // agent always has X tiles
+    /// <summary>
+    /// An AI Gym-like interface to tic tac toe
+    /// See https://gym.openai.com/docs/
+    /// </summary>
     public class TicTacToeEnvironment
     {
         private readonly ITicTacToeAgent _opponent;
@@ -16,11 +19,11 @@ namespace TicTacToe.Agent.MonteCarlo
             Reset();
         }
 
-        public TicTacToeObservation Reset()
+        public Board Reset()
         {
             _board = Board.CreateEmptyBoard();
 
-            return new TicTacToeObservation {Board = _board};
+            return _board;
         }
 
         public void SetState(Board board)
@@ -28,7 +31,7 @@ namespace TicTacToe.Agent.MonteCarlo
             _board = board;
         }
 
-        public TicTacToeObservation Step(TicTacToeAction action)
+        public TicTacToeEnvironmentStep Step(TicTacToeAction action)
         {
             try
             {
@@ -42,21 +45,21 @@ namespace TicTacToe.Agent.MonteCarlo
             if (!_board.IsValid())
                 throw new InvalidOperationException($"Action caused invalid state: '{_board.AsString()}'");
 
-            if (!_board.Winner().HasValue)
-                _board.Update(_opponent.GetAction(this, new TicTacToeObservation {Board = _board}));
+            if (!_board.IsGameOver)
+                _board.Update(_opponent.GetAction(this, _board));
 
             var reward = 0.0;
             if (_board.Winner() == BoardTile.X) reward = 1.0;
             if (_board.Winner() == BoardTile.O) reward = -1.0;
 
-            return new TicTacToeObservation
+            return new TicTacToeEnvironmentStep
             {
                 Board = _board,
                 Reward = reward
             };
         }
 
-        public IEnumerable<TicTacToeAction> AvailableActions()
+        public IEnumerable<TicTacToeAction> ActionSpace()
         {
             for (var pos = 0; pos < 9; pos++)
             {
