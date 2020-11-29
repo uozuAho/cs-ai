@@ -7,6 +7,7 @@ namespace TicTacToe.Agent.MonteCarlo
     public class MonteCarloTicTacToeAgent : IPlayer
     {
         public BoardTile Tile { get; }
+
         public TicTacToePolicy CurrentPolicy { get; set; } = new TicTacToePolicy();
 
         public MonteCarloTicTacToeAgent(BoardTile tile)
@@ -17,6 +18,11 @@ namespace TicTacToe.Agent.MonteCarlo
         public TicTacToeAction GetAction(ITicTacToeGame game)
         {
             return game.GetAvailableActions().First();
+        }
+
+        public TicTacToeAction GetAction(TicTacToeEnvironment environment)
+        {
+            return environment.AvailableActions().First();
         }
 
         public void Train(ITicTacToeGame game)
@@ -53,18 +59,20 @@ namespace TicTacToe.Agent.MonteCarlo
             // }
         }
 
-        // private List<TicTacToeObservation> CreateEpisode(IPlayer policy)
-        // {
-        //     var env = new TicTacToeEnvironment();
-        //
-        //     var lastObservation = env.Reset();
-        //     var observations = new List<TicTacToeObservation> {lastObservation};
-        //
-        //     while (!lastObservation.IsDone)
-        //     {
-        //         lastObservation = env.Step(GetAction(env.AvailableActions()));
-        //         observations.Add(lastObservation);
-        //     }
-        // }
+        private List<TicTacToeObservation> CreateEpisode(IPlayer policy)
+        {
+            var env = new TicTacToeEnvironment();
+        
+            var lastObservation = env.Reset();
+            var observations = new List<TicTacToeObservation> {lastObservation};
+        
+            while (!lastObservation.IsDone)
+            {
+                lastObservation = env.Step(GetAction(env));
+                observations.Add(lastObservation);
+            }
+
+            return observations;
+        }
     }
 }
