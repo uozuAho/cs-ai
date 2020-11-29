@@ -25,24 +25,25 @@ namespace TicTacToe.Agent.MonteCarlo
             return environment.AvailableActions().First();
         }
 
-        public void Train(ITicTacToeGame game)
+        public void Train(IPlayer opponent)
         {
-            for (var i = 0; i < 1000; i++)
+            for (var i = 0; i < 100; i++)
             {
-                ImprovePolicy(game, new ActionValues(), new Returns());
+                ImprovePolicy(opponent, new ActionValues(), new Returns());
             }
         }
 
-        private void ImprovePolicy(ITicTacToeGame game, ActionValues actionValues, Returns returns)
+        private void ImprovePolicy(IPlayer opponent, ActionValues actionValues, Returns returns)
         {
             var reward_sum = 0;
             var exploringPolicy = new ExploringStartPolicy(this);
 
             // temp to get test passing
-            // game.DoNextTurn();
-            // CurrentPolicy.AddAction(game.Board, new TicTacToeAction());
+            // opponent.DoNextTurn();
+            // CurrentPolicy.AddAction(opponent.Board, new TicTacToeAction());
 
-            // var episode = CreateEpisode(exploringPolicy);
+            var episode = CreateEpisode(exploringPolicy, opponent);
+            CurrentPolicy.AddAction(episode[1].Board, new TicTacToeAction());
             // var episode = bj.Episode(list(bj.generate_random_episode(exploring_policy)));
             // foreach (var t in reversed(range(episode.length() - 1)))
             // {
@@ -54,14 +55,16 @@ namespace TicTacToe.Agent.MonteCarlo
             //         returns.add(state, action, reward_sum);
             //         actionValues.set(state, action, returns.average_for(state, action));
             //         var best_action = actionValues.highest_value_action(state);
-            //         policy.set_action(state, best_action);
+            //         agentPolicy.set_action(state, best_action);
             //     }
             // }
         }
 
-        private List<TicTacToeObservation> CreateEpisode(IPlayer policy)
+        private List<TicTacToeObservation> CreateEpisode(
+            ExploringStartPolicy agentPolicy,
+            IPlayer opponent)
         {
-            var env = new TicTacToeEnvironment();
+            var env = new TicTacToeEnvironment(opponent);
         
             var lastObservation = env.Reset();
             var observations = new List<TicTacToeObservation> {lastObservation};

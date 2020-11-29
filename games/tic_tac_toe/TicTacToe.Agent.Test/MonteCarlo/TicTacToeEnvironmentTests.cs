@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Linq;
+using NSubstitute;
 using NUnit.Framework;
 using TicTacToe.Agent.MonteCarlo;
 using TicTacToe.Game;
@@ -13,7 +14,7 @@ namespace TicTacToe.Agent.Test.MonteCarlo
         [SetUp]
         public void Setup()
         {
-            _env = new TicTacToeEnvironment();
+            _env = new TicTacToeEnvironment(Substitute.For<IPlayer>());
         }
 
         [Test]
