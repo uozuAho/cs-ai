@@ -6,7 +6,7 @@ namespace TicTacToe.Agent.MonteCarlo
 {
     public class TicTacToePolicy
     {
-        private readonly Dictionary<string, TicTacToeAction> _actionMap = new Dictionary<string, TicTacToeAction>();
+        private readonly Dictionary<string, TicTacToeAction> _actionMap = new();
 
         public IEnumerable<string> States => _actionMap.Keys.Select(k => k);
 
@@ -15,7 +15,7 @@ namespace TicTacToe.Agent.MonteCarlo
             return _actionMap[state];
         }
 
-        public void AddAction(IBoard state, TicTacToeAction action)
+        public void SetAction(IBoard state, TicTacToeAction action)
         {
             _actionMap[state.AsString()] = action;
         }

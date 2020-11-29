@@ -30,6 +30,7 @@ namespace TicTacToe.Agent.Test.MonteCarlo
         }
 
         [Test]
+        [Ignore("not sure if this is a good test")]
         public void Train_ExploresAllPossibleStarts()
         {
             var mcAgent = new MonteCarloTicTacToeAgent(BoardTile.X);

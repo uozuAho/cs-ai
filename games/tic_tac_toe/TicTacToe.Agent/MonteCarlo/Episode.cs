@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
 using TicTacToe.Game;
@@ -7,7 +8,7 @@ namespace TicTacToe.Agent.MonteCarlo
 {
     public class Episode
     {
-        public List<EpisodeStep> Steps { get; private set; }
+        public List<EpisodeStep> Steps { get; }
         public int Length => Steps.Count;
 
         private readonly Dictionary<(IBoard, TicTacToeAction), int> _stateActionTimes;
@@ -20,7 +21,7 @@ namespace TicTacToe.Agent.MonteCarlo
 
         public static Episode Generate(ITicTacToeAgent agent, ITicTacToeAgent opponent)
         {
-            return new Episode(GenerateEpisode(agent, opponent));
+            return new(GenerateEpisode(agent, opponent));
         }
 
         public int TimeOfFirstVisit(IBoard state, TicTacToeAction action)
@@ -28,7 +29,7 @@ namespace TicTacToe.Agent.MonteCarlo
             return _stateActionTimes[(state, action)];
         }
 
-        private Dictionary<(IBoard, TicTacToeAction), int> CreateStateActionTimeLookup(List<EpisodeStep> steps)
+        private Dictionary<(IBoard, TicTacToeAction), int> CreateStateActionTimeLookup(ICollection steps)
         {
             var lookup = new Dictionary<(IBoard, TicTacToeAction), int>();
 

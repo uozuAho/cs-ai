@@ -7,7 +7,7 @@ namespace TicTacToe.Agent.MonteCarlo
     {
         public BoardTile Tile { get; }
 
-        public TicTacToePolicy CurrentPolicy { get; set; } = new TicTacToePolicy();
+        public TicTacToePolicy CurrentPolicy { get; set; } = new();
 
         public MonteCarloTicTacToeAgent(BoardTile tile)
         {
@@ -34,22 +34,22 @@ namespace TicTacToe.Agent.MonteCarlo
 
         private void ImprovePolicy(ITicTacToeAgent opponent, ActionValues actionValues, Returns returns)
         {
-            var reward_sum = 0.0;
+            var rewardSum = 0.0;
             var exploringPolicy = new ExploringStartPolicy(this);
 
             var episode = Episode.Generate(exploringPolicy, opponent);
-            CurrentPolicy.AddAction(episode.Steps[1].State, new TicTacToeAction());
+
             foreach (var t in Enumerable.Range(0, episode.Length - 1).Reverse())
             {
                 var state = episode.Steps[t].State;
                 var action = episode.Steps[t].Action;
-                reward_sum += episode.Steps[t + 1].Reward;
+                rewardSum += episode.Steps[t + 1].Reward;
                 if (episode.TimeOfFirstVisit(state, action) == t)
                 {
-                    returns.Add(state, action, reward_sum);
+                    returns.Add(state, action, rewardSum);
                     actionValues.Set(state, action, returns.AverageReturnFrom(state, action));
-                    var best_action = actionValues.HighestValueAction(state);
-                    // agentPolicy.set_action(state, best_action);
+                    var bestAction = actionValues.HighestValueAction(state);
+                    CurrentPolicy.SetAction(state, bestAction);
                 }
             }
         }
