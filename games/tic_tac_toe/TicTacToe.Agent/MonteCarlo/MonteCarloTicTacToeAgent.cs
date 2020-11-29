@@ -15,9 +15,9 @@ namespace TicTacToe.Agent.MonteCarlo
             Tile = tile;
         }
 
-        public TicTacToeAction GetAction(ITicTacToeGame game)
+        public TicTacToeAction GetAction(IBoard board)
         {
-            return game.GetAvailableActions().First();
+            return board.AvailableActions().First();
         }
 
         public TicTacToeAction GetAction(TicTacToeEnvironment environment)

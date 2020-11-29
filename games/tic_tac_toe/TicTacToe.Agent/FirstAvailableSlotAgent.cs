@@ -12,11 +12,11 @@ namespace TicTacToe.Agent
             Tile = playerTile;
         }
 
-        public TicTacToeAction GetAction(ITicTacToeGame game)
+        public TicTacToeAction GetAction(IBoard board)
         {
             for (var i = 0; i < 9; i++)
             {
-                if (game.Board.GetTileAt(i) == BoardTile.Empty)
+                if (board.GetTileAt(i) == BoardTile.Empty)
                 {
                     return new TicTacToeAction
                     {

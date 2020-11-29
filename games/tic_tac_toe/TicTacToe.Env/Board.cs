@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 
@@ -6,6 +7,8 @@ namespace TicTacToe.Game
 {
     public class Board : IBoard
     {
+        public BoardTile CurrentPlayer { get; set; } = BoardTile.X;
+
         private readonly BoardTile[] _tiles;
 
         public Board()
@@ -46,6 +49,21 @@ namespace TicTacToe.Game
             }
 
             return board;
+        }
+
+        public IEnumerable<TicTacToeAction> AvailableActions()
+        {
+            for (var pos = 0; pos < 9; pos++)
+            {
+                if (GetTileAt(pos) == BoardTile.Empty)
+                {
+                    yield return new TicTacToeAction
+                    {
+                        Position = pos,
+                        Tile = CurrentPlayer
+                    };
+                }
+            }
         }
 
         public void Update(TicTacToeAction action)

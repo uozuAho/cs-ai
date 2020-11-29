@@ -42,8 +42,8 @@ namespace TicTacToe.Agent.MonteCarlo
             if (!_board.IsValid())
                 throw new InvalidOperationException($"Action caused invalid state: '{_board.AsString()}'");
 
-            // IPlayer should use board, not game
-            // _board.Update(_opponent.GetAction(_board));
+            if (!_board.Winner().HasValue)
+                _board.Update(_opponent.GetAction(_board));
 
             var reward = 0.0;
             if (_board.Winner() == BoardTile.X) reward = 1.0;

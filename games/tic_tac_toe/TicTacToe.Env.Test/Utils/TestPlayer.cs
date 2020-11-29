@@ -23,7 +23,7 @@ namespace TicTacToe.Game.Test.Utils
             }
         }
 
-        public TicTacToeAction GetAction(ITicTacToeGame game)
+        public TicTacToeAction GetAction(IBoard board)
         {
             return new TicTacToeAction
             {

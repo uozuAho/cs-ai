@@ -41,8 +41,8 @@ namespace TicTacToe.Game.Test
         {
             _game.DoNextTurn();
 
-            _player1.Received(1).GetAction(Arg.Any<ITicTacToeGame>());
-            _player2.DidNotReceive().GetAction(Arg.Any<ITicTacToeGame>());
+            _player1.Received(1).GetAction(Arg.Any<IBoard>());
+            _player2.DidNotReceive().GetAction(Arg.Any<IBoard>());
         }
 
         [Test]

@@ -32,36 +32,42 @@ namespace TicTacToe.Agent.Test
         }
 
         [Test]
-        public void GivenNoRandomActions_AgentShouldPickHighestActionWithHighestProb()
+        public void GivenNoRandomActions_AgentShouldPickHighestActionWithHighestProbability()
         {
-            var highProbAction = new TicTacToeAction {Tile = BoardTile.O, Position = 0};
-            var lowProbAction = new TicTacToeAction {Tile = BoardTile.O, Position = 1};
+            var board = Board.CreateFromString("oxo" +
+                                               "xox" +
+                                               "   ");
+            board.CurrentPlayer = BoardTile.O;
 
-            _game.GetAvailableActions().Returns(new[] {lowProbAction, highProbAction});
-
-            _pTable.UpdateWinProbability(Board.CreateFromString("o        "), 0.9);
-            _pTable.UpdateWinProbability(Board.CreateFromString(" o       "), 0.1);
+            _pTable.UpdateWinProbability(board, 0.0);
+            _pTable.UpdateWinProbability(Board.CreateFromString("oxoxoxo  "), 0.8);
+            _pTable.UpdateWinProbability(Board.CreateFromString("oxoxox o "), 0.2);
+            _pTable.UpdateWinProbability(Board.CreateFromString("oxoxox  o"), 0.2);
 
             // act
-            var action = _agent.GetAction(_game);
+            var action = _agent.GetAction(board);
 
             // assert
-            Assert.AreEqual(highProbAction.Tile, action.Tile);
-            Assert.AreEqual(highProbAction.Position, action.Position);
+            Assert.AreEqual(6, action.Position);
         }
 
         [Test]
         public void GivenNoRandomActions_AgentShouldUpdatePTable()
         {
-            var nextBoard = Board.CreateFromString("o        ");
-            const double nextBoardWinProbability = 1.0;
-            _pTable.UpdateWinProbability(nextBoard, nextBoardWinProbability);
+            var currentBoard = Board.CreateFromString("oxo" +
+                                                      "xox" +
+                                                      "xo ");
+            currentBoard.CurrentPlayer = BoardTile.O;
 
-            var onlyAction = new TicTacToeAction { Tile = BoardTile.O, Position = 0 };
-            _game.GetAvailableActions().Returns(new[] { onlyAction });
+            var nextBoard = Board.CreateFromString("oxo" +
+                                                   "xox" +
+                                                   "xoo");
+            
+            _pTable.UpdateWinProbability(currentBoard, 0.5);
+            _pTable.UpdateWinProbability(nextBoard, 1.0);
 
             // act
-            var action = _agent.GetAction(_game);
+            var action = _agent.GetAction(currentBoard);
 
             // assert
             // P(t) = P(t) + LearningRate * (P(t + 1) - P(t))
@@ -69,7 +75,7 @@ namespace TicTacToe.Agent.Test
             //      = 0.5 + 0.5
             //      = 1.0
             const double expectedNewProbability = 1.0;
-            Assert.AreEqual(expectedNewProbability, _pTable.GetWinProbability(InitialBoard));
+            Assert.AreEqual(expectedNewProbability, _pTable.GetWinProbability(currentBoard));
         }
     }
 

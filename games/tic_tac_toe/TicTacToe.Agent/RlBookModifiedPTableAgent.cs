@@ -37,14 +37,14 @@ namespace TicTacToe.Agent
             });
         }
 
-        public TicTacToeAction GetAction(ITicTacToeGame game)
+        public TicTacToeAction GetAction(IBoard board)
         {
-            var availableActions = game.GetAvailableActions().ToList();
+            var availableActions = board.AvailableActions().ToList();
             if (availableActions.Count == 0)
                 throw new InvalidOperationException("no actions");
 
             return ShouldPickBestAction()
-                ? FindBestAction(game, availableActions)
+                ? FindBestAction(board, availableActions)
                 : PickRandomAction(availableActions);
         }
 
@@ -69,7 +69,7 @@ namespace TicTacToe.Agent
             return _rng.NextDouble() > _config.RandomActionProbability;
         }
 
-        private TicTacToeAction FindBestAction(ITicTacToeGame game, IReadOnlyList<TicTacToeAction> availableActions)
+        private TicTacToeAction FindBestAction(IBoard board, IReadOnlyList<TicTacToeAction> availableActions)
         {
             var highestProb = 0.0;
             var highestProbAction = availableActions[0];
@@ -77,7 +77,7 @@ namespace TicTacToe.Agent
             foreach (var action in availableActions)
             {
                 Debug.Assert(action.Tile == Tile);
-                var nextState = CreateNewState(game.Board, action);
+                var nextState = CreateNewState(board, action);
                 var nextStateProb = _pTable.GetWinProbability(nextState);
                 if (nextStateProb > highestProb)
                 {

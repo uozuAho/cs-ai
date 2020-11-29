@@ -40,7 +40,7 @@ namespace TicTacToe.Game
 
         public void DoNextTurn()
         {
-            var action = _currentPlayer.GetAction(this);
+            var action = _currentPlayer.GetAction(Board);
             var previousState = Board.Clone();
             Board.Update(action);
             NotifyObservers(previousState, Board);

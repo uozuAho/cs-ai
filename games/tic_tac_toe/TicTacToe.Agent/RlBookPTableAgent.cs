@@ -41,16 +41,16 @@ namespace TicTacToe.Agent
             });
         }
 
-        public TicTacToeAction GetAction(ITicTacToeGame game)
+        public TicTacToeAction GetAction(IBoard board)
         {
-            var availableActions = game.GetAvailableActions().ToList();
+            var availableActions = board.AvailableActions().ToList();
             if (availableActions.Count == 0)
                 throw new InvalidOperationException("no actions");
 
             if (ShouldPickBestAction())
             {
-                var action = FindBestAction(game, availableActions);
-                UpdatePTable(game, action);
+                var action = FindBestAction(board, availableActions);
+                UpdatePTable(board, action);
                 return action;
             }
             else
@@ -58,15 +58,15 @@ namespace TicTacToe.Agent
                 var action = PickRandomAction(availableActions);
                 // Deviation from the book's algorithm: update p table after random moves.
                 // Doesn't help :(
-                // UpdatePTable(game, action);
+                // UpdatePTable(board, action);
                 return action;
             }
         }
 
-        private void UpdatePTable(ITicTacToeGame game, TicTacToeAction action)
+        private void UpdatePTable(IBoard board, TicTacToeAction action)
         {
-            var newProbability = CalculateNewProbability(game.Board, action);
-            _pTable.UpdateWinProbability(game.Board, newProbability);
+            var newProbability = CalculateNewProbability(board, action);
+            _pTable.UpdateWinProbability(board, newProbability);
         }
 
         // P(State(t)) + alpha[P(State(t + 1)) - P(State(t))]
@@ -86,7 +86,7 @@ namespace TicTacToe.Agent
             return _rng.NextDouble() > _config.RandomActionProbability;
         }
 
-        private TicTacToeAction FindBestAction(ITicTacToeGame game, IReadOnlyList<TicTacToeAction> availableActions)
+        private TicTacToeAction FindBestAction(IBoard board, IReadOnlyList<TicTacToeAction> availableActions)
         {
             var highestProb = 0.0;
             var highestProbAction = availableActions[0];
@@ -94,7 +94,7 @@ namespace TicTacToe.Agent
             foreach (var action in availableActions)
             {
                 Debug.Assert(action.Tile == Tile);
-                var nextState = CreateNewState(game.Board, action);
+                var nextState = CreateNewState(board, action);
                 var nextStateProb = _pTable.GetWinProbability(nextState);
                 if (nextStateProb > highestProb)
                 {

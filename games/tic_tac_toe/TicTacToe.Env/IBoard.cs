@@ -1,4 +1,6 @@
-﻿namespace TicTacToe.Game
+﻿using System.Collections.Generic;
+
+namespace TicTacToe.Game
 {
     /// <summary>
     /// Tic tac toe board
@@ -16,6 +18,9 @@
     /// </remarks>
     public interface IBoard
     {
+        BoardTile CurrentPlayer { get; }
+
+        IEnumerable<TicTacToeAction> AvailableActions();
         void Update(TicTacToeAction action);
         BoardTile GetTileAt(int pos);
         BoardTile? Winner();
