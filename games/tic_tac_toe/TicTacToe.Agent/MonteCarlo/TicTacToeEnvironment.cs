@@ -10,6 +10,8 @@ namespace TicTacToe.Agent.MonteCarlo
     /// </summary>
     public class TicTacToeEnvironment
     {
+        public IBoard CurrentState => _board.Clone();
+
         private readonly ITicTacToeAgent _opponent;
         private IBoard _board;
 

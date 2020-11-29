@@ -1,4 +1,6 @@
-﻿using System.Linq;
+﻿using System;
+using System.Linq;
+using ailib.Utils;
 using TicTacToe.Game;
 
 namespace TicTacToe.Agent.MonteCarlo
@@ -8,6 +10,8 @@ namespace TicTacToe.Agent.MonteCarlo
         public BoardTile Tile { get; }
 
         public TicTacToeMutablePolicy CurrentMutablePolicy { get; set; } = new();
+
+        private readonly Random _random = new();
 
         public MonteCarloTicTacToeAgent(BoardTile tile)
         {
@@ -21,14 +25,31 @@ namespace TicTacToe.Agent.MonteCarlo
 
         public TicTacToeAction GetAction(TicTacToeEnvironment environment)
         {
-            return environment.ActionSpace().First();
+            return CurrentMutablePolicy.HasActionFor(environment.CurrentState)
+                ? CurrentMutablePolicy.Action(environment.CurrentState)
+                : _random.Choice(environment.ActionSpace());
         }
 
         public void Train(ITicTacToeAgent opponent)
         {
-            for (var i = 0; i < 100; i++)
+            var lastNumStates = 0;
+            var noNewStatesSeenForXEpisodes = 0;
+
+            for (var i = 0; i < 10000; i++)
             {
                 ImprovePolicy(opponent, new ActionValues(), new Returns());
+
+                if (CurrentMutablePolicy.NumStates == lastNumStates)
+                    noNewStatesSeenForXEpisodes++;
+                else
+                {
+                    noNewStatesSeenForXEpisodes = 0;
+                }
+
+                lastNumStates = CurrentMutablePolicy.NumStates;
+
+                if (noNewStatesSeenForXEpisodes == 100)
+                    break;
             }
         }
 
