@@ -47,8 +47,8 @@ namespace TicTacToe.Agent.MonteCarlo
                 if (episode.TimeOfFirstVisit(state, action) == t)
                 {
                     returns.Add(state, action, reward_sum);
-                    // actionValues.set(state, action, returns.average_for(state, action));
-                    // var best_action = actionValues.highest_value_action(state);
+                    actionValues.Set(state, action, returns.AverageReturnFrom(state, action));
+                    var best_action = actionValues.HighestValueAction(state);
                     // agentPolicy.set_action(state, best_action);
                 }
             }
