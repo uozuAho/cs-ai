@@ -4,7 +4,7 @@ using TicTacToe.Game;
 
 namespace TicTacToe.Agent.MonteCarlo
 {
-    public class TicTacToePolicy
+    public class TicTacToeMutablePolicy
     {
         private readonly Dictionary<string, TicTacToeAction> _actionMap = new();
 
@@ -18,6 +18,11 @@ namespace TicTacToe.Agent.MonteCarlo
         public void SetAction(IBoard state, TicTacToeAction action)
         {
             _actionMap[state.AsString()] = action;
+        }
+
+        public IPlayer ToPlayer(BoardTile tile)
+        {
+            return new TicTacToePolicyPlayer(tile, _actionMap);
         }
     }
 }

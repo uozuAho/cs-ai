@@ -3,20 +3,20 @@ using TicTacToe.Game;
 
 namespace TicTacToe.Agent.MonteCarlo
 {
-    public class MonteCarloTicTacToeAgent : IPlayer
+    public class MonteCarloTicTacToeAgent
     {
         public BoardTile Tile { get; }
 
-        public TicTacToePolicy CurrentPolicy { get; set; } = new();
+        public TicTacToeMutablePolicy CurrentMutablePolicy { get; set; } = new();
 
         public MonteCarloTicTacToeAgent(BoardTile tile)
         {
             Tile = tile;
         }
 
-        public TicTacToeAction GetAction(IBoard board)
+        public IPlayer ToFixedPolicyPlayer()
         {
-            return board.AvailableActions().First();
+            return CurrentMutablePolicy.ToPlayer(Tile);
         }
 
         public TicTacToeAction GetAction(TicTacToeEnvironment environment)
@@ -49,7 +49,7 @@ namespace TicTacToe.Agent.MonteCarlo
                     returns.Add(state, action, rewardSum);
                     actionValues.Set(state, action, returns.AverageReturnFrom(state, action));
                     var bestAction = actionValues.HighestValueAction(state);
-                    CurrentPolicy.SetAction(state, bestAction);
+                    CurrentMutablePolicy.SetAction(state, bestAction);
                 }
             }
         }
