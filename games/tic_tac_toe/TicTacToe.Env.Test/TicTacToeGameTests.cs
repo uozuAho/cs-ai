@@ -62,8 +62,8 @@ namespace TicTacToe.Game.Test
 
             // assert
             Assert.That(game.IsFinished());
-            var expectedBoardState = Board.CreateFromString("xoo" +
-                                                            " x " +
+            var expectedBoardState = Board.CreateFromString("xoo|" +
+                                                            " x |" +
                                                             "  x");
             Assert.That(game.Board.IsSameStateAs(expectedBoardState));
             Assert.AreEqual(BoardTile.X, game.Winner());

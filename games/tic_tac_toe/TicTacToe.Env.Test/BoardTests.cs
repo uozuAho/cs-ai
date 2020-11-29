@@ -5,39 +5,39 @@ namespace TicTacToe.Game.Test
 {
     public class BoardTests
     {
-        [TestCase("xxx      ", BoardTile.X)]
-        [TestCase("   xxx   ", BoardTile.X)]
-        [TestCase("      xxx", BoardTile.X)]
-        [TestCase("x  x  x  ", BoardTile.X)]
-        [TestCase(" x  x  x ", BoardTile.X)]
-        [TestCase("  x  x  x", BoardTile.X)]
-        [TestCase("x   x   x", BoardTile.X)]
-        [TestCase("  x x x  ", BoardTile.X)]
-        [TestCase("ooo      ", BoardTile.O)]
-        [TestCase("   ooo   ", BoardTile.O)]
-        [TestCase("      ooo", BoardTile.O)]
-        [TestCase("o  o  o  ", BoardTile.O)]
-        [TestCase(" o  o  o ", BoardTile.O)]
-        [TestCase("  o  o  o", BoardTile.O)]
-        [TestCase("o   o   o", BoardTile.O)]
-        [TestCase("  o o o  ", BoardTile.O)]
+        [TestCase("xxx|   |   ", BoardTile.X)]
+        [TestCase("   |xxx|   ", BoardTile.X)]
+        [TestCase("   |   |xxx", BoardTile.X)]
+        [TestCase("x  |x  |x  ", BoardTile.X)]
+        [TestCase(" x | x | x ", BoardTile.X)]
+        [TestCase("  x|  x|  x", BoardTile.X)]
+        [TestCase("x  | x |  x", BoardTile.X)]
+        [TestCase("  x| x |x  ", BoardTile.X)]
+        [TestCase("ooo|   |   ", BoardTile.O)]
+        [TestCase("   |ooo|   ", BoardTile.O)]
+        [TestCase("   |   |ooo", BoardTile.O)]
+        [TestCase("o  |o  |o  ", BoardTile.O)]
+        [TestCase(" o | o | o ", BoardTile.O)]
+        [TestCase("  o|  o|  o", BoardTile.O)]
+        [TestCase("o  | o |  o", BoardTile.O)]
+        [TestCase("  o| o |o  ", BoardTile.O)]
         // negatives
-        [TestCase("         ", null)]
-        [TestCase("   x     ", null)]
-        [TestCase("   x    o", null)]
+        [TestCase("   |   |   ", null)]
+        [TestCase("   |x  |   ", null)]
+        [TestCase("   |x  |  o", null)]
         public void TestWinner(string boardState, BoardTile? expectedWinner)
         {
             var board = Board.CreateFromString(boardState);
             Assert.AreEqual(expectedWinner, board.Winner());
         }
 
-        [TestCase("xxx    oo")]
-        [TestCase("x       o")]
-        [TestCase("xox" +
-                  "oxx" +
+        [TestCase("xxx|   | oo")]
+        [TestCase("x  |   |  o")]
+        [TestCase("xox|" +
+                  "oxx|" +
                   "oox")]
-        [TestCase("xxx" +
-                  "oox" +
+        [TestCase("xxx|" +
+                  "oox|" +
                   "oox")]
         public void TestValidBoards(string boardState)
         {
@@ -45,27 +45,27 @@ namespace TicTacToe.Game.Test
             Assert.IsTrue(board.IsValid());
         }
 
-        [TestCase("xxx      ")]
-        [TestCase("xxxxxxxxx")]
-        [TestCase("ooooooooo")]
-        [TestCase("xxxooo   ")]
+        [TestCase("xxx|   |   ")]
+        [TestCase("xxx|xxx|xxx")]
+        [TestCase("ooo|ooo|ooo")]
+        [TestCase("xxx|ooo|   ")]
         public void TestInvalidBoards(string boardState)
         {
             var board = Board.CreateFromString(boardState);
             Assert.IsFalse(board.IsValid());
         }
 
-        [TestCase("xxx    oo")]
-        [TestCase("x       o")]
-        [TestCase("xxx      ")]
-        [TestCase("xxxxxxxxx")]
-        [TestCase("ooooooooo")]
-        [TestCase("xxxooo   ")]
+        [TestCase("xxx|   | oo")]
+        [TestCase("x  |   |  o")]
+        [TestCase("xxx|   |   ")]
+        [TestCase("xxx|xxx|xxx")]
+        [TestCase("ooo|ooo|ooo")]
+        [TestCase("xxx|ooo|   ")]
         public void CreateFromString_ShouldGenerateBoardWithSameString(string boardState)
         {
             var board = Board.CreateFromString(boardState);
 
-            Assert.AreEqual(boardState, board.AsString());
+            Assert.AreEqual(boardState, board.ToString());
         }
 
         [Test]
@@ -128,7 +128,7 @@ namespace TicTacToe.Game.Test
         [Test]
         public void GivenBoardWithOnePlacedTile_AvailableActions_ShouldCount8()
         {
-            var board = Board.CreateFromString("x        ");
+            var board = Board.CreateFromString("x  |   |   ");
 
             Assert.AreEqual(8, board.AvailableActions().Count());
         }

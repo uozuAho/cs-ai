@@ -26,14 +26,11 @@ namespace TicTacToe.Game
         BoardTile GetTileAt(int pos);
         BoardTile? Winner();
 
-        /// <summary>
-        /// A string representation of the board
-        /// </summary>
-        string AsString();
-
         IBoard Clone();
         bool IsValid();
         bool IsSameStateAs(IBoard otherBoard);
         bool IsFull();
+
+        string ToString();
     }
 }

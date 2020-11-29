@@ -15,11 +15,11 @@ namespace TicTacToe.Agent.Test.MonteCarlo
                 new FirstAvailableSlotAgent(BoardTile.O));
 
             Assert.AreEqual(5, ep.Length);
-            Assert.AreEqual("         ", ep.Steps[0].State.AsString());
-            Assert.AreEqual("xo       ", ep.Steps[1].State.AsString());
-            Assert.AreEqual("xoxo     ", ep.Steps[2].State.AsString());
-            Assert.AreEqual("xoxoxo   ", ep.Steps[3].State.AsString());
-            Assert.AreEqual("xoxoxox  ", ep.Steps[4].State.AsString());
+            Assert.AreEqual("   |   |   ", ep.Steps[0].State.ToString());
+            Assert.AreEqual("xo |   |   ", ep.Steps[1].State.ToString());
+            Assert.AreEqual("xox|o  |   ", ep.Steps[2].State.ToString());
+            Assert.AreEqual("xox|oxo|   ", ep.Steps[3].State.ToString());
+            Assert.AreEqual("xox|oxo|x  ", ep.Steps[4].State.ToString());
 
             Assert.AreEqual(1.0, ep.Steps[4].Reward);
         }
@@ -49,7 +49,7 @@ namespace TicTacToe.Agent.Test.MonteCarlo
                 new FirstAvailableSlotAgent(BoardTile.O));
 
             Assert.Throws<KeyNotFoundException>(() =>
-                ep.TimeOfFirstVisit(Board.CreateFromString("xxxxxxxxx"), new TicTacToeAction()));
+                ep.TimeOfFirstVisit(Board.CreateFromString("xxx|xxx|xxx"), new TicTacToeAction()));
         }
     }
 }

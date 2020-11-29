@@ -53,14 +53,14 @@ namespace TicTacToe.Agent.Test.MonteCarlo
             var observation = _env.Step(placeXAtTopLeft);
 
             // assert
-            Assert.AreEqual(expectedBoard.AsString(), observation.Board.AsString());
+            Assert.AreEqual(expectedBoard.ToString(), observation.Board.ToString());
         }
 
         [Test]
         public void PlacingTileOnNonEmptySquare_Throws()
         {
-            _env.SetState(Board.CreateFromString("x  " +
-                                                 "   " +
+            _env.SetState(Board.CreateFromString("x  |" +
+                                                 "   |" +
                                                  "   "));
 
             var placeXAtTopLeft = new TicTacToeAction { Position = 0, Tile = BoardTile.X };
@@ -71,8 +71,8 @@ namespace TicTacToe.Agent.Test.MonteCarlo
         [Test]
         public void CreatingInvalidState_Throws()
         {
-            _env.SetState(Board.CreateFromString("x  " +
-                                                 "   " +
+            _env.SetState(Board.CreateFromString("x  |" +
+                                                 "   |" +
                                                  "   "));
 
             var placeXAtTopLeft = new TicTacToeAction { Position = 1, Tile = BoardTile.X };
@@ -83,8 +83,8 @@ namespace TicTacToe.Agent.Test.MonteCarlo
         [Test]
         public void RewardIs1_ForWin()
         {
-            _env.SetState(Board.CreateFromString("xx " +
-                                                 "oo " +
+            _env.SetState(Board.CreateFromString("xx |" +
+                                                 "oo |" +
                                                  "   "));
 
             var placeXAtTopRight = new TicTacToeAction { Position = 2, Tile = BoardTile.X };
@@ -99,8 +99,8 @@ namespace TicTacToe.Agent.Test.MonteCarlo
         [Test]
         public void RewardIsNegative1_ForLoss()
         {
-            var board = Board.CreateFromString("xx " +
-                                               "oo " +
+            var board = Board.CreateFromString("xx |" +
+                                               "oo |" +
                                                "   ");
             board.CurrentPlayer = BoardTile.O;
 
@@ -135,8 +135,8 @@ namespace TicTacToe.Agent.Test.MonteCarlo
 
         // env assumes agent uses X tiles
         // note that playing these available actions will result in invalid states
-        [TestCase("x        ")]
-        [TestCase("xox      ")]
+        [TestCase("x  |   |   ")]
+        [TestCase("xox|   |   ")]
         public void AvailableActions_AreAlwaysX(string board)
         {
             _env.SetState(Board.CreateFromString(board));

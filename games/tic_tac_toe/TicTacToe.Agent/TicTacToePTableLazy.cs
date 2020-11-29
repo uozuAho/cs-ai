@@ -20,7 +20,7 @@ namespace TicTacToe.Agent
             if (!board.IsValid())
                 throw new ArgumentException("invalid board: " + board);
 
-            var key = board.AsString();
+            var key = board.ToString();
 
             if (_pTable.ContainsKey(key))
                 return _pTable[key];
@@ -35,7 +35,7 @@ namespace TicTacToe.Agent
         {
             if (!board.IsValid()) throw new ArgumentException("invalid board: " + board);
 
-            _pTable[board.AsString()] = winProbability;
+            _pTable[board.ToString()] = winProbability;
         }
 
         private double CalculateWinProbability(IBoard board)

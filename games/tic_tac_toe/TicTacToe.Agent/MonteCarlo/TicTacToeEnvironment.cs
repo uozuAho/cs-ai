@@ -45,7 +45,7 @@ namespace TicTacToe.Agent.MonteCarlo
             }
 
             if (!_board.IsValid())
-                throw new InvalidOperationException($"Action caused invalid state: '{_board.AsString()}'");
+                throw new InvalidOperationException($"Action caused invalid state: '{_board.ToString()}'");
 
             if (!_board.IsGameOver)
                 _board.Update(_opponent.GetAction(this, _board));

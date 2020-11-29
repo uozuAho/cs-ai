@@ -10,17 +10,17 @@ namespace TicTacToe.Agent.MonteCarlo
 
         public TicTacToeAction ActionFor(IBoard board)
         {
-            return _actionMap[board.AsString()];
+            return _actionMap[board.ToString()];
         }
 
         public void SetAction(IBoard state, TicTacToeAction action)
         {
-            _actionMap[state.AsString()] = action;
+            _actionMap[state.ToString()] = action;
         }
 
         public bool HasActionFor(IBoard board)
         {
-            return _actionMap.ContainsKey(board.AsString());
+            return _actionMap.ContainsKey(board.ToString());
         }
     }
 }

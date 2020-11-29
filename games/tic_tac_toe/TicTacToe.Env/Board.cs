@@ -34,9 +34,9 @@ namespace TicTacToe.Game
 
         public static Board CreateFromString(string values)
         {
-            if (values.Length != 9) throw new ArgumentException("Must have 9 characters");
+            if (values.Length != 11) throw new ArgumentException("Must have 11 characters");
 
-            var chars = values.ToLowerInvariant().ToCharArray();
+            var chars = values.ToLowerInvariant().Replace("|", "").ToCharArray();
             var board = new Board();
             for (var i = 0; i < 9; i++)
             {
@@ -76,23 +76,6 @@ namespace TicTacToe.Game
             _tiles[action.Position] = action.Tile;
 
             SwitchCurrentPlayer();
-        }
-
-        public string AsString()
-        {
-            var sb = new StringBuilder();
-
-            foreach (var tile in _tiles)
-            {
-                switch (tile)
-                {
-                    case BoardTile.Empty: sb.Append(' '); break;
-                    case BoardTile.O: sb.Append('o'); break;
-                    case BoardTile.X: sb.Append('x'); break;
-                }
-            }
-
-            return sb.ToString();
         }
 
         public IBoard Clone()
@@ -153,11 +136,11 @@ namespace TicTacToe.Game
             sb.Append(_tiles[0].AsString());
             sb.Append(_tiles[1].AsString());
             sb.Append(_tiles[2].AsString());
-            sb.AppendLine();
+            sb.Append('|');
             sb.Append(_tiles[3].AsString());
             sb.Append(_tiles[4].AsString());
             sb.Append(_tiles[5].AsString());
-            sb.AppendLine();
+            sb.Append('|');
             sb.Append(_tiles[6].AsString());
             sb.Append(_tiles[7].AsString());
             sb.Append(_tiles[8].AsString());

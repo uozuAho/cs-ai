@@ -34,15 +34,15 @@ namespace TicTacToe.Agent.Test
         [Test]
         public void GivenNoRandomActions_AgentShouldPickHighestActionWithHighestProbability()
         {
-            var board = Board.CreateFromString("oxo" +
-                                               "xox" +
+            var board = Board.CreateFromString("oxo|" +
+                                               "xox|" +
                                                "   ");
             board.CurrentPlayer = BoardTile.O;
 
             _pTable.UpdateWinProbability(board, 0.0);
-            _pTable.UpdateWinProbability(Board.CreateFromString("oxoxoxo  "), 0.8);
-            _pTable.UpdateWinProbability(Board.CreateFromString("oxoxox o "), 0.2);
-            _pTable.UpdateWinProbability(Board.CreateFromString("oxoxox  o"), 0.2);
+            _pTable.UpdateWinProbability(Board.CreateFromString("oxo|xox|o  "), 0.8);
+            _pTable.UpdateWinProbability(Board.CreateFromString("oxo|xox| o "), 0.2);
+            _pTable.UpdateWinProbability(Board.CreateFromString("oxo|xox|  o"), 0.2);
 
             // act
             var action = _agent.GetAction(board);
@@ -54,13 +54,13 @@ namespace TicTacToe.Agent.Test
         [Test]
         public void GivenNoRandomActions_AgentShouldUpdatePTable()
         {
-            var currentBoard = Board.CreateFromString("oxo" +
-                                                      "xox" +
+            var currentBoard = Board.CreateFromString("oxo|" +
+                                                      "xox|" +
                                                       "xo ");
             currentBoard.CurrentPlayer = BoardTile.O;
 
-            var nextBoard = Board.CreateFromString("oxo" +
-                                                   "xox" +
+            var nextBoard = Board.CreateFromString("oxo|" +
+                                                   "xox|" +
                                                    "xoo");
             
             _pTable.UpdateWinProbability(currentBoard, 0.5);
@@ -81,16 +81,16 @@ namespace TicTacToe.Agent.Test
 
     public class TicTacToePTableFake : ITicTacToePTable
     {
-        private readonly Dictionary<string, double> _pTable = new Dictionary<string, double>();
+        private readonly Dictionary<string, double> _pTable = new();
 
         public double GetWinProbability(IBoard board)
         {
-            return _pTable[board.AsString()];
+            return _pTable[board.ToString()];
         }
 
         public void UpdateWinProbability(IBoard board, double winProbability)
         {
-            _pTable[board.AsString()] = winProbability;
+            _pTable[board.ToString()] = winProbability;
         }
     }
 }
