@@ -10,13 +10,16 @@ namespace TicTacToe.Agent.Test.MonteCarlo
     public class TicTacToeEnvironmentTests
     {
         private TicTacToeEnvironment _env;
-        private IPlayer _opponent;
+        private ITicTacToeAgent _opponent;
 
         [SetUp]
         public void Setup()
         {
-            _opponent = Substitute.For<IPlayer>();
-            _opponent.GetAction(Arg.Any<IBoard>()).Returns(new TicTacToeAction
+            _opponent = Substitute.For<ITicTacToeAgent>();
+            _opponent.GetAction(
+                Arg.Any<TicTacToeEnvironment>(),
+                Arg.Any<TicTacToeObservation>())
+                .Returns(new TicTacToeAction
             {
                 Position = 0,
                 Tile = BoardTile.O
@@ -39,7 +42,8 @@ namespace TicTacToe.Agent.Test.MonteCarlo
             var placeXAtTopLeft = new TicTacToeAction {Position = 0, Tile = BoardTile.X};
             var placeOAtTopMiddle = new TicTacToeAction {Position = 1, Tile = BoardTile.O};
 
-            _opponent.GetAction(Arg.Any<IBoard>()).Returns(placeOAtTopMiddle);
+            _opponent.GetAction(Arg.Any<TicTacToeEnvironment>(), Arg.Any<TicTacToeObservation>())
+                .Returns(placeOAtTopMiddle);
 
             var expectedBoard = Board.CreateEmptyBoard();
             expectedBoard.Update(placeXAtTopLeft);

@@ -4,7 +4,7 @@ using TicTacToe.Game;
 
 namespace TicTacToe.Agent.MonteCarlo
 {
-    public class ExploringStartPolicy
+    public class ExploringStartPolicy : ITicTacToeAgent
     {
         public BoardTile Tile => _innerAgent.Tile;
 
@@ -28,6 +28,13 @@ namespace TicTacToe.Agent.MonteCarlo
             _isFirstAction = false;
 
             return action;
+        }
+
+        public TicTacToeAction GetAction(
+            TicTacToeEnvironment environment,
+            TicTacToeObservation lastObservation)
+        {
+            return GetAction(environment);
         }
     }
 }

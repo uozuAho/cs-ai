@@ -7,10 +7,10 @@ namespace TicTacToe.Agent.MonteCarlo
     // agent always has X tiles
     public class TicTacToeEnvironment
     {
-        private readonly IPlayer _opponent;
+        private readonly ITicTacToeAgent _opponent;
         private Board _board;
 
-        public TicTacToeEnvironment(IPlayer opponent)
+        public TicTacToeEnvironment(ITicTacToeAgent opponent)
         {
             _opponent = opponent;
             Reset();
@@ -43,7 +43,7 @@ namespace TicTacToe.Agent.MonteCarlo
                 throw new InvalidOperationException($"Action caused invalid state: '{_board.AsString()}'");
 
             if (!_board.Winner().HasValue)
-                _board.Update(_opponent.GetAction(_board));
+                _board.Update(_opponent.GetAction(this, new TicTacToeObservation {Board = _board}));
 
             var reward = 0.0;
             if (_board.Winner() == BoardTile.X) reward = 1.0;

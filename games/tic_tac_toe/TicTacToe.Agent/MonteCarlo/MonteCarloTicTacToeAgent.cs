@@ -1,5 +1,4 @@
-﻿using System.Collections.Generic;
-using System.Linq;
+﻿using System.Linq;
 using TicTacToe.Game;
 
 namespace TicTacToe.Agent.MonteCarlo
@@ -25,7 +24,7 @@ namespace TicTacToe.Agent.MonteCarlo
             return environment.AvailableActions().First();
         }
 
-        public void Train(IPlayer opponent)
+        public void Train(ITicTacToeAgent opponent)
         {
             for (var i = 0; i < 100; i++)
             {
@@ -33,7 +32,7 @@ namespace TicTacToe.Agent.MonteCarlo
             }
         }
 
-        private void ImprovePolicy(IPlayer opponent, ActionValues actionValues, Returns returns)
+        private void ImprovePolicy(ITicTacToeAgent opponent, ActionValues actionValues, Returns returns)
         {
             var reward_sum = 0;
             var exploringPolicy = new ExploringStartPolicy(this);
@@ -42,8 +41,8 @@ namespace TicTacToe.Agent.MonteCarlo
             // opponent.DoNextTurn();
             // CurrentPolicy.AddAction(opponent.Board, new TicTacToeAction());
 
-            var episode = CreateEpisode(exploringPolicy, opponent);
-            CurrentPolicy.AddAction(episode[1].Board, new TicTacToeAction());
+            var episode = Episode.Generate(exploringPolicy, opponent);
+            CurrentPolicy.AddAction(episode.Observations[1].Board, new TicTacToeAction());
             // var episode = bj.Episode(list(bj.generate_random_episode(exploring_policy)));
             // foreach (var t in reversed(range(episode.length() - 1)))
             // {
@@ -58,24 +57,6 @@ namespace TicTacToe.Agent.MonteCarlo
             //         agentPolicy.set_action(state, best_action);
             //     }
             // }
-        }
-
-        private List<TicTacToeObservation> CreateEpisode(
-            ExploringStartPolicy agentPolicy,
-            IPlayer opponent)
-        {
-            var env = new TicTacToeEnvironment(opponent);
-        
-            var lastObservation = env.Reset();
-            var observations = new List<TicTacToeObservation> {lastObservation};
-        
-            while (!lastObservation.IsDone)
-            {
-                lastObservation = env.Step(GetAction(env));
-                observations.Add(lastObservation);
-            }
-
-            return observations;
         }
     }
 }

@@ -1,9 +1,10 @@
 ﻿using System;
+using TicTacToe.Agent.MonteCarlo;
 using TicTacToe.Game;
 
 namespace TicTacToe.Agent
 {
-    public class FirstAvailableSlotAgent : IPlayer
+    public class FirstAvailableSlotAgent : IPlayer, ITicTacToeAgent
     {
         public BoardTile Tile { get; }
 
@@ -27,6 +28,11 @@ namespace TicTacToe.Agent
             }
 
             throw new InvalidOperationException("No available actions");
+        }
+
+        public TicTacToeAction GetAction(TicTacToeEnvironment environment, TicTacToeObservation lastObservation)
+        {
+            return GetAction(lastObservation.Board);
         }
     }
 }
