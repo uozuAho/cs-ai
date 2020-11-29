@@ -34,29 +34,24 @@ namespace TicTacToe.Agent.MonteCarlo
 
         private void ImprovePolicy(ITicTacToeAgent opponent, ActionValues actionValues, Returns returns)
         {
-            var reward_sum = 0;
+            var reward_sum = 0.0;
             var exploringPolicy = new ExploringStartPolicy(this);
-
-            // temp to get test passing
-            // opponent.DoNextTurn();
-            // CurrentPolicy.AddAction(opponent.Board, new TicTacToeAction());
 
             var episode = Episode.Generate(exploringPolicy, opponent);
             CurrentPolicy.AddAction(episode.Steps[1].State, new TicTacToeAction());
-            // var episode = bj.Episode(list(bj.generate_random_episode(exploring_policy)));
-            // foreach (var t in reversed(range(episode.length() - 1)))
-            // {
-            //     var state = episode.steps[t].state;
-            //     var action = episode.steps[t].action;
-            //     reward_sum += episode.steps[t + 1].reward;
-            //     if (episode.first_visit(state, action) == t)
-            //     {
-            //         returns.add(state, action, reward_sum);
-            //         actionValues.set(state, action, returns.average_for(state, action));
-            //         var best_action = actionValues.highest_value_action(state);
-            //         agentPolicy.set_action(state, best_action);
-            //     }
-            // }
+            foreach (var t in Enumerable.Range(0, episode.Length - 1).Reverse())
+            {
+                var state = episode.Steps[t].State;
+                var action = episode.Steps[t].Action;
+                reward_sum += episode.Steps[t + 1].Reward;
+                if (episode.TimeOfFirstVisit(state, action) == t)
+                {
+                    // returns.add(state, action, reward_sum);
+                    // actionValues.set(state, action, returns.average_for(state, action));
+                    // var best_action = actionValues.highest_value_action(state);
+                    // agentPolicy.set_action(state, best_action);
+                }
+            }
         }
     }
 }

@@ -2,7 +2,7 @@
 
 namespace TicTacToe.Agent.MonteCarlo
 {
-    internal record EpisodeStep
+    public record EpisodeStep
     {
         /// <summary>
         /// Reward for the previous action

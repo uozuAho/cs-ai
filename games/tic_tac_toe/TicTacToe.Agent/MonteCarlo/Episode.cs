@@ -1,15 +1,45 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using System.Linq;
+using TicTacToe.Game;
 
 namespace TicTacToe.Agent.MonteCarlo
 {
-    internal class Episode
+    public class Episode
     {
         public List<EpisodeStep> Steps { get; private set; }
+        public int Length => Steps.Count;
+
+        private readonly Dictionary<(IBoard, TicTacToeAction), int> _stateActionTimes;
+
+        public Episode(IEnumerable<EpisodeStep> steps)
+        {
+            Steps = steps.ToList();
+            _stateActionTimes = CreateStateActionTimeLookup(Steps);
+        }
 
         public static Episode Generate(ITicTacToeAgent agent, ITicTacToeAgent opponent)
         {
-            return new Episode {Steps = GenerateEpisode(agent, opponent).ToList()};
+            return new Episode(GenerateEpisode(agent, opponent));
+        }
+
+        public int TimeOfFirstVisit(IBoard state, TicTacToeAction action)
+        {
+            return _stateActionTimes[(state, action)];
+        }
+
+        private Dictionary<(IBoard, TicTacToeAction), int> CreateStateActionTimeLookup(List<EpisodeStep> steps)
+        {
+            var lookup = new Dictionary<(IBoard, TicTacToeAction), int>();
+
+            for (var i = 0; i < steps.Count; i++)
+            {
+                var state = Steps[i].State;
+                var action = Steps[i].Action;
+                lookup[(state, action)] = i;
+            }
+
+            return lookup;
         }
 
         private static IEnumerable<EpisodeStep> GenerateEpisode(ITicTacToeAgent agent, ITicTacToeAgent opponent)
