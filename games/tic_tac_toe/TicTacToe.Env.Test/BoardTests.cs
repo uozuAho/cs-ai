@@ -1,3 +1,4 @@
+using System.Linq;
 using NUnit.Framework;
 
 namespace TicTacToe.Game.Test
@@ -89,6 +90,14 @@ namespace TicTacToe.Game.Test
         }
 
         [Test]
+        public void Clone_ShouldHaveSameCurrentPlayer()
+        {
+            var board = new Board {CurrentPlayer = BoardTile.O};
+
+            Assert.AreEqual(BoardTile.O, board.Clone().CurrentPlayer);
+        }
+
+        [Test]
         public void GivenClone_ModifyOriginal_ShouldNotModifyClone()
         {
             var board = new Board();
@@ -99,6 +108,29 @@ namespace TicTacToe.Game.Test
             board.Update(new TicTacToeAction {Tile = BoardTile.X, Position = position});
 
             Assert.AreEqual(board2TileBefore, board2.GetTileAt(position));
+        }
+
+        [Test]
+        public void GivenEmptyBoard_AvailableActions_ShouldCount9()
+        {
+            Assert.AreEqual(9, Board.CreateEmptyBoard().AvailableActions().Count());
+        }
+
+        [Test]
+        public void GivenEmptyBoard_AvailableActions_ShouldAllBeForCurrentPlayer()
+        {
+            var board = Board.CreateEmptyBoard();
+            var actions = board.AvailableActions().ToList();
+
+            Assert.IsTrue(actions.All(a => a.Tile == board.CurrentPlayer));
+        }
+
+        [Test]
+        public void GivenBoardWithOnePlacedTile_AvailableActions_ShouldCount8()
+        {
+            var board = Board.CreateFromString("x        ");
+
+            Assert.AreEqual(8, board.AvailableActions().Count());
         }
     }
 }

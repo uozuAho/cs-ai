@@ -95,9 +95,12 @@ namespace TicTacToe.Agent.Test.MonteCarlo
         [Test]
         public void RewardIsNegative1_ForLoss()
         {
-            _env.SetState(Board.CreateFromString("xx " +
-                                                 "oo " +
-                                                 "   "));
+            var board = Board.CreateFromString("xx " +
+                                               "oo " +
+                                               "   ");
+            board.CurrentPlayer = BoardTile.O;
+
+            _env.SetState(board);
 
             var placeOAtMiddleRight = new TicTacToeAction { Position = 5, Tile = BoardTile.O };
 
@@ -111,7 +114,7 @@ namespace TicTacToe.Agent.Test.MonteCarlo
         [Test]
         public void RewardIs0_WhenGameIsNotOver()
         {
-            var placeOAtMiddleRight = new TicTacToeAction { Position = 5, Tile = BoardTile.O };
+            var placeOAtMiddleRight = new TicTacToeAction { Position = 5, Tile = BoardTile.X };
 
             // act
             var observation = _env.Step(placeOAtMiddleRight);

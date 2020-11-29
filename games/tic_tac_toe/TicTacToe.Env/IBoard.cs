@@ -18,7 +18,7 @@ namespace TicTacToe.Game
     /// </remarks>
     public interface IBoard
     {
-        BoardTile CurrentPlayer { get; }
+        BoardTile CurrentPlayer { get; set; }
 
         IEnumerable<TicTacToeAction> AvailableActions();
         void Update(TicTacToeAction action);

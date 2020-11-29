@@ -68,10 +68,13 @@ namespace TicTacToe.Game
 
         public void Update(TicTacToeAction action)
         {
+            ThrowIfIncorrectTile(action);
             RangeCheck(action.Position);
             ThrowIfNotEmpty(action.Position);
 
             _tiles[action.Position] = action.Tile;
+
+            SwitchCurrentPlayer();
         }
 
         public string AsString()
@@ -94,7 +97,7 @@ namespace TicTacToe.Game
         public IBoard Clone()
         {
             var newTiles = _tiles.Select(t => t).ToArray();
-            return new Board(newTiles);
+            return new Board(newTiles) {CurrentPlayer = CurrentPlayer};
         }
 
         public bool IsSameStateAs(IBoard otherBoard)
@@ -189,6 +192,11 @@ namespace TicTacToe.Game
             return WinnerState.NoWinner;
         }
 
+        private void SwitchCurrentPlayer()
+        {
+            CurrentPlayer = CurrentPlayer == BoardTile.X ? BoardTile.O : BoardTile.X;
+        }
+
         private void ThrowIfNotEmpty(int pos)
         {
             if (!IsEmpty(pos)) throw new ArgumentException($"Position {pos} isn't empty");
@@ -202,6 +210,14 @@ namespace TicTacToe.Game
         private static void RangeCheck(int pos)
         {
             if (pos < 0 || pos > 8) throw new ArgumentException($"Invalid position: {pos}");
+        }
+
+        private void ThrowIfIncorrectTile(TicTacToeAction action)
+        {
+            if (action.Tile != CurrentPlayer)
+            {
+                throw new InvalidOperationException($"It's not {action.Tile}'s turn!");
+            }
         }
 
         private enum WinnerState

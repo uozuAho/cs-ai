@@ -11,7 +11,8 @@ namespace TicTacToe.Game
         private readonly IPlayer _player1;
         private readonly IPlayer _player2;
 
-        private IPlayer _currentPlayer;
+        private IPlayer CurrentPlayer => Board.CurrentPlayer == _player1.Tile ? _player1 : _player2;
+
         private readonly List<IGameStateObserver> _stateObservers = new List<IGameStateObserver>();
 
         public TicTacToeGame(IBoard board, IPlayer player1, IPlayer player2)
@@ -19,7 +20,6 @@ namespace TicTacToe.Game
             Board = board;
             _player1 = player1;
             _player2 = player2;
-            _currentPlayer = player1;
 
             ThrowIfPlayersInvalid();
 
@@ -40,11 +40,10 @@ namespace TicTacToe.Game
 
         public void DoNextTurn()
         {
-            var action = _currentPlayer.GetAction(Board);
+            var action = CurrentPlayer.GetAction(Board);
             var previousState = Board.Clone();
             Board.Update(action);
             NotifyObservers(previousState, Board);
-            SwitchCurrentPlayer();
         }
 
         private void NotifyObservers(IBoard previousState, IBoard currentState)
@@ -57,32 +56,12 @@ namespace TicTacToe.Game
 
         public bool IsFinished()
         {
-            return Winner().HasValue || !GetAvailableActions().Any();
+            return Winner().HasValue || !Board.AvailableActions().Any();
         }
 
         public BoardTile? Winner()
         {
             return Board.Winner();
-        }
-
-        public IEnumerable<TicTacToeAction> GetAvailableActions()
-        {
-            for (var pos = 0; pos < 9; pos++)
-            {
-                if (Board.GetTileAt(pos) == BoardTile.Empty)
-                {
-                    yield return new TicTacToeAction
-                    {
-                        Position = pos,
-                        Tile = _currentPlayer.Tile
-                    };
-                }
-            }
-        }
-
-        private void SwitchCurrentPlayer()
-        {
-            _currentPlayer = _currentPlayer == _player1 ? _player2 : _player1;
         }
 
         private void ThrowIfPlayersInvalid()
