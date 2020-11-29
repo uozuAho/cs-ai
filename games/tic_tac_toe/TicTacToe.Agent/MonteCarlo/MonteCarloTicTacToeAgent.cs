@@ -48,7 +48,9 @@ namespace TicTacToe.Agent.MonteCarlo
 
                 lastNumStates = CurrentMutablePolicy.NumStates;
 
-                if (noNewStatesSeenForXEpisodes == 100)
+                // todo: make this more meaningful. Maybe stop on value change
+                // falling below a certain threshold
+                if (noNewStatesSeenForXEpisodes == 3000)
                     break;
             }
         }
