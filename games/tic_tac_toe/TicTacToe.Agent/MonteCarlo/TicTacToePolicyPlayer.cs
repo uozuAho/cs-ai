@@ -1,15 +1,13 @@
-﻿using System.Collections.Generic;
-using TicTacToe.Game;
+﻿using TicTacToe.Game;
 
 namespace TicTacToe.Agent.MonteCarlo
 {
     public class TicTacToePolicyPlayer : IPlayer
     {
         public BoardTile Tile { get; }
-        private readonly Dictionary<string, TicTacToeAction> _actionMap;
+        private readonly BoardActionMap _actionMap;
 
-        // todo: make dict board: action
-        public TicTacToePolicyPlayer(BoardTile tile, Dictionary<string, TicTacToeAction> actionMap)
+        public TicTacToePolicyPlayer(BoardTile tile, BoardActionMap actionMap)
         {
             _actionMap = actionMap;
             Tile = tile;
@@ -17,7 +15,7 @@ namespace TicTacToe.Agent.MonteCarlo
 
         public TicTacToeAction GetAction(IBoard board)
         {
-            return _actionMap[board.AsString()];
+            return _actionMap.ActionFor(board);
         }
     }
 }

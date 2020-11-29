@@ -1,23 +1,19 @@
-﻿using System.Collections.Generic;
-using System.Linq;
-using TicTacToe.Game;
+﻿using TicTacToe.Game;
 
 namespace TicTacToe.Agent.MonteCarlo
 {
     public class TicTacToeMutablePolicy
     {
-        private readonly Dictionary<string, TicTacToeAction> _actionMap = new();
+        private readonly BoardActionMap _actionMap = new();
 
-        public IEnumerable<string> States => _actionMap.Keys.Select(k => k);
-
-        public TicTacToeAction Action(string state)
+        public TicTacToeAction Action(IBoard board)
         {
-            return _actionMap[state];
+            return _actionMap.ActionFor(board);
         }
 
         public void SetAction(IBoard state, TicTacToeAction action)
         {
-            _actionMap[state.AsString()] = action;
+            _actionMap.SetAction(state, action);
         }
 
         public IPlayer ToPlayer(BoardTile tile)
