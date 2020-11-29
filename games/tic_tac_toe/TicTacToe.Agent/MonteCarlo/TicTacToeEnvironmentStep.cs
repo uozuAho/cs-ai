@@ -2,10 +2,10 @@
 
 namespace TicTacToe.Agent.MonteCarlo
 {
-    public class TicTacToeEnvironmentStep
+    public record TicTacToeEnvironmentStep
     {
-        public Board Board { get; set; } = Board.CreateEmptyBoard();
-        public double Reward { get; set; }
+        public IBoard Board { get; init; }
+        public double Reward { get; init; }
         public bool IsDone => Board.IsGameOver;
     }
 }

@@ -11,7 +11,7 @@ namespace TicTacToe.Agent.MonteCarlo
     public class TicTacToeEnvironment
     {
         private readonly ITicTacToeAgent _opponent;
-        private Board _board;
+        private IBoard _board;
 
         public TicTacToeEnvironment(ITicTacToeAgent opponent)
         {
@@ -19,16 +19,16 @@ namespace TicTacToe.Agent.MonteCarlo
             Reset();
         }
 
-        public Board Reset()
+        public IBoard Reset()
         {
             _board = Board.CreateEmptyBoard();
 
-            return _board;
+            return _board.Clone();
         }
 
         public void SetState(Board board)
         {
-            _board = board;
+            _board = board.Clone();
         }
 
         public TicTacToeEnvironmentStep Step(TicTacToeAction action)
@@ -54,7 +54,7 @@ namespace TicTacToe.Agent.MonteCarlo
 
             return new TicTacToeEnvironmentStep
             {
-                Board = _board,
+                Board = _board.Clone(),
                 Reward = reward
             };
         }

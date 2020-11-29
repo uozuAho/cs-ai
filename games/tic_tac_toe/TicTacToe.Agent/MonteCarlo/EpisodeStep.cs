@@ -2,21 +2,21 @@
 
 namespace TicTacToe.Agent.MonteCarlo
 {
-    internal class EpisodeStep
+    internal record EpisodeStep
     {
         /// <summary>
         /// Reward for the previous action
         /// </summary>
-        public double Reward { get; set; }
+        public double Reward { get; init; }
 
         /// <summary>
         /// Current state
         /// </summary>
-        public Board State { get; set; }
+        public IBoard State { get; init; }
 
         /// <summary>
         /// Action taken from the current state
         /// </summary>
-        public TicTacToeAction Action { get; set; }
+        public TicTacToeAction Action { get; init; }
     }
 }

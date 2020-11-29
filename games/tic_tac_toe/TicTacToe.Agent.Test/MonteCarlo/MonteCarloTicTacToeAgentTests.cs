@@ -22,7 +22,6 @@ namespace TicTacToe.Agent.Test.MonteCarlo
         public void Trains()
         {
             var mcAgent = new MonteCarloTicTacToeAgent(BoardTile.X);
-            var game = new TicTacToeGame(new Board(), mcAgent, new FirstAvailableSlotAgent(BoardTile.O));
 
             mcAgent.Train(new FirstAvailableSlotAgent(BoardTile.O));
 
@@ -36,12 +35,15 @@ namespace TicTacToe.Agent.Test.MonteCarlo
             var mcAgent = new MonteCarloTicTacToeAgent(BoardTile.X);
             var opponent = new FirstAvailableSlotAgent(BoardTile.O);
 
-            var game = new TicTacToeGame(new Board(), mcAgent, opponent);
-
             mcAgent.Train(opponent);
 
             var states = mcAgent.CurrentPolicy.States.ToHashSet();
-            Assert.True(states.Contains("x        "));
+            Assert.AreEqual(9, states.Count);
+
+            // each state has an x in a different spot
+            Assert.AreEqual(9, Enumerable.Range(0, 9)
+                .Select(i => states.Where(s => s[i] == 'x'))
+                .Count());
         }
     }
 }

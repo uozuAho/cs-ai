@@ -19,6 +19,7 @@ namespace TicTacToe.Game
     public interface IBoard
     {
         BoardTile CurrentPlayer { get; set; }
+        bool IsGameOver { get; }
 
         IEnumerable<TicTacToeAction> AvailableActions();
         void Update(TicTacToeAction action);

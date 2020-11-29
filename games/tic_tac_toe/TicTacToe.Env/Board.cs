@@ -27,7 +27,7 @@ namespace TicTacToe.Game
             _tiles = tiles;
         }
 
-        public static Board CreateEmptyBoard()
+        public static IBoard CreateEmptyBoard()
         {
             return new Board();
         }
