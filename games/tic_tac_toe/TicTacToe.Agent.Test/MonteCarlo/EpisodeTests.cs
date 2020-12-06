@@ -22,6 +22,25 @@ namespace TicTacToe.Agent.Test.MonteCarlo
             Assert.AreEqual("xox|oxo|x  ", ep.Steps[4].State.ToString());
 
             Assert.AreEqual(1.0, ep.Steps[4].Reward);
+            Assert.IsNull(ep.Steps[4].Action);
+        }
+
+        [Test]
+        public void TwoFirstAvailableSlotAgents_PlayPredictableGame_TilesReversed()
+        {
+            var ep = Episode.Generate(
+                new FirstAvailableSlotAgent(BoardTile.O),
+                new FirstAvailableSlotAgent(BoardTile.X));
+
+            Assert.AreEqual(5, ep.Length);
+            Assert.AreEqual("   |   |   ", ep.Steps[0].State.ToString());
+            Assert.AreEqual("ox |   |   ", ep.Steps[1].State.ToString());
+            Assert.AreEqual("oxo|x  |   ", ep.Steps[2].State.ToString());
+            Assert.AreEqual("oxo|xox|   ", ep.Steps[3].State.ToString());
+            Assert.AreEqual("oxo|xox|o  ", ep.Steps[4].State.ToString());
+
+            Assert.AreEqual(-1.0, ep.Steps[4].Reward);
+            Assert.IsNull(ep.Steps[4].Action);
         }
 
         [TestCase(0)]

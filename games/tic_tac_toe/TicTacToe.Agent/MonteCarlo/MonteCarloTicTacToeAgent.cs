@@ -11,6 +11,7 @@ namespace TicTacToe.Agent.MonteCarlo
 
         public TicTacToeMutablePolicy CurrentMutablePolicy { get; set; } = new();
 
+        private const double ChanceOfRandomAction = 0.05;
         private readonly Random _random = new();
 
         public MonteCarloTicTacToeAgent(BoardTile tile)
@@ -25,19 +26,26 @@ namespace TicTacToe.Agent.MonteCarlo
 
         public TicTacToeAction GetAction(TicTacToeEnvironment environment)
         {
-            return CurrentMutablePolicy.HasActionFor(environment.CurrentState)
+            var action = CurrentMutablePolicy.HasActionFor(environment.CurrentState)
                 ? CurrentMutablePolicy.Action(environment.CurrentState)
                 : _random.Choice(environment.ActionSpace());
+
+            if (_random.TrueWithProbability(ChanceOfRandomAction))
+                action = _random.Choice(environment.ActionSpace());
+
+            return action;
         }
 
         public void Train(ITicTacToeAgent opponent)
         {
             var lastNumStates = 0;
             var noNewStatesSeenForXEpisodes = 0;
+            var actionValues = new ActionValues();
+            var returns = new Returns();
 
             for (var i = 0; i < 10000; i++)
             {
-                ImprovePolicy(opponent, new ActionValues(), new Returns());
+                ImprovePolicy(opponent, actionValues, returns);
 
                 if (CurrentMutablePolicy.NumStates == lastNumStates)
                     noNewStatesSeenForXEpisodes++;

@@ -16,6 +16,7 @@ namespace TicTacToe.Agent.Test.MonteCarlo
         public void Setup()
         {
             _opponent = Substitute.For<ITicTacToeAgent>();
+            _opponent.Tile.Returns(BoardTile.O);
             _opponent.GetAction(
                 Arg.Any<TicTacToeEnvironment>(),
                 Arg.Any<IBoard>())

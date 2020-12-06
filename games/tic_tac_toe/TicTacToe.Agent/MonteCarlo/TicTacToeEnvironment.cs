@@ -24,6 +24,7 @@ namespace TicTacToe.Agent.MonteCarlo
         public IBoard Reset()
         {
             _board = Board.CreateEmptyBoard();
+            _board.CurrentPlayer = _opponent.Tile.Other();
 
             return _board.Clone();
         }
