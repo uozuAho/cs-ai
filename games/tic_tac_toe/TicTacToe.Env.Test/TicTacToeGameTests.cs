@@ -1,5 +1,4 @@
 ﻿using System;
-using System.Linq;
 using NSubstitute;
 using NUnit.Framework;
 using TicTacToe.Game.Test.Utils;
@@ -8,7 +7,7 @@ namespace TicTacToe.Game.Test
 {
     public class TicTacToeGameTests
     {
-        private IBoard _board;
+        private Board _board;
         private IPlayer _player1;
         private IPlayer _player2;
         private TicTacToeGame _game;
@@ -39,12 +38,12 @@ namespace TicTacToe.Game.Test
         [Test]
         public void Player1IsFirst()
         {
-            _player1.GetAction(Arg.Any<IBoard>()).Returns(new TicTacToeAction {Position = 0, Tile = BoardTile.X});
+            _player1.GetAction(Arg.Any<Board>()).Returns(new TicTacToeAction {Position = 0, Tile = BoardTile.X});
 
             _game.DoNextTurn();
 
-            _player1.Received(1).GetAction(Arg.Any<IBoard>());
-            _player2.DidNotReceive().GetAction(Arg.Any<IBoard>());
+            _player1.Received(1).GetAction(Arg.Any<Board>());
+            _player2.DidNotReceive().GetAction(Arg.Any<Board>());
         }
 
         [Test]

@@ -6,7 +6,7 @@ namespace TicTacToe.Game
 {
     public class TicTacToeGame : ITicTacToeGame
     {
-        public IBoard Board { get; }
+        public Board Board { get; }
 
         private readonly IPlayer _player1;
         private readonly IPlayer _player2;
@@ -15,7 +15,7 @@ namespace TicTacToe.Game
 
         private readonly List<IGameStateObserver> _stateObservers = new List<IGameStateObserver>();
 
-        public TicTacToeGame(IBoard board, IPlayer player1, IPlayer player2)
+        public TicTacToeGame(Board board, IPlayer player1, IPlayer player2)
         {
             Board = board;
             _player1 = player1;
@@ -46,7 +46,7 @@ namespace TicTacToe.Game
             NotifyObservers(previousState, Board);
         }
 
-        private void NotifyObservers(IBoard previousState, IBoard currentState)
+        private void NotifyObservers(Board previousState, Board currentState)
         {
             foreach (var observer in _stateObservers)
             {

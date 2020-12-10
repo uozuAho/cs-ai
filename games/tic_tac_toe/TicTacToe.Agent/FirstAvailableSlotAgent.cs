@@ -13,7 +13,7 @@ namespace TicTacToe.Agent
             Tile = playerTile;
         }
 
-        public TicTacToeAction GetAction(IBoard board)
+        public TicTacToeAction GetAction(Board board)
         {
             for (var i = 0; i < 9; i++)
             {
@@ -30,7 +30,7 @@ namespace TicTacToe.Agent
             throw new InvalidOperationException("No available actions");
         }
 
-        public TicTacToeAction GetAction(TicTacToeEnvironment environment, IBoard board)
+        public TicTacToeAction GetAction(TicTacToeEnvironment environment, Board board)
         {
             return GetAction(board);
         }

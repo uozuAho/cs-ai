@@ -6,9 +6,9 @@ namespace TicTacToe.Agent.MonteCarlo
 {
     public class ActionValues
     {
-        private readonly Dictionary<IBoard, Dictionary<TicTacToeAction, double>> _values = new();
+        private readonly Dictionary<Board, Dictionary<TicTacToeAction, double>> _values = new();
 
-        public void Set(IBoard state, TicTacToeAction action, double value)
+        public void Set(Board state, TicTacToeAction action, double value)
         {
             if (_values.ContainsKey(state))
                 _values[state][action] = value;
@@ -16,7 +16,7 @@ namespace TicTacToe.Agent.MonteCarlo
                 _values[state] = new Dictionary<TicTacToeAction, double> {{action, value}};
         }
 
-        public TicTacToeAction HighestValueAction(IBoard state)
+        public TicTacToeAction HighestValueAction(Board state)
         {
             var actionValues = _values[state];
 

@@ -13,7 +13,7 @@ namespace TicTacToe.Agent.MonteCarlo
             Tile = tile;
         }
 
-        public TicTacToeAction GetAction(IBoard board)
+        public TicTacToeAction GetAction(Board board)
         {
             return _actionMap.ActionFor(board);
         }

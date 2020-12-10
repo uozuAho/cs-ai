@@ -110,7 +110,7 @@ namespace TicTacToe.Console
             return _userInput.ReadLine();
         }
 
-        private static string RenderBoard(IBoard board)
+        private static string RenderBoard(Board board)
         {
             var sb = new StringBuilder();
 

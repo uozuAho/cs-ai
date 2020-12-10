@@ -2,7 +2,7 @@
 {
     public interface ITicTacToeGame
     {
-        IBoard Board { get; }
+        Board Board { get; }
         void DoNextTurn();
         bool IsFinished();
         BoardTile? Winner();

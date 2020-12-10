@@ -5,7 +5,7 @@ using System.Text;
 
 namespace TicTacToe.Game
 {
-    public class Board : IBoard
+    public class Board
     {
         public BoardTile CurrentPlayer { get; set; } = BoardTile.X;
         public bool IsGameOver => Winner().HasValue || IsFull();
@@ -27,7 +27,7 @@ namespace TicTacToe.Game
             _tiles = tiles;
         }
 
-        public static IBoard CreateEmptyBoard()
+        public static Board CreateEmptyBoard()
         {
             return new Board();
         }
@@ -78,13 +78,13 @@ namespace TicTacToe.Game
             SwitchCurrentPlayer();
         }
 
-        public IBoard Clone()
+        public Board Clone()
         {
             var newTiles = _tiles.Select(t => t).ToArray();
             return new Board(newTiles) {CurrentPlayer = CurrentPlayer};
         }
 
-        public bool IsSameStateAs(IBoard otherBoard)
+        public bool IsSameStateAs(Board otherBoard)
         {
             for (var i = 0; i < 9; i++)
             {

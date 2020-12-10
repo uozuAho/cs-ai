@@ -10,10 +10,10 @@ namespace TicTacToe.Agent.MonteCarlo
     /// </summary>
     public class TicTacToeEnvironment
     {
-        public IBoard CurrentState => _board.Clone();
+        public Board CurrentState => _board.Clone();
 
         private readonly ITicTacToeAgent _opponent;
-        private IBoard _board = Board.CreateEmptyBoard();
+        private Board _board = Board.CreateEmptyBoard();
 
         public TicTacToeEnvironment(ITicTacToeAgent opponent)
         {
@@ -21,7 +21,7 @@ namespace TicTacToe.Agent.MonteCarlo
             Reset();
         }
 
-        public IBoard Reset()
+        public Board Reset()
         {
             _board = Board.CreateEmptyBoard();
             _board.CurrentPlayer = _opponent.Tile.Other();

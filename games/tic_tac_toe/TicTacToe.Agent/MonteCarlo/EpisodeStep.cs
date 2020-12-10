@@ -12,7 +12,7 @@ namespace TicTacToe.Agent.MonteCarlo
         /// <summary>
         /// Current state
         /// </summary>
-        public IBoard State { get; init; } = Board.CreateEmptyBoard();
+        public Board State { get; init; } = Board.CreateEmptyBoard();
 
         /// <summary>
         /// Action taken from the current state

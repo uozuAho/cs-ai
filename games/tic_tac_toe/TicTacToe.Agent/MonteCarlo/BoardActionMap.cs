@@ -8,17 +8,17 @@ namespace TicTacToe.Agent.MonteCarlo
         private readonly Dictionary<string, TicTacToeAction> _actionMap = new();
         public int NumStates => _actionMap.Count;
 
-        public TicTacToeAction ActionFor(IBoard board)
+        public TicTacToeAction ActionFor(Board board)
         {
             return _actionMap[board.ToString()];
         }
 
-        public void SetAction(IBoard state, TicTacToeAction action)
+        public void SetAction(Board state, TicTacToeAction action)
         {
             _actionMap[state.ToString()] = action;
         }
 
-        public bool HasActionFor(IBoard board)
+        public bool HasActionFor(Board board)
         {
             return _actionMap.ContainsKey(board.ToString());
         }

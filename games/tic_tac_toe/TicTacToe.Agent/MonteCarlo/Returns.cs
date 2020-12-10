@@ -6,9 +6,9 @@ namespace TicTacToe.Agent.MonteCarlo
 {
     public class Returns
     {
-        private readonly Dictionary<(IBoard, TicTacToeAction), List<double>> _returns = new();
+        private readonly Dictionary<(Board, TicTacToeAction), List<double>> _returns = new();
 
-        public void Add(IBoard state, TicTacToeAction action, in double reward)
+        public void Add(Board state, TicTacToeAction action, in double reward)
         {
             var stateActionPair = (state, action);
             if (_returns.ContainsKey(stateActionPair))
@@ -17,7 +17,7 @@ namespace TicTacToe.Agent.MonteCarlo
                 _returns[stateActionPair] = new List<double> {reward};
         }
 
-        public double AverageReturnFrom(IBoard state, TicTacToeAction action)
+        public double AverageReturnFrom(Board state, TicTacToeAction action)
         {
             var returns = _returns[(state, action)];
 

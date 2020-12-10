@@ -7,12 +7,12 @@ namespace TicTacToe.Agent.MonteCarlo
         private readonly BoardActionMap _actionMap = new();
         public int NumStates => _actionMap.NumStates;
 
-        public TicTacToeAction Action(IBoard board)
+        public TicTacToeAction Action(Board board)
         {
             return _actionMap.ActionFor(board);
         }
 
-        public void SetAction(IBoard state, TicTacToeAction action)
+        public void SetAction(Board state, TicTacToeAction action)
         {
             _actionMap.SetAction(state, action);
         }
@@ -22,7 +22,7 @@ namespace TicTacToe.Agent.MonteCarlo
             return new TicTacToePolicyPlayer(tile, _actionMap);
         }
 
-        public bool HasActionFor(IBoard board)
+        public bool HasActionFor(Board board)
         {
             return _actionMap.HasActionFor(board);
         }

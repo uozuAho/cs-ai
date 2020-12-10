@@ -37,7 +37,7 @@ namespace TicTacToe.Agent
             });
         }
 
-        public TicTacToeAction GetAction(IBoard board)
+        public TicTacToeAction GetAction(Board board)
         {
             var availableActions = board.AvailableActions().ToList();
             if (availableActions.Count == 0)
@@ -48,14 +48,14 @@ namespace TicTacToe.Agent
                 : PickRandomAction(availableActions);
         }
 
-        public void NotifyStateChanged(IBoard previousState, IBoard currentState)
+        public void NotifyStateChanged(Board previousState, Board currentState)
         {
             var previousStatePWin = CalculateNewProbability(previousState, currentState);
             _pTable.UpdateWinProbability(previousState, previousStatePWin);
         }
 
         // P(State(t)) + alpha[P(State(t + 1)) - P(State(t))]
-        private double CalculateNewProbability(IBoard board, IBoard nextBoard)
+        private double CalculateNewProbability(Board board, Board nextBoard)
         {
             var Pwin = _pTable.GetWinProbability(board);
             var Pwin_next = _pTable.GetWinProbability(nextBoard);
@@ -69,7 +69,7 @@ namespace TicTacToe.Agent
             return _rng.NextDouble() > _config.RandomActionProbability;
         }
 
-        private TicTacToeAction FindBestAction(IBoard board, IReadOnlyList<TicTacToeAction> availableActions)
+        private TicTacToeAction FindBestAction(Board board, IReadOnlyList<TicTacToeAction> availableActions)
         {
             var highestProb = 0.0;
             var highestProbAction = availableActions[0];
@@ -89,7 +89,7 @@ namespace TicTacToe.Agent
             return highestProbAction;
         }
 
-        private static IBoard CreateNewState(IBoard board, TicTacToeAction action)
+        private static Board CreateNewState(Board board, TicTacToeAction action)
         {
             var newBoard = board.Clone();
             newBoard.Update(action);

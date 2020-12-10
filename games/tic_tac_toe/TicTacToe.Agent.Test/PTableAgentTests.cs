@@ -83,12 +83,12 @@ namespace TicTacToe.Agent.Test
     {
         private readonly Dictionary<string, double> _pTable = new();
 
-        public double GetWinProbability(IBoard board)
+        public double GetWinProbability(Board board)
         {
             return _pTable[board.ToString()];
         }
 
-        public void UpdateWinProbability(IBoard board, double winProbability)
+        public void UpdateWinProbability(Board board, double winProbability)
         {
             _pTable[board.ToString()] = winProbability;
         }

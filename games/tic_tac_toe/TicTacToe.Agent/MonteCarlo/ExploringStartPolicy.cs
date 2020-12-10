@@ -30,7 +30,7 @@ namespace TicTacToe.Agent.MonteCarlo
             return action;
         }
 
-        public TicTacToeAction GetAction(TicTacToeEnvironment environment, IBoard board)
+        public TicTacToeAction GetAction(TicTacToeEnvironment environment, Board board)
         {
             var action = _isFirstAction
                 ? _rng.Choice(environment.ActionSpace())

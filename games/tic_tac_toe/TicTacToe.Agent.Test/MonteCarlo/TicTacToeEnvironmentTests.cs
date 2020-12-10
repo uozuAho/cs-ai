@@ -19,7 +19,7 @@ namespace TicTacToe.Agent.Test.MonteCarlo
             _opponent.Tile.Returns(BoardTile.O);
             _opponent.GetAction(
                 Arg.Any<TicTacToeEnvironment>(),
-                Arg.Any<IBoard>())
+                Arg.Any<Board>())
                 .Returns(new TicTacToeAction
             {
                 Position = 0,
@@ -43,7 +43,7 @@ namespace TicTacToe.Agent.Test.MonteCarlo
             var placeXAtTopLeft = new TicTacToeAction {Position = 0, Tile = BoardTile.X};
             var placeOAtTopMiddle = new TicTacToeAction {Position = 1, Tile = BoardTile.O};
 
-            _opponent.GetAction(Arg.Any<TicTacToeEnvironment>(), Arg.Any<IBoard>())
+            _opponent.GetAction(Arg.Any<TicTacToeEnvironment>(), Arg.Any<Board>())
                 .Returns(placeOAtTopMiddle);
 
             var expectedBoard = Board.CreateEmptyBoard();
