@@ -4,7 +4,7 @@ using TicTacToe.Game;
 
 namespace TicTacToe.Agent.MonteCarlo
 {
-    internal class ActionValues
+    public class ActionValues
     {
         private readonly Dictionary<IBoard, Dictionary<TicTacToeAction, double>> _values = new();
 

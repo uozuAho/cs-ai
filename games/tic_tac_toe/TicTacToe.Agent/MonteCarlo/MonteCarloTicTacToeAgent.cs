@@ -40,7 +40,7 @@ namespace TicTacToe.Agent.MonteCarlo
         {
             var lastNumStates = 0;
             var noNewStatesSeenForXEpisodes = 0;
-            var actionValues = new ActionValues();
+            var actionValues = new ActionValues();// not working?
             var returns = new Returns();
 
             for (var i = 0; i < 10000; i++)
@@ -75,6 +75,10 @@ namespace TicTacToe.Agent.MonteCarlo
                 var state = episode.Steps[t].State;
                 var action = episode.Steps[t].Action;
                 rewardSum += episode.Steps[t + 1].Reward;
+
+                // hmm this is a bit dumb. Have a 'null action'?
+                if (action == null) continue;
+
                 if (episode.TimeOfFirstVisit(state, action) == t)
                 {
                     returns.Add(state, action, rewardSum);

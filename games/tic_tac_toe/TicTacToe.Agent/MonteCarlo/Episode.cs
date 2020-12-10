@@ -10,7 +10,7 @@ namespace TicTacToe.Agent.MonteCarlo
         public List<EpisodeStep> Steps { get; }
         public int Length => Steps.Count;
 
-        private readonly Dictionary<(IBoard, TicTacToeAction), int> _stateActionTimes;
+        private readonly Dictionary<(IBoard, TicTacToeAction?), int> _stateActionTimes;
 
         public Episode(IEnumerable<EpisodeStep> steps)
         {
@@ -28,9 +28,9 @@ namespace TicTacToe.Agent.MonteCarlo
             return _stateActionTimes[(state, action)];
         }
 
-        private Dictionary<(IBoard, TicTacToeAction), int> CreateStateActionTimeLookup(ICollection steps)
+        private Dictionary<(IBoard, TicTacToeAction?), int> CreateStateActionTimeLookup(ICollection steps)
         {
-            var lookup = new Dictionary<(IBoard, TicTacToeAction), int>();
+            var lookup = new Dictionary<(IBoard, TicTacToeAction?), int>();
 
             for (var i = 0; i < steps.Count; i++)
             {

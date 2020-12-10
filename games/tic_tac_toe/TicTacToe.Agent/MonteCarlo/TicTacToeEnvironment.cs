@@ -13,7 +13,7 @@ namespace TicTacToe.Agent.MonteCarlo
         public IBoard CurrentState => _board.Clone();
 
         private readonly ITicTacToeAgent _opponent;
-        private IBoard _board;
+        private IBoard _board = Board.CreateEmptyBoard();
 
         public TicTacToeEnvironment(ITicTacToeAgent opponent)
         {
