@@ -13,6 +13,7 @@ namespace TicTacToe.Agent.MonteCarlo
 
         // e-greedy constant: probability of choosing a random action instead
         // of the greedy action
+        // possible improvement: reduce over time during training
         private const double ChanceOfRandomAction = 0.05;
         private readonly Random _random = new();
 
@@ -58,7 +59,7 @@ namespace TicTacToe.Agent.MonteCarlo
 
                 lastNumStates = CurrentMutablePolicy.NumStates;
 
-                // todo: make this more meaningful. Maybe stop on value change
+                // improvement: make this more meaningful. Maybe stop on value change
                 // falling below a certain threshold
                 if (noNewStatesSeenForXEpisodes == 3000)
                     break;
