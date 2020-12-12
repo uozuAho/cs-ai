@@ -1,8 +1,5 @@
-﻿using System.IO;
-using System.Linq;
-using TicTacToe.Agent.MonteCarlo;
+﻿using System.Linq;
 using TicTacToe.Console.Test;
-using TicTacToe.Game;
 
 namespace TicTacToe.Console
 {
@@ -39,13 +36,8 @@ namespace TicTacToe.Console
                 }
                 case "train":
                 {
-                    var agent = new MonteCarloTicTacToeAgent(BoardTile.X);
-                    var opponent = _register.GetPlayerByName(args[2], BoardTile.O);
-                    var opponentAgent = new PlayerAgent(opponent);
-                    agent.Train(opponentAgent);
-                    var policyStorage = new PolicyStorage();
-                    policyStorage.SaveJsonFile("trained MonteCarloTicTacToeAgent.json", agent.ToFixedPolicy());
-                    Print("Trained agent 'mc' against 'FirstAvailableSlotAgent'");
+                    var trainer = new ConsoleAgentTrainer(_userOutput, _register);
+                    trainer.Run(args.Skip(1).ToArray());
                     break;
                 }
             }
@@ -54,33 +46,13 @@ namespace TicTacToe.Console
         private void PrintUsage()
         {
             Print("usage: run <play|train> [num games]");
+            Print("");
+            Print("  Note: train is still a work in progress");
         }
 
         private void Print(string message)
         {
             _userOutput.PrintLine(message);
-        }
-    }
-
-    internal class PlayerAgent : ITicTacToeAgent
-    {
-        public BoardTile Tile => _player.Tile;
-
-        public TicTacToeAction GetAction(TicTacToeEnvironment environment, Board board) => _player.GetAction(board);
-
-        private readonly IPlayer _player;
-
-        public PlayerAgent(IPlayer player)
-        {
-            _player = player;
-        }
-    }
-
-    public class PolicyStorage
-    {
-        public void SaveJsonFile(string filename, TicTacToeMutablePolicy player)
-        {
-            File.WriteAllText(filename, "asdf");
         }
     }
 }
