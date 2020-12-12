@@ -9,20 +9,21 @@ namespace TicTacToe.Console
     {
         private readonly ITextInput _userInput;
         private readonly ITextOutput _userOutput;
+        private readonly PlayerRegister _register;
 
-        public TicTacToeConsoleRunner(ITextInput userInput, ITextOutput userOutput)
+        public TicTacToeConsoleRunner(ITextInput userInput, ITextOutput userOutput, PlayerRegister register)
         {
             _userInput = userInput;
             _userOutput = userOutput;
+            _register = register;
         }
 
         public void Run()
         {
-            var register = new PlayerRegister();
-            ShowAvailablePlayers(register);
+            ShowAvailablePlayers(_register);
 
-            var player1 = PromptForPlayer1(register);
-            var player2 = PromptForPlayer2(register);
+            var player1 = PromptForPlayer1(_register);
+            var player2 = PromptForPlayer2(_register);
 
             var numGames = PromptForNumberOfGames();
 
@@ -57,7 +58,7 @@ namespace TicTacToe.Console
 
         private void RunSingleGame(IPlayer player1, IPlayer player2)
         {
-            var game = new TicTacToeGame(new Board(), player1, player2);
+            var game = new TicTacToeGame(Board.CreateEmptyBoard(), player1, player2);
 
             while (!game.IsFinished())
             {
@@ -109,7 +110,7 @@ namespace TicTacToe.Console
             return _userInput.ReadLine();
         }
 
-        private static string RenderBoard(IBoard board)
+        private static string RenderBoard(Board board)
         {
             var sb = new StringBuilder();
 

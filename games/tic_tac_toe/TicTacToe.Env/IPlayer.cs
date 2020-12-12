@@ -3,6 +3,6 @@
     public interface IPlayer
     {
         BoardTile Tile { get; }
-        TicTacToeAction GetAction(ITicTacToeGame game);
+        TicTacToeAction GetAction(Board board);
     }
 }

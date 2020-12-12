@@ -1,41 +1,17 @@
-﻿using System;
-using System.Collections.Generic;
-using TicTacToe.Agent;
-using TicTacToe.Game;
-
-namespace TicTacToe.Console
+﻿namespace TicTacToe.Console
 {
     public class Program
     {
         public static int Main(string[] args)
         {
-            var runner = new TicTacToeConsoleRunner(new ConsoleTextInput(), new ConsoleTextOutput());
+            var runner = new TicTacToeConsoleRunner(
+                new ConsoleTextInput(),
+                new ConsoleTextOutput(),
+                new PlayerRegister());
+
             runner.Run();
 
             return 0;
-        }
-    }
-
-    internal class PlayerRegister
-    {
-        public IPlayer NewPlayer(string key, BoardTile playerTile)
-        {
-            switch (key)
-            {
-                case "a": return new ConsoleInputPlayer(playerTile);
-                case "b": return new FirstAvailableSlotAgent(playerTile);
-                case "c": return RlBookPTableAgent.CreateDefaultAgent(playerTile);
-                case "d": return RlBookModifiedPTableAgent.CreateDefaultAgent(playerTile);
-            }
-            throw new InvalidOperationException($"Unknown player key: {key}");
-        }
-
-        public IEnumerable<string> AvailablePlayers()
-        {
-            yield return "a: ConsoleInputPlayer";
-            yield return "b: FirstAvailableSlotAgent";
-            yield return "c: PTableAgent";
-            yield return "d: ModifiedPTableAgent";
         }
     }
 }

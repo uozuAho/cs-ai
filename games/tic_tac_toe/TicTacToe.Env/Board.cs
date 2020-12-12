@@ -1,87 +1,122 @@
 ﻿using System;
+using System.Collections.Generic;
+using System.Collections.Immutable;
 using System.Linq;
 using System.Text;
 
 namespace TicTacToe.Game
 {
-    public class Board : IBoard
+    public class Board
     {
-        private readonly BoardTile[] _tiles;
+        public BoardTile CurrentPlayer { get; private init; }
+        public bool IsGameOver => Winner().HasValue || IsFull();
 
-        public Board()
+        private readonly ImmutableArray<BoardTile> _tiles;
+
+        private Board()
         {
-            _tiles = new[]
-            {
-                BoardTile.Empty, BoardTile.Empty, BoardTile.Empty,
-                BoardTile.Empty, BoardTile.Empty, BoardTile.Empty,
-                BoardTile.Empty, BoardTile.Empty, BoardTile.Empty,
-            };
+            _tiles = ImmutableArray.Create(
+                BoardTile.Empty,
+                BoardTile.Empty,
+                BoardTile.Empty,
+                BoardTile.Empty,
+                BoardTile.Empty,
+                BoardTile.Empty,
+                BoardTile.Empty,
+                BoardTile.Empty,
+                BoardTile.Empty
+            );
         }
 
-        private Board(BoardTile[] tiles)
+        public static Board CreateEmptyBoard() => new() {CurrentPlayer = BoardTile.X};
+
+        public static Board CreateEmptyBoard(BoardTile currentPlayer) => new() { CurrentPlayer = currentPlayer };
+
+        private Board(IEnumerable<BoardTile> tiles, BoardTile currentPlayer = BoardTile.X)
         {
-            _tiles = tiles;
+            _tiles = tiles.Select(t => t).ToImmutableArray();
+            CurrentPlayer = currentPlayer;
         }
 
-        public static Board CreateFromString(string values)
+        public Board Clone()
         {
-            if (values.Length != 9) throw new ArgumentException("Must have 9 characters");
+            return new(_tiles) {CurrentPlayer = CurrentPlayer};
+        }
 
-            var chars = values.ToLowerInvariant().ToCharArray();
-            var board = new Board();
-            for (var i = 0; i < 9; i++)
+        public static Board CreateFromString(string values, BoardTile currentPlayer = BoardTile.X)
+        {
+            if (values.Length != 11) throw new ArgumentException("Must have 11 characters");
+
+            var chars = values.ToLowerInvariant().Replace("|", "").ToCharArray();
+
+            return new Board(chars.Select(c => c switch
             {
-                var c = chars[i];
-                switch (c)
+                'x' => BoardTile.X,
+                'o' => BoardTile.O,
+                _ => BoardTile.Empty
+            }), currentPlayer);
+        }
+
+        public IEnumerable<TicTacToeAction> AvailableActions()
+        {
+            for (var pos = 0; pos < 9; pos++)
+            {
+                if (GetTileAt(pos) == BoardTile.Empty)
                 {
-                    case 'x': board._tiles[i] = BoardTile.X; break;
-                    case 'o': board._tiles[i] = BoardTile.O; break;
-                    default: board._tiles[i] = BoardTile.Empty; break;
+                    yield return new TicTacToeAction
+                    {
+                        Position = pos,
+                        Tile = CurrentPlayer
+                    };
                 }
             }
-
-            return board;
         }
 
-        public void Update(TicTacToeAction action)
+        public Board DoAction(TicTacToeAction action)
         {
+            ThrowIfIncorrectTile(action);
             RangeCheck(action.Position);
             ThrowIfNotEmpty(action.Position);
 
-            _tiles[action.Position] = action.Tile;
+            var tiles = _tiles.Select(x => x).ToArray();
+            tiles[action.Position] = action.Tile;
+
+            return new Board(tiles) {CurrentPlayer = CurrentPlayer.Other()};
         }
 
-        public string AsString()
+        protected bool Equals(Board other)
         {
-            var sb = new StringBuilder();
+            if (CurrentPlayer != other.CurrentPlayer) return false;
 
-            foreach (var tile in _tiles)
-            {
-                switch (tile)
-                {
-                    case BoardTile.Empty: sb.Append(' '); break;
-                    case BoardTile.O: sb.Append('o'); break;
-                    case BoardTile.X: sb.Append('x'); break;
-                }
-            }
-
-            return sb.ToString();
-        }
-
-        public IBoard Clone()
-        {
-            var newTiles = _tiles.Select(t => t).ToArray();
-            return new Board(newTiles);
-        }
-
-        public bool IsSameStateAs(IBoard otherBoard)
-        {
             for (var i = 0; i < 9; i++)
             {
-                if (GetTileAt(i) != otherBoard.GetTileAt(i)) return false;
+                if (_tiles[i] != other._tiles[i]) return false;
             }
 
             return true;
+        }
+
+        public override bool Equals(object obj)
+        {
+            if (ReferenceEquals(null, obj)) return false;
+            if (ReferenceEquals(this, obj)) return true;
+            if (obj.GetType() != this.GetType()) return false;
+            return Equals((Board) obj);
+        }
+
+        public override int GetHashCode()
+        {
+            var tilesHash = 19;
+
+            unchecked
+            {
+                foreach (var tile in _tiles)
+                {
+                    tilesHash = tilesHash * 31 + tile.GetHashCode();
+                }
+            }
+
+            return HashCode.Combine(tilesHash, (int) CurrentPlayer);
         }
 
         public bool IsFull()
@@ -126,11 +161,11 @@ namespace TicTacToe.Game
             sb.Append(_tiles[0].AsString());
             sb.Append(_tiles[1].AsString());
             sb.Append(_tiles[2].AsString());
-            sb.AppendLine();
+            sb.Append('|');
             sb.Append(_tiles[3].AsString());
             sb.Append(_tiles[4].AsString());
             sb.Append(_tiles[5].AsString());
-            sb.AppendLine();
+            sb.Append('|');
             sb.Append(_tiles[6].AsString());
             sb.Append(_tiles[7].AsString());
             sb.Append(_tiles[8].AsString());
@@ -179,6 +214,14 @@ namespace TicTacToe.Game
         private static void RangeCheck(int pos)
         {
             if (pos < 0 || pos > 8) throw new ArgumentException($"Invalid position: {pos}");
+        }
+
+        private void ThrowIfIncorrectTile(TicTacToeAction action)
+        {
+            if (action.Tile != CurrentPlayer)
+            {
+                throw new InvalidOperationException($"It's not {action.Tile}'s turn!");
+            }
         }
 
         private enum WinnerState

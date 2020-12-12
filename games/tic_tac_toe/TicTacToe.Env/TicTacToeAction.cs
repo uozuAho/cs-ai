@@ -1,8 +1,13 @@
 ﻿namespace TicTacToe.Game
 {
-    public class TicTacToeAction
+    public record TicTacToeAction
     {
-        public BoardTile Tile { get; set; }
-        public int Position { get; set; }
+        public BoardTile Tile { get; init; }
+        public int Position { get; init; }
+
+        public override string ToString()
+        {
+            return $"{Tile} {Position}";
+        }
     }
 }

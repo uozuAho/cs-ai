@@ -4,22 +4,22 @@ using System.Linq;
 
 namespace TicTacToe.Game
 {
-    public class TicTacToeGame : ITicTacToeGame
+    public class TicTacToeGame
     {
-        public IBoard Board { get; }
+        public Board Board { get; private set; }
 
         private readonly IPlayer _player1;
         private readonly IPlayer _player2;
 
-        private IPlayer _currentPlayer;
-        private readonly List<IGameStateObserver> _stateObservers = new List<IGameStateObserver>();
+        private IPlayer CurrentPlayer => Board.CurrentPlayer == _player1.Tile ? _player1 : _player2;
 
-        public TicTacToeGame(IBoard board, IPlayer player1, IPlayer player2)
+        private readonly List<IGameStateObserver> _stateObservers = new();
+
+        public TicTacToeGame(Board board, IPlayer player1, IPlayer player2)
         {
             Board = board;
             _player1 = player1;
             _player2 = player2;
-            _currentPlayer = player1;
 
             ThrowIfPlayersInvalid();
 
@@ -38,16 +38,16 @@ namespace TicTacToe.Game
             }
         }
 
-        public void DoNextTurn()
+        public Board DoNextTurn()
         {
-            var action = _currentPlayer.GetAction(this);
-            var previousState = Board.Clone();
-            Board.Update(action);
+            var action = CurrentPlayer.GetAction(Board);
+            var previousState = Board;
+            Board = Board.DoAction(action);
             NotifyObservers(previousState, Board);
-            SwitchCurrentPlayer();
+            return Board;
         }
 
-        private void NotifyObservers(IBoard previousState, IBoard currentState)
+        private void NotifyObservers(Board previousState, Board currentState)
         {
             foreach (var observer in _stateObservers)
             {
@@ -57,32 +57,12 @@ namespace TicTacToe.Game
 
         public bool IsFinished()
         {
-            return Winner().HasValue || !GetAvailableActions().Any();
+            return Winner().HasValue || !Board.AvailableActions().Any();
         }
 
         public BoardTile? Winner()
         {
             return Board.Winner();
-        }
-
-        public IEnumerable<TicTacToeAction> GetAvailableActions()
-        {
-            for (var pos = 0; pos < 9; pos++)
-            {
-                if (Board.GetTileAt(pos) == BoardTile.Empty)
-                {
-                    yield return new TicTacToeAction
-                    {
-                        Position = pos,
-                        Tile = _currentPlayer.Tile
-                    };
-                }
-            }
-        }
-
-        private void SwitchCurrentPlayer()
-        {
-            _currentPlayer = _currentPlayer == _player1 ? _player2 : _player1;
         }
 
         private void ThrowIfPlayersInvalid()

@@ -4,7 +4,7 @@ namespace TicTacToe.Agent
 {
     public interface ITicTacToePTable
     {
-        double GetWinProbability(IBoard board);
-        void UpdateWinProbability(IBoard board, double winProbability);
+        double GetWinProbability(Board board);
+        void UpdateWinProbability(Board board, double winProbability);
     }
 }

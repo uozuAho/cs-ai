@@ -2,6 +2,6 @@
 {
     public interface IGameStateObserver
     {
-        void NotifyStateChanged(IBoard previousState, IBoard currentState);
+        void NotifyStateChanged(Board previousState, Board currentState);
     }
 }

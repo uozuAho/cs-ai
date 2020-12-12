@@ -1,5 +1,4 @@
 ﻿using System;
-using System.Linq;
 using NSubstitute;
 using NUnit.Framework;
 using TicTacToe.Game.Test.Utils;
@@ -8,7 +7,7 @@ namespace TicTacToe.Game.Test
 {
     public class TicTacToeGameTests
     {
-        private IBoard _board;
+        private Board _board;
         private IPlayer _player1;
         private IPlayer _player2;
         private TicTacToeGame _game;
@@ -16,7 +15,7 @@ namespace TicTacToe.Game.Test
         [SetUp]
         public void Setup()
         {
-            _board = Substitute.For<IBoard>();
+            _board = Board.CreateEmptyBoard();
             _player1 = Substitute.For<IPlayer>();
             _player2 = Substitute.For<IPlayer>();
             _player1.Tile.Returns(BoardTile.X);
@@ -39,35 +38,12 @@ namespace TicTacToe.Game.Test
         [Test]
         public void Player1IsFirst()
         {
+            _player1.GetAction(Arg.Any<Board>()).Returns(new TicTacToeAction {Position = 0, Tile = BoardTile.X});
+
             _game.DoNextTurn();
 
-            _player1.Received(1).GetAction(Arg.Any<ITicTacToeGame>());
-            _player2.DidNotReceive().GetAction(Arg.Any<ITicTacToeGame>());
-        }
-
-        [Test]
-        public void GivenEmptyBoard_AvailableActions_ShouldCount9()
-        {
-            var actions = _game.GetAvailableActions().ToList();
-
-            Assert.AreEqual(9, actions.Count);
-        }
-
-        [Test]
-        public void GivenEmptyBoard_AvailableActions_ShouldAllBeForPlayer1()
-        {
-            var actions = _game.GetAvailableActions().ToList();
-
-            Assert.IsTrue(actions.All(a => a.Tile == _player1.Tile));
-        }
-
-        [Test]
-        public void GivenBoardWithOnePlacedTile_AvailableActions_ShouldCount8()
-        {
-            _board.GetTileAt(0).Returns(BoardTile.O);
-            var actions = _game.GetAvailableActions().ToList();
-
-            Assert.AreEqual(8, actions.Count);
+            _player1.Received(1).GetAction(Arg.Any<Board>());
+            _player2.DidNotReceive().GetAction(Arg.Any<Board>());
         }
 
         [Test]
@@ -75,20 +51,22 @@ namespace TicTacToe.Game.Test
         {
             var player1 = new TestPlayer(BoardTile.X);
             player1.SetMoves(new[] { 0, 4, 8 });
+
             var player2 = new TestPlayer(BoardTile.O);
             player2.SetMoves(new[] { 1, 2 });
 
-            var game = new TicTacToeGame(new Board(), player1, player2);
+            var game = new TicTacToeGame(Board.CreateEmptyBoard(), player1, player2);
 
             // act
             game.Run();
 
             // assert
             Assert.That(game.IsFinished());
-            var expectedBoardState = Board.CreateFromString("xoo" +
-                                                            " x " +
-                                                            "  x");
-            Assert.That(game.Board.IsSameStateAs(expectedBoardState));
+            var expectedBoardState = Board.CreateFromString("xoo|" +
+                                                            " x |" +
+                                                            "  x",
+                                                            BoardTile.O);
+            Assert.AreEqual(expectedBoardState, game.Board);
             Assert.AreEqual(BoardTile.X, game.Winner());
         }
     }

@@ -11,7 +11,7 @@ namespace TicTacToe.Console
             Tile = playerTile;
         }
 
-        public TicTacToeAction GetAction(ITicTacToeGame game)
+        public TicTacToeAction GetAction(Board board)
         {
             System.Console.WriteLine($"place {Tile} on tile (number):");
             var input = System.Console.ReadLine();

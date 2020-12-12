@@ -15,12 +15,12 @@ namespace TicTacToe.Agent
             _pTable = new Dictionary<string, double>();
         }
 
-        public double GetWinProbability(IBoard board)
+        public double GetWinProbability(Board board)
         {
             if (!board.IsValid())
                 throw new ArgumentException("invalid board: " + board);
 
-            var key = board.AsString();
+            var key = board.ToString();
 
             if (_pTable.ContainsKey(key))
                 return _pTable[key];
@@ -31,14 +31,14 @@ namespace TicTacToe.Agent
             return winProbability;
         }
 
-        public void UpdateWinProbability(IBoard board, double winProbability)
+        public void UpdateWinProbability(Board board, double winProbability)
         {
             if (!board.IsValid()) throw new ArgumentException("invalid board: " + board);
 
-            _pTable[board.AsString()] = winProbability;
+            _pTable[board.ToString()] = winProbability;
         }
 
-        private double CalculateWinProbability(IBoard board)
+        private double CalculateWinProbability(Board board)
         {
             var winner = board.Winner();
             var isFinished = board.IsFull();
