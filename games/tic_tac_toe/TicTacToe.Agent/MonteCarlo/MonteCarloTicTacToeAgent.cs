@@ -40,7 +40,7 @@ namespace TicTacToe.Agent.MonteCarlo
         {
             var lastNumStates = 0;
             var noNewStatesSeenForXEpisodes = 0;
-            var actionValues = new ActionValues();// not working?
+            var actionValues = new ActionValues();
             var returns = new Returns();
 
             for (var i = 0; i < 10000; i++)

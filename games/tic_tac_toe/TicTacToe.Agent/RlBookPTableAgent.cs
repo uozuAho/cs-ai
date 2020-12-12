@@ -72,8 +72,7 @@ namespace TicTacToe.Agent
         // P(State(t)) + alpha[P(State(t + 1)) - P(State(t))]
         private double CalculateNewProbability(Board board, TicTacToeAction action)
         {
-            var nextBoard = board.Clone();
-            nextBoard.Update(action);
+            var nextBoard = board.DoAction(action);
             var Pt = _pTable.GetWinProbability(board);
             var Pt_next = _pTable.GetWinProbability(nextBoard);
             var alpha = _config.LearningRate;
@@ -108,9 +107,7 @@ namespace TicTacToe.Agent
 
         private static Board CreateNewState(Board board, TicTacToeAction action)
         {
-            var newBoard = board.Clone();
-            newBoard.Update(action);
-            return newBoard;
+            return board.DoAction(action);
         }
 
         private TicTacToeAction PickRandomAction(IReadOnlyList<TicTacToeAction> availableActions)

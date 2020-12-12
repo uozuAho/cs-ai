@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Collections.Immutable;
 using System.Linq;
 using System.Text;
 
@@ -7,49 +8,53 @@ namespace TicTacToe.Game
 {
     public class Board
     {
-        public BoardTile CurrentPlayer { get; set; } = BoardTile.X;
+        public BoardTile CurrentPlayer { get; private init; }
         public bool IsGameOver => Winner().HasValue || IsFull();
 
-        private readonly BoardTile[] _tiles;
+        private readonly ImmutableArray<BoardTile> _tiles;
 
-        public Board()
+        private Board()
         {
-            _tiles = new[]
-            {
-                BoardTile.Empty, BoardTile.Empty, BoardTile.Empty,
-                BoardTile.Empty, BoardTile.Empty, BoardTile.Empty,
-                BoardTile.Empty, BoardTile.Empty, BoardTile.Empty,
-            };
+            _tiles = ImmutableArray.Create(
+                BoardTile.Empty,
+                BoardTile.Empty,
+                BoardTile.Empty,
+                BoardTile.Empty,
+                BoardTile.Empty,
+                BoardTile.Empty,
+                BoardTile.Empty,
+                BoardTile.Empty,
+                BoardTile.Empty
+            );
         }
 
-        private Board(BoardTile[] tiles)
+        public static Board CreateEmptyBoard() => new() {CurrentPlayer = BoardTile.X};
+
+        public static Board CreateEmptyBoard(BoardTile currentPlayer) => new() { CurrentPlayer = currentPlayer };
+
+        private Board(IEnumerable<BoardTile> tiles, BoardTile currentPlayer = BoardTile.X)
         {
-            _tiles = tiles;
+            _tiles = tiles.Select(t => t).ToImmutableArray();
+            CurrentPlayer = currentPlayer;
         }
 
-        public static Board CreateEmptyBoard()
+        public Board Clone()
         {
-            return new Board();
+            return new(_tiles) {CurrentPlayer = CurrentPlayer};
         }
 
-        public static Board CreateFromString(string values)
+        public static Board CreateFromString(string values, BoardTile currentPlayer = BoardTile.X)
         {
             if (values.Length != 11) throw new ArgumentException("Must have 11 characters");
 
             var chars = values.ToLowerInvariant().Replace("|", "").ToCharArray();
-            var board = new Board();
-            for (var i = 0; i < 9; i++)
-            {
-                var c = chars[i];
-                switch (c)
-                {
-                    case 'x': board._tiles[i] = BoardTile.X; break;
-                    case 'o': board._tiles[i] = BoardTile.O; break;
-                    default: board._tiles[i] = BoardTile.Empty; break;
-                }
-            }
 
-            return board;
+            return new Board(chars.Select(c => c switch
+            {
+                'x' => BoardTile.X,
+                'o' => BoardTile.O,
+                _ => BoardTile.Empty
+            }), currentPlayer);
         }
 
         public IEnumerable<TicTacToeAction> AvailableActions()
@@ -67,21 +72,16 @@ namespace TicTacToe.Game
             }
         }
 
-        public void Update(TicTacToeAction action)
+        public Board DoAction(TicTacToeAction action)
         {
             ThrowIfIncorrectTile(action);
             RangeCheck(action.Position);
             ThrowIfNotEmpty(action.Position);
 
-            _tiles[action.Position] = action.Tile;
+            var tiles = _tiles.Select(x => x).ToArray();
+            tiles[action.Position] = action.Tile;
 
-            SwitchCurrentPlayer();
-        }
-
-        public Board Clone()
-        {
-            var newTiles = _tiles.Select(t => t).ToArray();
-            return new Board(newTiles) {CurrentPlayer = CurrentPlayer};
+            return new Board(tiles) {CurrentPlayer = CurrentPlayer.Other()};
         }
 
         public bool IsSameStateAs(Board otherBoard)
@@ -174,11 +174,6 @@ namespace TicTacToe.Game
             if (hasOWon) return WinnerState.OWon;
             if (hasXWon) return WinnerState.XWon;
             return WinnerState.NoWinner;
-        }
-
-        private void SwitchCurrentPlayer()
-        {
-            CurrentPlayer = CurrentPlayer == BoardTile.X ? BoardTile.O : BoardTile.X;
         }
 
         private void ThrowIfNotEmpty(int pos)

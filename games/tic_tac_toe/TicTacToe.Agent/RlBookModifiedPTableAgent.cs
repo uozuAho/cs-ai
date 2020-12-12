@@ -91,9 +91,7 @@ namespace TicTacToe.Agent
 
         private static Board CreateNewState(Board board, TicTacToeAction action)
         {
-            var newBoard = board.Clone();
-            newBoard.Update(action);
-            return newBoard;
+            return board.DoAction(action);
         }
 
         private TicTacToeAction PickRandomAction(IReadOnlyList<TicTacToeAction> availableActions)

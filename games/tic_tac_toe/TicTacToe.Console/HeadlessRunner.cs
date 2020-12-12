@@ -35,7 +35,7 @@ namespace TicTacToe.Console
 
         private static TicTacToeGame RunSingleGame(IPlayer player1, IPlayer player2)
         {
-            var game = new TicTacToeGame(new Board(), player1, player2);
+            var game = new TicTacToeGame(Board.CreateEmptyBoard(), player1, player2);
 
             while (!game.IsFinished())
             {

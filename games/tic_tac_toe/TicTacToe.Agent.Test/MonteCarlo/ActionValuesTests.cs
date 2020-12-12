@@ -11,14 +11,14 @@ namespace TicTacToe.Agent.Test.MonteCarlo
         public void HighestValueAction_ThrowsKeyError_ForNonExistentState()
         {
             Assert.Throws<KeyNotFoundException>(() =>
-                new ActionValues().HighestValueAction(new Board()));
+                new ActionValues().HighestValueAction(Board.CreateEmptyBoard()));
         }
 
         [Test]
         public void HighestValueAction_ReturnsHighestValueAction()
         {
             var values = new ActionValues();
-            var state = new Board();
+            var state = Board.CreateEmptyBoard();
             var action0 = new TicTacToeAction();
             var action1 = new TicTacToeAction();
             var action2 = new TicTacToeAction();
@@ -34,7 +34,7 @@ namespace TicTacToe.Agent.Test.MonteCarlo
         public void GivenASingleStateAndAction_HighestValueAction_ReturnsOnlyAction()
         {
             var values = new ActionValues();
-            var state = new Board();
+            var state = Board.CreateEmptyBoard();
             var action = new TicTacToeAction();
 
             values.Set(state, action, 1.0);

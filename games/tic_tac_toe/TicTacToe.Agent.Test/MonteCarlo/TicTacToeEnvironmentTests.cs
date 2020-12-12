@@ -46,9 +46,10 @@ namespace TicTacToe.Agent.Test.MonteCarlo
             _opponent.GetAction(Arg.Any<TicTacToeEnvironment>(), Arg.Any<Board>())
                 .Returns(placeOAtTopMiddle);
 
-            var expectedBoard = Board.CreateEmptyBoard();
-            expectedBoard.Update(placeXAtTopLeft);
-            expectedBoard.Update(placeOAtTopMiddle);
+            var expectedBoard = Board
+                .CreateEmptyBoard()
+                .DoAction(placeXAtTopLeft)
+                .DoAction(placeOAtTopMiddle);
 
             // act
             var observation = _env.Step(placeXAtTopLeft);
@@ -102,8 +103,8 @@ namespace TicTacToe.Agent.Test.MonteCarlo
         {
             var board = Board.CreateFromString("xx |" +
                                                "oo |" +
-                                               "   ");
-            board.CurrentPlayer = BoardTile.O;
+                                               "   ",
+                                                BoardTile.O);
 
             _env.SetState(board);
 

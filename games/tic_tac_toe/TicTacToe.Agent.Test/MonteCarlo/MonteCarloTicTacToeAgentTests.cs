@@ -18,7 +18,7 @@ namespace TicTacToe.Agent.Test.MonteCarlo
 
             for (var i = 0; i < 100; i++)
             {
-                var game = new TicTacToeGame(new Board(), trainedPlayer, opponent);
+                var game = new TicTacToeGame(Board.CreateEmptyBoard(), trainedPlayer, opponent);
                 game.Run();
                 Assert.AreEqual(trainedPlayer.Tile, game.Winner(), $"Lost/drew game {i}");
             }

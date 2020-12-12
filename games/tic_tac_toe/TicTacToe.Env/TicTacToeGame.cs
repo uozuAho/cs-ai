@@ -4,16 +4,16 @@ using System.Linq;
 
 namespace TicTacToe.Game
 {
-    public class TicTacToeGame : ITicTacToeGame
+    public class TicTacToeGame
     {
-        public Board Board { get; }
+        public Board Board { get; private set; }
 
         private readonly IPlayer _player1;
         private readonly IPlayer _player2;
 
         private IPlayer CurrentPlayer => Board.CurrentPlayer == _player1.Tile ? _player1 : _player2;
 
-        private readonly List<IGameStateObserver> _stateObservers = new List<IGameStateObserver>();
+        private readonly List<IGameStateObserver> _stateObservers = new();
 
         public TicTacToeGame(Board board, IPlayer player1, IPlayer player2)
         {
@@ -38,12 +38,13 @@ namespace TicTacToe.Game
             }
         }
 
-        public void DoNextTurn()
+        public Board DoNextTurn()
         {
             var action = CurrentPlayer.GetAction(Board);
-            var previousState = Board.Clone();
-            Board.Update(action);
+            var previousState = Board;
+            Board = Board.DoAction(action);
             NotifyObservers(previousState, Board);
+            return Board;
         }
 
         private void NotifyObservers(Board previousState, Board currentState)

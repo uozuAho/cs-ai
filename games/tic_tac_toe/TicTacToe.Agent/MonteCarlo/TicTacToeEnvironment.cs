@@ -10,10 +10,9 @@ namespace TicTacToe.Agent.MonteCarlo
     /// </summary>
     public class TicTacToeEnvironment
     {
-        public Board CurrentState => _board.Clone();
+        public Board CurrentState { get; private set; } = Board.CreateEmptyBoard(BoardTile.X);
 
         private readonly ITicTacToeAgent _opponent;
-        private Board _board = Board.CreateEmptyBoard();
 
         public TicTacToeEnvironment(ITicTacToeAgent opponent)
         {
@@ -23,41 +22,40 @@ namespace TicTacToe.Agent.MonteCarlo
 
         public Board Reset()
         {
-            _board = Board.CreateEmptyBoard();
-            _board.CurrentPlayer = _opponent.Tile.Other();
+            CurrentState = Board.CreateEmptyBoard(_opponent.Tile.Other());
 
-            return _board.Clone();
+            return CurrentState.Clone();
         }
 
         public void SetState(Board board)
         {
-            _board = board.Clone();
+            CurrentState = board;
         }
 
         public TicTacToeEnvironmentStep Step(TicTacToeAction action)
         {
             try
             {
-                _board.Update(action);
+                DoAction(action);
             }
             catch (Exception e)
             {
                 throw new InvalidOperationException(e.Message);
             }
 
-            if (!_board.IsValid())
-                throw new InvalidOperationException($"Action caused invalid state: '{_board.ToString()}'");
+            if (!CurrentState.IsValid())
+                throw new InvalidOperationException($"Action caused invalid state: '{CurrentState}'");
 
-            if (!_board.IsGameOver)
-                _board.Update(_opponent.GetAction(this, _board));
+            if (!CurrentState.IsGameOver)
+                DoAction(_opponent.GetAction(this, CurrentState));
 
             var reward = 0.0;
-            if (_board.Winner() == BoardTile.X) reward = 1.0;
-            if (_board.Winner() == BoardTile.O) reward = -1.0;
+            if (CurrentState.Winner() == BoardTile.X) reward = 1.0;
+            if (CurrentState.Winner() == BoardTile.O) reward = -1.0;
 
             return new TicTacToeEnvironmentStep
             {
-                Board = _board.Clone(),
+                Board = CurrentState,
                 Reward = reward
             };
         }
@@ -66,7 +64,7 @@ namespace TicTacToe.Agent.MonteCarlo
         {
             for (var pos = 0; pos < 9; pos++)
             {
-                if (_board.GetTileAt(pos) == BoardTile.Empty)
+                if (CurrentState.GetTileAt(pos) == BoardTile.Empty)
                 {
                     yield return new TicTacToeAction
                     {
@@ -75,6 +73,11 @@ namespace TicTacToe.Agent.MonteCarlo
                     };
                 }
             }
+        }
+
+        private void DoAction(TicTacToeAction action)
+        {
+            CurrentState = CurrentState.DoAction(action);
         }
     }
 }

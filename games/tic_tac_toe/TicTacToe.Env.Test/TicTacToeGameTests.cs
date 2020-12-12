@@ -15,7 +15,7 @@ namespace TicTacToe.Game.Test
         [SetUp]
         public void Setup()
         {
-            _board = new Board();
+            _board = Board.CreateEmptyBoard();
             _player1 = Substitute.For<IPlayer>();
             _player2 = Substitute.For<IPlayer>();
             _player1.Tile.Returns(BoardTile.X);
@@ -54,7 +54,7 @@ namespace TicTacToe.Game.Test
             var player2 = new TestPlayer(BoardTile.O);
             player2.SetMoves(new[] { 1, 2 });
 
-            var game = new TicTacToeGame(new Board(), player1, player2);
+            var game = new TicTacToeGame(Board.CreateEmptyBoard(), player1, player2);
 
             // act
             game.Run();

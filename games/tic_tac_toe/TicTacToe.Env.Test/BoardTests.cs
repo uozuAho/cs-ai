@@ -71,7 +71,7 @@ namespace TicTacToe.Game.Test
         [Test]
         public void Clone_ShouldNotBeEqual()
         {
-            var board = new Board();
+            var board = Board.CreateEmptyBoard();
             var board2 = board.Clone();
 
             Assert.AreNotEqual(board, board2);
@@ -80,7 +80,7 @@ namespace TicTacToe.Game.Test
         [Test]
         public void Clone_ShouldHaveSameTiles()
         {
-            var board = new Board();
+            var board = Board.CreateEmptyBoard();
             var board2 = board.Clone();
 
             for (var i = 0; i < 9; i++)
@@ -90,22 +90,31 @@ namespace TicTacToe.Game.Test
         }
 
         [Test]
-        public void Clone_ShouldHaveSameCurrentPlayer()
+        public void CreateEmpty_CurrentPlayerIsX()
         {
-            var board = new Board {CurrentPlayer = BoardTile.O};
+            var board = Board.CreateEmptyBoard();
 
+            Assert.AreEqual(BoardTile.X, board.CurrentPlayer);
+        }
+
+        [Test]
+        public void Clone_HasSameCurrentPlayer()
+        {
+            var board = Board.CreateEmptyBoard(BoardTile.O);
+
+            Assert.AreEqual(BoardTile.O, board.CurrentPlayer);
             Assert.AreEqual(BoardTile.O, board.Clone().CurrentPlayer);
         }
 
         [Test]
-        public void GivenClone_ModifyOriginal_ShouldNotModifyClone()
+        public void GivenClone_ModifyOriginal_DoesNotModifyClone()
         {
-            var board = new Board();
+            var board = Board.CreateEmptyBoard();
             var board2 = board.Clone();
             const int position = 0;
             var board2TileBefore = board2.GetTileAt(position);
 
-            board.Update(new TicTacToeAction {Tile = BoardTile.X, Position = position});
+            board.DoAction(new TicTacToeAction {Tile = BoardTile.X, Position = position});
 
             Assert.AreEqual(board2TileBefore, board2.GetTileAt(position));
         }
