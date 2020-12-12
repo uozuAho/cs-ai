@@ -3,23 +3,29 @@ using System.Linq;
 
 namespace dp
 {
-    class DpPolicyOptimiser
+    internal class DpPolicyOptimiser
     {
         /// <summary>
         /// Uses value iteration to find the optimal policy and values for the given problem
         /// </summary>
         public static (IDeterministicPolicy<TState, TAction>, ValueTable<TState, TAction>)
-            FindOptimalPolicy<TState, TAction>(IProblem<TState, TAction> problem,
-                IRewarder<TState, TAction> rewarder, int evaluationSweepsPerPolicyUpdate = 1)
+            FindOptimalPolicy<TState, TAction>(
+                IProblem<TState, TAction> problem,
+                IRewarder<TState, TAction> rewarder,
+                int evaluationSweepsPerPolicyUpdate = 1)
+            where TState : struct
+            where TAction : struct
         {
             const int maxIterations = 100;
             var values = new ValueTable<TState, TAction>(problem);
             IPolicy<TState, TAction> initialPolicy = new UniformRandomPolicy<TState, TAction>(problem);
-            IDeterministicPolicy<TState, TAction> greedyPolicy = null;
+
+            values.Evaluate(initialPolicy, rewarder, evaluationSweepsPerPolicyUpdate);
+            var greedyPolicy = GreedyPolicy<TState, TAction>.Create(problem, values, rewarder);
 
             for (var i = 0; i < maxIterations; i++)
             {
-                values.Evaluate(greedyPolicy ?? initialPolicy, rewarder, evaluationSweepsPerPolicyUpdate);
+                values.Evaluate(greedyPolicy, rewarder, evaluationSweepsPerPolicyUpdate);
 
                 var newGreedyPolicy = GreedyPolicy<TState, TAction>.Create(problem, values, rewarder);
 

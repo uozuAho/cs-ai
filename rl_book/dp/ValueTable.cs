@@ -5,6 +5,8 @@ using System.Linq;
 namespace dp
 {
     public class ValueTable<TState, TAction>
+        where TState : struct
+        where TAction : struct
     {
         private readonly IProblem<TState, TAction> _problem;
 

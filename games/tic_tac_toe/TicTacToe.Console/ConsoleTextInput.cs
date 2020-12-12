@@ -2,7 +2,7 @@
 {
     public class ConsoleTextInput : ITextInput
     {
-        public string ReadLine()
+        public string? ReadLine()
         {
             return System.Console.ReadLine();
         }

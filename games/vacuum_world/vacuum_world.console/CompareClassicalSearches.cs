@@ -26,20 +26,16 @@ namespace vacuum_world.console
                 //    ^ 25    (25 squares)
                 //    * 25    (25 possible vacuum locations)
                 //    = 838 860 800
-                new SearchAlgorithmWithLabel
-                {
-                    Label = "BFS",
-                    Algorithm = new BreadthFirstSearch<VacuumWorldState, VacuumWorldAction>(problem),
-                },
+                new SearchAlgorithmWithLabel("BFS",
+                    new BreadthFirstSearch<VacuumWorldState, VacuumWorldAction>(problem)
+                ),
                 
                 // Greedy best first
                 // greedy best first is much more efficient, but won't find an optimal solution, ie. number of
                 // moves to clean all squares may be more than the minimum possible
-                new SearchAlgorithmWithLabel
-                {
-                    Label = "Greedy best first, heuristic: number of dirty squares",
-                    Algorithm = new GreedyBestFirstSearch<VacuumWorldState, VacuumWorldAction>(problem, s => s.NumberOfDirtySquares()) 
-                },
+                new SearchAlgorithmWithLabel("Greedy best first, heuristic: number of dirty squares",
+                    new GreedyBestFirstSearch<VacuumWorldState, VacuumWorldAction>(problem, s => s.NumberOfDirtySquares())
+                ),
                 
                 // A*
                 // A* is optimal and optimally efficient, given the heuristic is admissible (always
@@ -48,41 +44,33 @@ namespace vacuum_world.console
                 // h = number of dirty squares
                 // - admissible & consistent
                 // - too much of an underestimate, results in searching too many states 
-                new SearchAlgorithmWithLabel
-                {
-                    Label = "A*, heuristic: number of dirty squares",
-                    Algorithm = new AStarSearch<VacuumWorldState, VacuumWorldAction>(problem, s => s.NumberOfDirtySquares())
-                },
+                new SearchAlgorithmWithLabel("A*, heuristic: number of dirty squares",
+                    new AStarSearch<VacuumWorldState, VacuumWorldAction>(problem, s => s.NumberOfDirtySquares())
+                ),
                 
                 // h = 2 * number of dirty squares
                 // - closer to the truth - need to move to each square, and clean it (2 moves per square)
                 // - admissible & consistent
                 // - a closer underestimate, searches fewer than the above h
-                new SearchAlgorithmWithLabel
-                {
-                    Label = "A*, heuristic: 2 x number of dirty squares",
-                    Algorithm = new AStarSearch<VacuumWorldState, VacuumWorldAction>(problem, s => 2 * s.NumberOfDirtySquares())
-                },
+                new SearchAlgorithmWithLabel("A*, heuristic: 2 x number of dirty squares",
+                    new AStarSearch<VacuumWorldState, VacuumWorldAction>(problem, s => 2 * s.NumberOfDirtySquares())
+                ),
                 
                 // h = 5 * number of dirty squares
                 // - an overestimate to improve solution time
                 // - not admissible, is it consistent?
-                new SearchAlgorithmWithLabel
-                {
-                    Label = "A*, heuristic: 5 x number of dirty squares",
-                    Algorithm = new AStarSearch<VacuumWorldState, VacuumWorldAction>(problem, s => 5 * s.NumberOfDirtySquares())
-                },
+                new SearchAlgorithmWithLabel("A*, heuristic: 5 x number of dirty squares",
+                    new AStarSearch<VacuumWorldState, VacuumWorldAction>(problem, s => 5 * s.NumberOfDirtySquares())
+                ),
                 
                 // h = 2 * number of dirty squares + number of moves to closest dirty square - 1
                 // This seems like a pretty accurate guess
                 // - Admissible and consistent (I think)
                 // - Calculating number of moves to dirty square is inefficient
-                new SearchAlgorithmWithLabel
-                {
-                    Label = "A*, heuristic: 2 x number of dirty squares + distance to closest dirty square - 1",
-                    Algorithm = new AStarSearch<VacuumWorldState, VacuumWorldAction>(problem, state => 
+                new SearchAlgorithmWithLabel("A*, heuristic: 2 x number of dirty squares + distance to closest dirty square - 1",
+                    new AStarSearch<VacuumWorldState, VacuumWorldAction>(problem, state => 
                         state.MinNumberOfMovesToDirtySquare() + 2 * state.NumberOfDirtySquares() - 1)
-                },
+                ),
             };
 
             var numDirtySquares = initialState.NumberOfDirtySquares();
@@ -150,10 +138,10 @@ namespace vacuum_world.console
             public int SolutionCost { get; set; }
         }
 
-        private class SearchAlgorithmWithLabel
+        private record SearchAlgorithmWithLabel(
+            string Label,
+            ISearchAlgorithm<VacuumWorldState, VacuumWorldAction> Algorithm)
         {
-            public string Label { get; set; }
-            public ISearchAlgorithm<VacuumWorldState, VacuumWorldAction> Algorithm { get; set; }
         }
     }
 }

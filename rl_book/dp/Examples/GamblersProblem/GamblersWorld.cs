@@ -10,14 +10,19 @@ namespace dp.Examples.GamblersProblem
         public readonly int DollarsToWin;
 
         private readonly double _probabilityOfHeads;
-        private List<GamblersWorldState> _allStates;
         private readonly Random _random;
+        private readonly List<GamblersWorldState> _allStates;
 
         public GamblersWorld(double probabilityOfHeads, int dollarsToWin)
         {
             _probabilityOfHeads = probabilityOfHeads;
             DollarsToWin = dollarsToWin;
             _random = new Random();
+
+            _allStates = Enumerable
+                .Range(0, DollarsToWin + 1)
+                .Select(i => new GamblersWorldState(i))
+                .ToList();
         }
 
         public bool IsWin(in GamblersWorldState state) => state.DollarsInHand == DollarsToWin;
@@ -27,10 +32,7 @@ namespace dp.Examples.GamblersProblem
 
         public IEnumerable<GamblersWorldState> AllStates()
         {
-            return _allStates ??= Enumerable
-                .Range(0, DollarsToWin + 1)
-                .Select(i => new GamblersWorldState(i))
-                .ToList();
+            return _allStates;
         }
 
         public IEnumerable<GamblersWorldAction> AvailableActions(GamblersWorldState state)
