@@ -20,7 +20,7 @@ namespace TicTacToe.Agent.MonteCarlo
         {
             var actionValues = _values[state];
 
-            return actionValues.MaxBy(av => av.Value).Single().Key;
+            return actionValues.MaxBy(av => av.Value).First().Key;
         }
     }
 }

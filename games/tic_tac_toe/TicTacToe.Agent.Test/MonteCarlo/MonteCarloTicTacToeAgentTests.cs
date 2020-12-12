@@ -6,7 +6,6 @@ namespace TicTacToe.Agent.Test.MonteCarlo
 {
     public class MonteCarloTicTacToeAgentTests
     {
-        // todo: passes 50% of the time. Is this a good test?
         [Test]
         public void AfterTraining_AlwaysBeatsFirstAvailableSlotAgent()
         {
