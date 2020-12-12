@@ -6,8 +6,8 @@ namespace TicTacToe.Console.Test
 {
     public class TestUserOutput : ITextOutput
     {
-        private readonly List<string> _capturedLines = new List<string>();
-        private int _readIndex = 0;
+        private readonly List<string> _capturedLines = new();
+        private int _readIndex;
 
         public void PrintLine(string line)
         {
@@ -19,8 +19,12 @@ namespace TicTacToe.Console.Test
 
         public void ExpectLine(string line)
         {
-            var actualLine = ReadLine();
-            Assert.AreEqual(line, actualLine);
+            if (AllLinesRead())
+            {
+                Assert.Fail($"Expected at line {_readIndex + 1}: '{line}'. No more lines exist.");
+            }
+
+            Assert.AreEqual(line, ReadLine());
         }
 
         public void ExpectLines(params string[] lines)
@@ -37,11 +41,6 @@ namespace TicTacToe.Console.Test
             {
                 ReadLine();
             }
-        }
-
-        public int NumberOfLines()
-        {
-            return _capturedLines.Count;
         }
 
         /// <summary>
@@ -65,6 +64,8 @@ namespace TicTacToe.Console.Test
 
         private string ReadLine()
         {
+            if (AllLinesRead()) throw new InvalidOperationException("No more output lines captured!");
+
             return _capturedLines[_readIndex++];
         }
     }

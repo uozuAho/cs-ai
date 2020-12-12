@@ -61,5 +61,13 @@ namespace TicTacToe.Console.Test
             _output.ExpectLine(-1, $"After {numGames} games, x wins, o wins: " +
                                    $"{expectedNumXWins}, {expectedNumOWins}");
         }
+
+        [Test]
+        public void Train_TrainsAnAgent()
+        {
+            _ticTacToeRunner.Run("train", "mc", "FirstAvailableSlotAgent");
+
+            _output.ExpectLine("Trained agent 'mc' against 'FirstAvailableSlotAgent'");
+        }
     }
 }

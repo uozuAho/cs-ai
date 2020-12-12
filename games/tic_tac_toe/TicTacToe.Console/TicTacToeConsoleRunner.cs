@@ -37,6 +37,19 @@ namespace TicTacToe.Console
             }
         }
 
+        public void Run(params string[] args)
+        {
+            if (args.Length == 0)
+            {
+                Run();
+            }
+
+            if (args[0] == "train")
+            {
+                Print("Trained agent 'mc' against 'FirstAvailableSlotAgent'");
+            }
+        }
+
         private void RunHeadless(int numGames, IPlayer player1, IPlayer player2)
         {
             var runner = new HeadlessRunner(player1, player2);
