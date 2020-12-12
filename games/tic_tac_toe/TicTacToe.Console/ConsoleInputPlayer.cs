@@ -1,4 +1,5 @@
-﻿using TicTacToe.Game;
+﻿using System;
+using TicTacToe.Game;
 
 namespace TicTacToe.Console
 {
@@ -15,6 +16,9 @@ namespace TicTacToe.Console
         {
             System.Console.WriteLine($"place {Tile} on tile (number):");
             var input = System.Console.ReadLine();
+
+            if (input == null) throw new InvalidOperationException("no!");
+
             var pos = int.Parse(input);
 
             return new TicTacToeAction

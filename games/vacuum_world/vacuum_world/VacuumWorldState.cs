@@ -82,8 +82,8 @@ namespace vacuum_world
 
             _squares[x, y] = isDirty;
         }
-        
-        public bool Equals(VacuumWorldState other)
+
+        public bool Equals(VacuumWorldState? other)
         {
             if (ReferenceEquals(null, other)) return false;
             if (ReferenceEquals(this, other)) return true;
@@ -92,7 +92,7 @@ namespace vacuum_world
                    && SquaresAreEqual(_squares, other._squares);
         }
 
-        public override bool Equals(object obj)
+        public override bool Equals(object? obj)
         {
             if (ReferenceEquals(null, obj)) return false;
             if (ReferenceEquals(this, obj)) return true;

@@ -107,7 +107,9 @@ namespace TicTacToe.Console
 
         private string ReadLine()
         {
-            return _userInput.ReadLine();
+            var line = _userInput.ReadLine();
+            if (line == null) throw new InvalidOperationException("no!");
+            return line;
         }
 
         private static string RenderBoard(Board board)
