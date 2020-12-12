@@ -11,6 +11,8 @@ namespace TicTacToe.Agent.MonteCarlo
 
         public TicTacToeMutablePolicy CurrentMutablePolicy { get; set; } = new();
 
+        // e-greedy constant: probability of choosing a random action instead
+        // of the greedy action
         private const double ChanceOfRandomAction = 0.05;
         private readonly Random _random = new();
 
@@ -76,7 +78,6 @@ namespace TicTacToe.Agent.MonteCarlo
                 var action = episode.Steps[t].Action;
                 rewardSum += episode.Steps[t + 1].Reward;
 
-                // hmm this is a bit dumb. Have a 'null action'?
                 if (action == null) continue;
 
                 if (episode.TimeOfFirstVisit(state, action) == t)

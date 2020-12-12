@@ -29,9 +29,3 @@ in their *.console directories.
 - [Reinforcement learning, an introduction](https://www.amazon.com.au/Reinforcement-Learning-Introduction-Richard-Sutton/dp/0262039249)
     - Introduces many reinforcement learning techniques. Provides
       examples and exercises to solidify learnings.
-
-
-# todo
-
-- tic tac toe:
-  - make board a record
