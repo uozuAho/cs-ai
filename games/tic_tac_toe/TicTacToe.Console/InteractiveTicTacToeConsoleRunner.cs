@@ -22,12 +22,10 @@ namespace TicTacToe.Console
         {
             if (args.Length != 2 && args.Length != 3) throw new ArgumentException("must have 2 players");
 
-            ShowAvailablePlayers(_register);
-
             var player1 = _register.GetPlayerByName(args[0], BoardTile.X);
             var player2 = _register.GetPlayerByName(args[1], BoardTile.O);
 
-            var numGames = 1;
+            var numGames = args.Length == 3 ? int.Parse(args[2]) : 1;
 
             if (numGames <= 5)
             {

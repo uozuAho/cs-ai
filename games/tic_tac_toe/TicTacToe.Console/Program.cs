@@ -9,7 +9,7 @@
                 new ConsoleTextOutput(),
                 new PlayerRegister());
 
-            runner.Run();
+            runner.Run(args);
 
             return 0;
         }

@@ -1,5 +1,4 @@
 ﻿using System.Linq;
-using MoreLinq;
 using TicTacToe.Console.Test;
 
 namespace TicTacToe.Console
@@ -40,7 +39,7 @@ namespace TicTacToe.Console
 
         private void PrintUsage()
         {
-            Print("usage: run [play|train]");
+            Print("usage: run <play|train> [num games]");
         }
 
         private void Print(string message)

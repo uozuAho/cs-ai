@@ -19,19 +19,18 @@ namespace TicTacToe.Console.Test
         [Test]
         public void TwoFirstAvailableSlotAgents_PlayOneCompleteGame()
         {
-            _user.WillEnterLines("1");
-
             // act
             _ticTacToeRunner.Run("play", "FirstAvailableSlotAgent", "FirstAvailableSlotAgent");
 
+            _output.ReadToEnd();
+
             // assert
-            _output.ExpectLine("How many games? (more than 5 runs headless)");
-            _output.ExpectLine("");
-            _output.ExpectLine("xox");
-            _output.ExpectLine("oxo");
-            _output.ExpectLine("x..");
-            _output.ExpectLine("");
-            _output.ExpectLine("The winner is: X!");
+            _output.ExpectLine(-6, "");
+            _output.ExpectLine(-5, "xox");
+            _output.ExpectLine(-4, "oxo");
+            _output.ExpectLine(-3, "x..");
+            _output.ExpectLine(-2, "");
+            _output.ExpectLine(-1, "The winner is: X!");
         }
 
         [Test]
