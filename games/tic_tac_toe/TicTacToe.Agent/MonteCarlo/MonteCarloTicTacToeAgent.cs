@@ -90,5 +90,10 @@ namespace TicTacToe.Agent.MonteCarlo
                 }
             }
         }
+
+        public TicTacToeMutablePolicy ToFixedPolicy()
+        {
+            return CurrentMutablePolicy;
+        }
     }
 }

@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.IO;
 using TicTacToe.Agent;
 using TicTacToe.Game;
 
@@ -45,6 +46,15 @@ namespace TicTacToe.Console
         public void AddPlayer(string name, Func<BoardTile, IPlayer> player)
         {
             _players[name] = player;
+        }
+
+        public void LoadPolicyFiles()
+        {
+            foreach (var filename in Directory.EnumerateFiles(".", "*.json"))
+            {
+                var name = filename.Replace(".\\", "").Replace(".json", "");
+                AddPlayer(name, tile => new FirstAvailableSlotAgent(tile));
+            }
         }
     }
 }

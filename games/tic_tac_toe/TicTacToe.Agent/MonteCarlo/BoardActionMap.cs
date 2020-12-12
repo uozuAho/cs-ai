@@ -1,4 +1,5 @@
 ﻿using System.Collections.Generic;
+using System.Linq;
 using TicTacToe.Game;
 
 namespace TicTacToe.Agent.MonteCarlo
@@ -21,6 +22,11 @@ namespace TicTacToe.Agent.MonteCarlo
         public bool HasActionFor(Board board)
         {
             return _actionMap.ContainsKey(board.ToString());
+        }
+
+        public IEnumerable<(Board, TicTacToeAction)> AllActions()
+        {
+            return _actionMap.Select(action => (Board.CreateFromString(action.Key), action.Value));
         }
     }
 }

@@ -1,4 +1,5 @@
-﻿using TicTacToe.Game;
+﻿using System.Collections.Generic;
+using TicTacToe.Game;
 
 namespace TicTacToe.Agent.MonteCarlo
 {
@@ -25,6 +26,11 @@ namespace TicTacToe.Agent.MonteCarlo
         public bool HasActionFor(Board board)
         {
             return _actionMap.HasActionFor(board);
+        }
+
+        public IEnumerable<(Board, TicTacToeAction)> AllActions()
+        {
+            return _actionMap.AllActions();
         }
     }
 }

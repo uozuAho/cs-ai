@@ -50,14 +50,23 @@ namespace TicTacToe.Console.Test
                                    $"{expectedNumXWins}, {expectedNumOWins}");
         }
 
-        // todo: invalid player/opponent prints help mesg
-
         [Test]
         public void Train_TrainsAnAgent()
         {
             _ticTacToeRunner.Run("train", "mc", "FirstAvailableSlotAgent");
 
             _output.ExpectLine("Trained agent 'mc' against 'FirstAvailableSlotAgent'");
+        }
+
+        [Test]
+        public void AfterTrain_TrainedAgentIsPlayable()
+        {
+            _ticTacToeRunner.Run("train", "mc", "FirstAvailableSlotAgent");
+            _ticTacToeRunner.Run("play", "trained MonteCarloTicTacToeAgent", "FirstAvailableSlotAgent");
+
+            _output.ReadToEnd();
+
+            _output.ExpectLine(-1, "The winner is: X!");
         }
     }
 }
