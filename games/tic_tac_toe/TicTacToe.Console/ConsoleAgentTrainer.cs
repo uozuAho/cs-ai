@@ -29,7 +29,7 @@ namespace TicTacToe.Console
             var opponentAgent = new PlayerAgent(opponent);
             agent.Train(opponentAgent);
             var policyStorage = new PolicyStorage();
-            policyStorage.SaveJsonFile("trained MonteCarloTicTacToeAgent.json", agent.ToFixedPolicy());
+            policyStorage.SaveJsonFile("trained MonteCarloTicTacToeAgent.json", agent.GetCurrentActionMap());
         }
     }
 }

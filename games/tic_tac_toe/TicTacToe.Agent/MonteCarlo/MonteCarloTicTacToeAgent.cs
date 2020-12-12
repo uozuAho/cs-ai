@@ -9,13 +9,13 @@ namespace TicTacToe.Agent.MonteCarlo
     {
         public BoardTile Tile { get; }
 
-        public TicTacToeMutablePolicy CurrentMutablePolicy { get; set; } = new();
-
         // e-greedy constant: probability of choosing a random action instead
         // of the greedy action
         // possible improvement: reduce over time during training
         private const double ChanceOfRandomAction = 0.05;
         private readonly Random _random = new();
+
+        private readonly BoardActionMap _actions = new();
 
         public MonteCarloTicTacToeAgent(BoardTile tile)
         {
@@ -24,13 +24,18 @@ namespace TicTacToe.Agent.MonteCarlo
 
         public IPlayer ToFixedPolicyPlayer()
         {
-            return CurrentMutablePolicy.ToPlayer(Tile);
+            return new TicTacToePolicyPlayer(Tile, _actions);
+        }
+
+        public BoardActionMap GetCurrentActionMap()
+        {
+            return _actions;
         }
 
         public TicTacToeAction GetAction(TicTacToeEnvironment environment)
         {
-            var action = CurrentMutablePolicy.HasActionFor(environment.CurrentState)
-                ? CurrentMutablePolicy.Action(environment.CurrentState)
+            var action = _actions.HasActionFor(environment.CurrentState)
+                ? _actions.ActionFor(environment.CurrentState)
                 : _random.Choice(environment.ActionSpace());
 
             if (_random.TrueWithProbability(ChanceOfRandomAction))
@@ -50,14 +55,14 @@ namespace TicTacToe.Agent.MonteCarlo
             {
                 ImprovePolicy(opponent, actionValues, returns);
 
-                if (CurrentMutablePolicy.NumStates == lastNumStates)
+                if (_actions.NumStates == lastNumStates)
                     noNewStatesSeenForXEpisodes++;
                 else
                 {
                     noNewStatesSeenForXEpisodes = 0;
                 }
 
-                lastNumStates = CurrentMutablePolicy.NumStates;
+                lastNumStates = _actions.NumStates;
 
                 // improvement: make this more meaningful. Maybe stop on value change
                 // falling below a certain threshold
@@ -86,14 +91,9 @@ namespace TicTacToe.Agent.MonteCarlo
                     returns.Add(state, action, rewardSum);
                     actionValues.Set(state, action, returns.AverageReturnFrom(state, action));
                     var bestAction = actionValues.HighestValueAction(state);
-                    CurrentMutablePolicy.SetAction(state, bestAction);
+                    _actions.SetAction(state, bestAction);
                 }
             }
-        }
-
-        public TicTacToeMutablePolicy ToFixedPolicy()
-        {
-            return CurrentMutablePolicy;
         }
     }
 }

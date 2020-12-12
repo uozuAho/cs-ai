@@ -1,11 +1,11 @@
 ﻿using System.IO;
-using TicTacToe.Agent.MonteCarlo;
+using TicTacToe.Agent;
 
 namespace TicTacToe.Console
 {
     public class PolicyStorage
     {
-        public void SaveJsonFile(string filename, TicTacToeMutablePolicy player)
+        public void SaveJsonFile(string filename, BoardActionMap player)
         {
             File.WriteAllText(filename, "asdf");
         }
