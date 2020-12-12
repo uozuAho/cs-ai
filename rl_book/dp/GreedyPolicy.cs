@@ -4,7 +4,9 @@ using System.Linq;
 namespace dp
 {
     internal class GreedyPolicy<TState, TAction>
-        : IPolicy<TState, TAction>, IDeterministicPolicy<TState, TAction>
+        : IDeterministicPolicy<TState, TAction>
+        where TState : struct
+        where TAction : struct
     {
         private readonly IProblem<TState, TAction> _problem;
         private readonly Dictionary<TState, TAction> _actions;
@@ -47,8 +49,6 @@ namespace dp
 
         public bool HasSameActionsAs(IDeterministicPolicy<TState, TAction> otherPolicy)
         {
-            if (otherPolicy == null) return false;
-
             return _actions.Keys.All(state =>
                 _actions[state].Equals(otherPolicy.Action(state)));
         }
@@ -62,8 +62,6 @@ namespace dp
             var maxActionValue = double.MinValue;
             var maxAction = default(TAction);
 
-            // var actionValues = new List<(GamblersWorldAction, double)>();
-
             foreach (var action in problem.AvailableActions(state))
             {
                 var actionValue = 0.0;
@@ -75,8 +73,6 @@ namespace dp
 
                     actionValue += pNextState * (reward + nextStateValue);
                 }
-
-                // actionValues.Add((action, actionValue));
 
                 if (actionValue > maxActionValue)
                 {
