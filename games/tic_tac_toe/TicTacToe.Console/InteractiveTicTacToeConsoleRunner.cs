@@ -18,14 +18,16 @@ namespace TicTacToe.Console
             _register = register;
         }
 
-        public void Run()
+        public void Run(string[] args)
         {
+            if (args.Length != 2 && args.Length != 3) throw new ArgumentException("must have 2 players");
+
             ShowAvailablePlayers(_register);
 
-            var player1 = PromptForPlayer1(_register);
-            var player2 = PromptForPlayer2(_register);
+            var player1 = _register.GetPlayerByName(args[0], BoardTile.X);
+            var player2 = _register.GetPlayerByName(args[1], BoardTile.O);
 
-            var numGames = PromptForNumberOfGames();
+            var numGames = 1;
 
             if (numGames <= 5)
             {
@@ -90,14 +92,14 @@ namespace TicTacToe.Console
         {
             Print("Choose player 1 (x)");
             var input = ReadLine();
-            return register.NewPlayer(input, BoardTile.X);
+            return register.GetPlayerByKey(input, BoardTile.X);
         }
 
         private IPlayer PromptForPlayer2(PlayerRegister register)
         {
             Print("Choose player 2 (o)");
             var input = ReadLine();
-            return register.NewPlayer(input, BoardTile.O);
+            return register.GetPlayerByKey(input, BoardTile.O);
         }
 
         private void Print(string message)

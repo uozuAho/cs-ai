@@ -1,4 +1,6 @@
-﻿using TicTacToe.Console.Test;
+﻿using System.Linq;
+using MoreLinq;
+using TicTacToe.Console.Test;
 
 namespace TicTacToe.Console
 {
@@ -15,23 +17,30 @@ namespace TicTacToe.Console
             _register = register;
         }
 
-        public void Run()
-        {
-            var runner = new InteractiveTicTacToeConsoleRunner(_userInput, _userOutput, _register);
-            runner.Run();
-        }
-
         public void Run(params string[] args)
         {
             if (args.Length == 0)
             {
-                Run();
+                PrintUsage();
             }
 
-            if (args[0] == "train")
+            else switch (args[0])
             {
-                Print("Trained agent 'mc' against 'FirstAvailableSlotAgent'");
+                case "play":
+                {
+                    var runner = new InteractiveTicTacToeConsoleRunner(_userInput, _userOutput, _register);
+                    runner.Run(args.Skip(1).ToArray());
+                    break;
+                }
+                case "train":
+                    Print("Trained agent 'mc' against 'FirstAvailableSlotAgent'");
+                    break;
             }
+        }
+
+        private void PrintUsage()
+        {
+            Print("usage: run [play|train]");
         }
 
         private void Print(string message)

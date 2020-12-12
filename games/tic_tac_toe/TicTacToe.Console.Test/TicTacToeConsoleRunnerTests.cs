@@ -19,39 +19,28 @@ namespace TicTacToe.Console.Test
         [Test]
         public void TwoFirstAvailableSlotAgents_PlayOneCompleteGame()
         {
-            _user.WillEnterLines("b", "b", "1");
+            _user.WillEnterLines("1");
 
             // act
-            _ticTacToeRunner.Run();
+            _ticTacToeRunner.Run("play", "FirstAvailableSlotAgent", "FirstAvailableSlotAgent");
 
             // assert
-            _output.ExpectLines(
-                "Player choices:",
-                "  a: ConsoleInputPlayer",
-                "  b: FirstAvailableSlotAgent",
-                "  c: PTableAgent",
-                "  d: ModifiedPTableAgent",
-                "Choose player 1 (x)",
-                "Choose player 2 (o)",
-                "How many games? (more than 5 runs headless)");
-
-            _output.ReadToEnd();
-
-            _output.ExpectLine(-5, "xox");
-            _output.ExpectLine(-4, "oxo");
-            _output.ExpectLine(-3, "x..");
-            _output.ExpectLine(-2, "");
-            _output.ExpectLine(-1, "The winner is: X!");
+            _output.ExpectLine("How many games? (more than 5 runs headless)");
+            _output.ExpectLine("");
+            _output.ExpectLine("xox");
+            _output.ExpectLine("oxo");
+            _output.ExpectLine("x..");
+            _output.ExpectLine("");
+            _output.ExpectLine("The winner is: X!");
         }
 
         [Test]
         public void TwoFirstAvailableSlotAgents_PlayMoreThan5GamesHeadless()
         {
             const int numGames = 6;
-            _user.WillEnterLines("b", "b", $"{numGames}");
 
             // act
-            _ticTacToeRunner.Run();
+            _ticTacToeRunner.Run("play", "FirstAvailableSlotAgent", "FirstAvailableSlotAgent", numGames.ToString());
 
             // assert
             _output.ReadToEnd();
@@ -61,6 +50,8 @@ namespace TicTacToe.Console.Test
             _output.ExpectLine(-1, $"After {numGames} games, x wins, o wins: " +
                                    $"{expectedNumXWins}, {expectedNumOWins}");
         }
+
+        // todo: invalid player/opponent prints help mesg
 
         [Test]
         public void Train_TrainsAnAgent()
