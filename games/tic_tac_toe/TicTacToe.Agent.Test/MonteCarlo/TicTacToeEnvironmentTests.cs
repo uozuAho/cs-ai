@@ -34,7 +34,7 @@ namespace TicTacToe.Agent.Test.MonteCarlo
         {
             var board = _env.Reset();
 
-            Assert.True(Board.CreateEmptyBoard().IsSameStateAs(board));
+            Assert.AreEqual(Board.CreateEmptyBoard(), board);
         }
 
         [Test]

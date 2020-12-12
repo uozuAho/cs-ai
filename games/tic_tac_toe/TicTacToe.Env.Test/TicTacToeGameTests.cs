@@ -51,6 +51,7 @@ namespace TicTacToe.Game.Test
         {
             var player1 = new TestPlayer(BoardTile.X);
             player1.SetMoves(new[] { 0, 4, 8 });
+
             var player2 = new TestPlayer(BoardTile.O);
             player2.SetMoves(new[] { 1, 2 });
 
@@ -63,8 +64,9 @@ namespace TicTacToe.Game.Test
             Assert.That(game.IsFinished());
             var expectedBoardState = Board.CreateFromString("xoo|" +
                                                             " x |" +
-                                                            "  x");
-            Assert.That(game.Board.IsSameStateAs(expectedBoardState));
+                                                            "  x",
+                                                            BoardTile.O);
+            Assert.AreEqual(expectedBoardState, game.Board);
             Assert.AreEqual(BoardTile.X, game.Winner());
         }
     }

@@ -41,5 +41,37 @@ namespace TicTacToe.Agent.Test.MonteCarlo
 
             Assert.AreEqual(action, values.HighestValueAction(state));
         }
+
+        [Test]
+        public void DuplicateBoards_AreTreatedAsEqual()
+        {
+            var values = new ActionValues();
+            var emptyBoard1 = Board.CreateEmptyBoard();
+            var emptyBoard2 = Board.CreateEmptyBoard();
+            var action1 = new TicTacToeAction();
+            var action2 = new TicTacToeAction();
+
+            values.Set(emptyBoard1, action1, 1.0);
+            values.Set(emptyBoard2, action2, 2.0);
+
+            Assert.AreEqual(action2, values.HighestValueAction(emptyBoard1));
+            Assert.AreEqual(action2, values.HighestValueAction(emptyBoard2));
+        }
+
+        [Test]
+        public void DuplicateActions_AreTreatedAsEqual()
+        {
+            var values = new ActionValues();
+            var board = Board.CreateEmptyBoard();
+            var action1 = new TicTacToeAction {Position = 2, Tile = BoardTile.X};
+            var action2 = new TicTacToeAction {Position = 2, Tile = BoardTile.X};
+
+            values.Set(board, action1, 1.0);
+            values.Set(board, action2, 2.0);
+
+            var expectedHighestValueAction = new TicTacToeAction {Position = 2, Tile = BoardTile.X};
+
+            Assert.AreEqual(expectedHighestValueAction, values.HighestValueAction(board));
+        }
     }
 }

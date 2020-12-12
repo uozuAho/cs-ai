@@ -84,14 +84,39 @@ namespace TicTacToe.Game
             return new Board(tiles) {CurrentPlayer = CurrentPlayer.Other()};
         }
 
-        public bool IsSameStateAs(Board otherBoard)
+        protected bool Equals(Board other)
         {
+            if (CurrentPlayer != other.CurrentPlayer) return false;
+
             for (var i = 0; i < 9; i++)
             {
-                if (GetTileAt(i) != otherBoard.GetTileAt(i)) return false;
+                if (_tiles[i] != other._tiles[i]) return false;
             }
 
             return true;
+        }
+
+        public override bool Equals(object obj)
+        {
+            if (ReferenceEquals(null, obj)) return false;
+            if (ReferenceEquals(this, obj)) return true;
+            if (obj.GetType() != this.GetType()) return false;
+            return Equals((Board) obj);
+        }
+
+        public override int GetHashCode()
+        {
+            var tilesHash = 19;
+
+            unchecked
+            {
+                foreach (var tile in _tiles)
+                {
+                    tilesHash = tilesHash * 31 + tile.GetHashCode();
+                }
+            }
+
+            return HashCode.Combine(tilesHash, (int) CurrentPlayer);
         }
 
         public bool IsFull()

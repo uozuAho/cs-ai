@@ -1,3 +1,4 @@
+using System.Collections.Immutable;
 using System.Linq;
 using NUnit.Framework;
 
@@ -69,12 +70,12 @@ namespace TicTacToe.Game.Test
         }
 
         [Test]
-        public void Clone_ShouldNotBeEqual()
+        public void Clone_ShouldBeEqual()
         {
             var board = Board.CreateEmptyBoard();
             var board2 = board.Clone();
 
-            Assert.AreNotEqual(board, board2);
+            Assert.AreEqual(board, board2);
         }
 
         [Test]
@@ -140,6 +141,34 @@ namespace TicTacToe.Game.Test
             var board = Board.CreateFromString("x  |   |   ");
 
             Assert.AreEqual(8, board.AvailableActions().Count());
+        }
+
+        [Test]
+        public void ImmutableArrayCopies_AreNotEqual()
+        {
+            var a = ImmutableArray.Create(1, 2, 3);
+            var b = ImmutableArray.Create(1, 2, 3);
+
+            Assert.AreNotEqual(a, b);
+            Assert.True(a.SequenceEqual(b));
+        }
+
+        [Test]
+        public void ImmutableArrayCopies_AreSequenceEqual()
+        {
+            var a = ImmutableArray.Create(1, 2, 3);
+            var b = ImmutableArray.Create(1, 2, 3);
+
+            Assert.True(a.SequenceEqual(b));
+        }
+
+        [Test]
+        public void ImmutableArrayCopies_HaveDifferentHashCodes()
+        {
+            var a = ImmutableArray.Create(1, 2, 3);
+            var b = ImmutableArray.Create(1, 2, 3);
+
+            Assert.AreNotEqual(a.GetHashCode(), b.GetHashCode());
         }
     }
 }
