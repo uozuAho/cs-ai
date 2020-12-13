@@ -2,12 +2,12 @@
 
 namespace TicTacToe.Agent.MonteCarlo
 {
-    public class TicTacToePolicyPlayer : IPlayer
+    public class TicTacToeFixedPolicyPlayer : ITicTacToePlayer
     {
         public BoardTile Tile { get; }
         private readonly BoardActionMap _actionMap;
 
-        public TicTacToePolicyPlayer(BoardTile tile, BoardActionMap actionMap)
+        public TicTacToeFixedPolicyPlayer(BoardTile tile, BoardActionMap actionMap)
         {
             _actionMap = actionMap;
             Tile = tile;

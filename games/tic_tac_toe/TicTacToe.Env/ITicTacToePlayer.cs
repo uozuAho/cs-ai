@@ -1,6 +1,6 @@
 ﻿namespace TicTacToe.Game
 {
-    public interface IPlayer
+    public interface ITicTacToePlayer
     {
         BoardTile Tile { get; }
         TicTacToeAction GetAction(Board board);

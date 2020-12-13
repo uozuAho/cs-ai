@@ -11,7 +11,7 @@ namespace TicTacToe.Agent
     /// It learns to win all games against <see cref="FirstAvailableSlotAgent"/>, once random actions are
     /// turned off.
     /// </summary>
-    public class RlBookModifiedPTableAgent : IPlayer, IGameStateObserver
+    public class RlBookModifiedPTableAgent : ITicTacToePlayer, IGameStateObserver
     {
         public BoardTile Tile { get; }
 

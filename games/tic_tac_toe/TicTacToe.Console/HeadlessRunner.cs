@@ -6,11 +6,11 @@ namespace TicTacToe.Console
 {
     class HeadlessRunner
     {
-        private readonly IPlayer _player1;
-        private readonly IPlayer _player2;
+        private readonly ITicTacToePlayer _player1;
+        private readonly ITicTacToePlayer _player2;
         private readonly List<BoardTile?> _winnerRecord;
 
-        public HeadlessRunner(IPlayer player1, IPlayer player2)
+        public HeadlessRunner(ITicTacToePlayer player1, ITicTacToePlayer player2)
         {
             _player1 = player1;
             _player2 = player2;
@@ -33,7 +33,7 @@ namespace TicTacToe.Console
             return _winnerRecord.Count(winner => winner == tile);
         }
 
-        private static TicTacToeGame RunSingleGame(IPlayer player1, IPlayer player2)
+        private static TicTacToeGame RunSingleGame(ITicTacToePlayer player1, ITicTacToePlayer player2)
         {
             var game = new TicTacToeGame(Board.CreateEmptyBoard(), player1, player2);
 

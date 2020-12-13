@@ -4,7 +4,7 @@ using TicTacToe.Game;
 
 namespace TicTacToe.Agent
 {
-    public class FirstAvailableSlotAgent : IPlayer, ITicTacToeAgent
+    public class FirstAvailableSlotAgent : ITicTacToePlayer, ITicTacToeAgent
     {
         public BoardTile Tile { get; }
 

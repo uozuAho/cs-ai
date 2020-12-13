@@ -22,9 +22,9 @@ namespace TicTacToe.Agent.MonteCarlo
             Tile = tile;
         }
 
-        public IPlayer ToFixedPolicyPlayer()
+        public ITicTacToePlayer ToFixedPolicyPlayer()
         {
-            return new TicTacToePolicyPlayer(Tile, _actions);
+            return new TicTacToeFixedPolicyPlayer(Tile, _actions);
         }
 
         public BoardActionMap GetCurrentActionMap()

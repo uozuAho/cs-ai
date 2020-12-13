@@ -5,15 +5,15 @@ namespace TicTacToe.Console
 {
     internal class PlayerAgent : ITicTacToeAgent
     {
-        public BoardTile Tile => _player.Tile;
+        public BoardTile Tile => _ticTacToePlayer.Tile;
 
-        public TicTacToeAction GetAction(TicTacToeEnvironment environment, Board board) => _player.GetAction(board);
+        public TicTacToeAction GetAction(TicTacToeEnvironment environment, Board board) => _ticTacToePlayer.GetAction(board);
 
-        private readonly IPlayer _player;
+        private readonly ITicTacToePlayer _ticTacToePlayer;
 
-        public PlayerAgent(IPlayer player)
+        public PlayerAgent(ITicTacToePlayer ticTacToePlayer)
         {
-            _player = player;
+            _ticTacToePlayer = ticTacToePlayer;
         }
     }
 }

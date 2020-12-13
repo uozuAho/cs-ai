@@ -2,13 +2,13 @@ using System.Collections.Generic;
 
 namespace TicTacToe.Game.Test.Utils
 {
-    public class TestPlayer : IPlayer
+    public class TestTicTacToePlayer : ITicTacToePlayer
     {
         public BoardTile Tile { get; }
 
         private readonly Queue<int> _moves;
 
-        public TestPlayer(BoardTile playerTile)
+        public TestTicTacToePlayer(BoardTile playerTile)
         {
             Tile = playerTile;
             _moves = new Queue<int>();

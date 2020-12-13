@@ -3,11 +3,11 @@ using TicTacToe.Game;
 
 namespace TicTacToe.Console
 {
-    public class ConsoleInputPlayer : IPlayer
+    public class ConsoleInputTicTacToePlayer : ITicTacToePlayer
     {
         public BoardTile Tile { get; }
 
-        public ConsoleInputPlayer(BoardTile playerTile)
+        public ConsoleInputTicTacToePlayer(BoardTile playerTile)
         {
             Tile = playerTile;
         }

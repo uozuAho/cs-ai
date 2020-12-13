@@ -8,16 +8,16 @@ namespace TicTacToe.Game.Test
     public class TicTacToeGameTests
     {
         private Board _board;
-        private IPlayer _player1;
-        private IPlayer _player2;
+        private ITicTacToePlayer _player1;
+        private ITicTacToePlayer _player2;
         private TicTacToeGame _game;
 
         [SetUp]
         public void Setup()
         {
             _board = Board.CreateEmptyBoard();
-            _player1 = Substitute.For<IPlayer>();
-            _player2 = Substitute.For<IPlayer>();
+            _player1 = Substitute.For<ITicTacToePlayer>();
+            _player2 = Substitute.For<ITicTacToePlayer>();
             _player1.Tile.Returns(BoardTile.X);
             _player2.Tile.Returns(BoardTile.O);
             _game = new TicTacToeGame(_board, _player1, _player2);
@@ -49,10 +49,10 @@ namespace TicTacToe.Game.Test
         [Test]
         public void Player1X_WinsInThreeMoves_Diagonal()
         {
-            var player1 = new TestPlayer(BoardTile.X);
+            var player1 = new TestTicTacToePlayer(BoardTile.X);
             player1.SetMoves(new[] { 0, 4, 8 });
 
-            var player2 = new TestPlayer(BoardTile.O);
+            var player2 = new TestTicTacToePlayer(BoardTile.O);
             player2.SetMoves(new[] { 1, 2 });
 
             var game = new TicTacToeGame(Board.CreateEmptyBoard(), player1, player2);

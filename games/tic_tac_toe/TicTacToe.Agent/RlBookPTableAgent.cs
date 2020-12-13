@@ -15,7 +15,7 @@ namespace TicTacToe.Agent
     /// This means the table is not updated when the agent loses, which I think
     /// is critical information...
     /// </summary>
-    public class RlBookPTableAgent : IPlayer
+    public class RlBookPTableAgent : ITicTacToePlayer
     {
         public BoardTile Tile { get; }
 
