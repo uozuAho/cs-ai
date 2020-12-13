@@ -5,7 +5,7 @@ using TicTacToe.Game;
 
 namespace TicTacToe.Agent.MonteCarlo
 {
-    public class MonteCarloTicTacToeAgent
+    public class MonteCarloTicTacToeAgent : ITicTacToeAgent
     {
         public BoardTile Tile { get; }
 

@@ -53,7 +53,7 @@ namespace TicTacToe.Agent
 
             while (!done)
             {
-                var action = agent.GetAction(env, board);
+                var action = agent.GetAction(env);
 
                 yield return new EpisodeStep
                 {

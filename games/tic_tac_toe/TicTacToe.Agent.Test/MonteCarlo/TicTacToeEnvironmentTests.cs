@@ -17,14 +17,12 @@ namespace TicTacToe.Agent.Test.MonteCarlo
         {
             _opponent = Substitute.For<ITicTacToeAgent>();
             _opponent.Tile.Returns(BoardTile.O);
-            _opponent.GetAction(
-                Arg.Any<TicTacToeEnvironment>(),
-                Arg.Any<Board>())
+            _opponent.GetAction(Arg.Any<TicTacToeEnvironment>())
                 .Returns(new TicTacToeAction
-            {
-                Position = 0,
-                Tile = BoardTile.O
-            });
+                {
+                    Position = 0,
+                    Tile = BoardTile.O
+                });
 
             _env = new TicTacToeEnvironment(_opponent);
         }
@@ -43,7 +41,7 @@ namespace TicTacToe.Agent.Test.MonteCarlo
             var placeXAtTopLeft = new TicTacToeAction {Position = 0, Tile = BoardTile.X};
             var placeOAtTopMiddle = new TicTacToeAction {Position = 1, Tile = BoardTile.O};
 
-            _opponent.GetAction(Arg.Any<TicTacToeEnvironment>(), Arg.Any<Board>())
+            _opponent.GetAction(Arg.Any<TicTacToeEnvironment>())
                 .Returns(placeOAtTopMiddle);
 
             var expectedBoard = Board

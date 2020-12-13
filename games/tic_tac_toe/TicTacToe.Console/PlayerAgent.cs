@@ -7,7 +7,7 @@ namespace TicTacToe.Console
     {
         public BoardTile Tile => _ticTacToePlayer.Tile;
 
-        public TicTacToeAction GetAction(TicTacToeEnvironment environment, Board board) => _ticTacToePlayer.GetAction(board);
+        public TicTacToeAction GetAction(TicTacToeEnvironment environment) => _ticTacToePlayer.GetAction(environment.CurrentState);
 
         private readonly ITicTacToePlayer _ticTacToePlayer;
 

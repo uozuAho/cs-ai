@@ -47,7 +47,7 @@ namespace TicTacToe.Agent
                 throw new InvalidOperationException($"Action caused invalid state: '{CurrentState}'");
 
             if (!CurrentState.IsGameOver)
-                DoAction(_opponent.GetAction(this, CurrentState));
+                DoAction(_opponent.GetAction(this));
 
             var reward = 0.0;
             if (CurrentState.Winner() == BoardTile.X) reward = 1.0;

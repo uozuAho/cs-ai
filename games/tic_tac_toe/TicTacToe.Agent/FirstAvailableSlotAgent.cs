@@ -29,9 +29,9 @@ namespace TicTacToe.Agent
             throw new InvalidOperationException("No available actions");
         }
 
-        public TicTacToeAction GetAction(TicTacToeEnvironment environment, Board board)
+        public TicTacToeAction GetAction(TicTacToeEnvironment environment)
         {
-            return GetAction(board);
+            return GetAction(environment.CurrentState);
         }
     }
 }
