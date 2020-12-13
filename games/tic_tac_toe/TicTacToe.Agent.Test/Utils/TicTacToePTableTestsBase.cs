@@ -3,7 +3,7 @@ using NUnit.Framework;
 using TicTacToe.Agent.Utils;
 using TicTacToe.Game;
 
-namespace TicTacToe.Agent.Test
+namespace TicTacToe.Agent.Test.Utils
 {
     public abstract class TicTacToePTableTestsBase
     {

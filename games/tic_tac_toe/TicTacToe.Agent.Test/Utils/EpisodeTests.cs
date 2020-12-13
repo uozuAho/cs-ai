@@ -4,7 +4,7 @@ using TicTacToe.Agent.Agents;
 using TicTacToe.Agent.Utils;
 using TicTacToe.Game;
 
-namespace TicTacToe.Agent.Test.MonteCarlo
+namespace TicTacToe.Agent.Test.Utils
 {
     internal class EpisodeTests
     {

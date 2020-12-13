@@ -3,7 +3,7 @@ using TicTacToe.Agent.Agents;
 using TicTacToe.Agent.Agents.MonteCarlo;
 using TicTacToe.Game;
 
-namespace TicTacToe.Agent.Test.MonteCarlo
+namespace TicTacToe.Agent.Test.Agents.MonteCarlo
 {
     public class MonteCarloTicTacToeAgentTests
     {

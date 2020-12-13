@@ -5,7 +5,7 @@ using NUnit.Framework;
 using TicTacToe.Agent.Environment;
 using TicTacToe.Game;
 
-namespace TicTacToe.Agent.Test.MonteCarlo
+namespace TicTacToe.Agent.Test.Environment
 {
     public class TicTacToeEnvironmentTests
     {
