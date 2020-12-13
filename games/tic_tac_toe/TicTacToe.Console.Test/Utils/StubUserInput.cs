@@ -1,7 +1,7 @@
 using System;
 using System.Collections.Generic;
 
-namespace TicTacToe.Console.Test
+namespace TicTacToe.Console.Test.Utils
 {
     public class StubUserInput : ITextInput
     {
