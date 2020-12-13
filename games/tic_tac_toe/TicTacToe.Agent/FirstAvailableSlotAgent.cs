@@ -1,5 +1,4 @@
 ﻿using System;
-using TicTacToe.Agent.MonteCarlo;
 using TicTacToe.Game;
 
 namespace TicTacToe.Agent

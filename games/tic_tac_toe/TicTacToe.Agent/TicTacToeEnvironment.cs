@@ -2,7 +2,7 @@
 using System.Collections.Generic;
 using TicTacToe.Game;
 
-namespace TicTacToe.Agent.MonteCarlo
+namespace TicTacToe.Agent
 {
     /// <summary>
     /// An AI Gym-like interface to tic tac toe

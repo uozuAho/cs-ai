@@ -1,9 +1,10 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
+using TicTacToe.Agent.MonteCarlo;
 using TicTacToe.Game;
 
-namespace TicTacToe.Agent.MonteCarlo
+namespace TicTacToe.Agent
 {
     public class Episode
     {

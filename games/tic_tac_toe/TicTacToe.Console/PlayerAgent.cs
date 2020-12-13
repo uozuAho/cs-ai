@@ -1,4 +1,4 @@
-﻿using TicTacToe.Agent.MonteCarlo;
+﻿using TicTacToe.Agent;
 using TicTacToe.Game;
 
 namespace TicTacToe.Console

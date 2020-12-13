@@ -2,7 +2,7 @@
 using MoreLinq.Extensions;
 using TicTacToe.Game;
 
-namespace TicTacToe.Agent.MonteCarlo
+namespace TicTacToe.Agent
 {
     public class ActionValues
     {

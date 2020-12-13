@@ -2,7 +2,7 @@
 using System.Linq;
 using TicTacToe.Game;
 
-namespace TicTacToe.Agent.MonteCarlo
+namespace TicTacToe.Agent
 {
     public class Returns
     {

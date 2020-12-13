@@ -1,6 +1,6 @@
 ﻿using TicTacToe.Game;
 
-namespace TicTacToe.Agent.MonteCarlo
+namespace TicTacToe.Agent
 {
     public record EpisodeStep
     {
