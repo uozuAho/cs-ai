@@ -2,9 +2,10 @@
 using System.Collections.Generic;
 using System.Diagnostics;
 using System.Linq;
+using TicTacToe.Agent.Utils;
 using TicTacToe.Game;
 
-namespace TicTacToe.Agent
+namespace TicTacToe.Agent.Agents
 {
     /// <summary>
     /// The tic-tac-toe playing agent as described in the RL book, 1.5

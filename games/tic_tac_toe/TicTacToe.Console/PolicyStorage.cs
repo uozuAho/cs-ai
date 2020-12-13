@@ -1,5 +1,6 @@
 ﻿using System.IO;
 using TicTacToe.Agent;
+using TicTacToe.Agent.Utils;
 
 namespace TicTacToe.Console
 {

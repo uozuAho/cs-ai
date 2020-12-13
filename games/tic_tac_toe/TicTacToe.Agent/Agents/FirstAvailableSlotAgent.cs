@@ -1,7 +1,8 @@
 ﻿using System;
+using TicTacToe.Agent.Environment;
 using TicTacToe.Game;
 
-namespace TicTacToe.Agent
+namespace TicTacToe.Agent.Agents
 {
     public class FirstAvailableSlotAgent : ITicTacToePlayer, ITicTacToeAgent
     {

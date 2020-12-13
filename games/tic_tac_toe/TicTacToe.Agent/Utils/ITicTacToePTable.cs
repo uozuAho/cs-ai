@@ -1,6 +1,6 @@
 ﻿using TicTacToe.Game;
 
-namespace TicTacToe.Agent
+namespace TicTacToe.Agent.Utils
 {
     public interface ITicTacToePTable
     {

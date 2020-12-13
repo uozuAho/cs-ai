@@ -2,7 +2,7 @@
 using System.Collections.Generic;
 using TicTacToe.Game;
 
-namespace TicTacToe.Agent
+namespace TicTacToe.Agent.Environment
 {
     /// <summary>
     /// An AI Gym-like interface to tic tac toe

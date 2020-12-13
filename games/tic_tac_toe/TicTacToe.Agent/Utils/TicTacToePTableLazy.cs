@@ -2,7 +2,7 @@
 using System.Collections.Generic;
 using TicTacToe.Game;
 
-namespace TicTacToe.Agent
+namespace TicTacToe.Agent.Utils
 {
     public class TicTacToePTableLazy : ITicTacToePTable
     {

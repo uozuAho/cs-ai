@@ -2,9 +2,10 @@
 using System.Collections.Generic;
 using System.Diagnostics;
 using System.Linq;
+using TicTacToe.Agent.Utils;
 using TicTacToe.Game;
 
-namespace TicTacToe.Agent
+namespace TicTacToe.Agent.Agents
 {
     /// <summary>
     /// A copy of the RL book's p table agent, except that it updates the p table after _all_ state changes.

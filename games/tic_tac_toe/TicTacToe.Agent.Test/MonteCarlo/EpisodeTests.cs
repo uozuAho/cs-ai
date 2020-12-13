@@ -1,6 +1,7 @@
 ﻿using System.Collections.Generic;
 using NUnit.Framework;
-using TicTacToe.Agent.MonteCarlo;
+using TicTacToe.Agent.Agents;
+using TicTacToe.Agent.Utils;
 using TicTacToe.Game;
 
 namespace TicTacToe.Agent.Test.MonteCarlo

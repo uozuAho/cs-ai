@@ -1,5 +1,6 @@
 ﻿using NUnit.Framework;
-using TicTacToe.Agent.MonteCarlo;
+using TicTacToe.Agent.Agents;
+using TicTacToe.Agent.Agents.MonteCarlo;
 using TicTacToe.Game;
 
 namespace TicTacToe.Agent.Test.MonteCarlo

@@ -1,9 +1,11 @@
 ﻿using System;
 using System.Linq;
 using ailib.Utils;
+using TicTacToe.Agent.Environment;
+using TicTacToe.Agent.Utils;
 using TicTacToe.Game;
 
-namespace TicTacToe.Agent.MonteCarlo
+namespace TicTacToe.Agent.Agents.MonteCarlo
 {
     public class MonteCarloTicTacToeAgent : ITicTacToeAgent
     {

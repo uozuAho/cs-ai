@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.IO;
 using TicTacToe.Agent;
+using TicTacToe.Agent.Agents;
 using TicTacToe.Game;
 
 namespace TicTacToe.Console

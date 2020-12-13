@@ -1,4 +1,5 @@
-﻿using TicTacToe.Game;
+﻿using TicTacToe.Agent.Utils;
+using TicTacToe.Game;
 
 namespace TicTacToe.Agent.Test
 {

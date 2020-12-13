@@ -1,6 +1,8 @@
 ﻿using System.Collections.Generic;
 using NSubstitute;
 using NUnit.Framework;
+using TicTacToe.Agent.Agents;
+using TicTacToe.Agent.Utils;
 using TicTacToe.Game;
 
 namespace TicTacToe.Agent.Test

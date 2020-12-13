@@ -1,7 +1,9 @@
 ﻿using System.Linq;
 using NSubstitute;
 using NUnit.Framework;
-using TicTacToe.Agent.MonteCarlo;
+using TicTacToe.Agent.Agents;
+using TicTacToe.Agent.Agents.MonteCarlo;
+using TicTacToe.Agent.Environment;
 using TicTacToe.Game;
 
 namespace TicTacToe.Agent.Test.MonteCarlo

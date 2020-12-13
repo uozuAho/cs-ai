@@ -2,7 +2,7 @@
 using System.Linq;
 using TicTacToe.Game;
 
-namespace TicTacToe.Agent
+namespace TicTacToe.Agent.Utils
 {
     public class BoardActionMap
     {
