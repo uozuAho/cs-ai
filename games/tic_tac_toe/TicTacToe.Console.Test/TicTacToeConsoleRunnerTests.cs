@@ -1,4 +1,5 @@
 using NUnit.Framework;
+using TicTacToe.Console.Test.Utils;
 
 namespace TicTacToe.Console.Test
 {

@@ -1,5 +1,6 @@
 ﻿using NUnit.Framework;
 using TicTacToe.Agent;
+using TicTacToe.Agent.Agents;
 using TicTacToe.Game;
 
 namespace TicTacToe.Console.Test
@@ -14,8 +15,8 @@ namespace TicTacToe.Console.Test
             Assert.AreEqual(typeof(FirstAvailableSlotAgent),
                 register.GetPlayerByName("FirstAvailableSlotAgent", BoardTile.O).GetType());
 
-            Assert.AreEqual(typeof(ConsoleInputPlayer),
-                register.GetPlayerByName("ConsoleInputPlayer", BoardTile.O).GetType());
+            Assert.AreEqual(typeof(ConsoleInputTicTacToePlayer),
+                register.GetPlayerByName("ConsoleInputTicTacToePlayer", BoardTile.O).GetType());
         }
 
         [Test]

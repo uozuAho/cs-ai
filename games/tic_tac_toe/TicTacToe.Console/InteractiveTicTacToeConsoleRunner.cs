@@ -46,7 +46,7 @@ namespace TicTacToe.Console
             }
         }
 
-        private void RunHeadless(int numGames, IPlayer player1, IPlayer player2)
+        private void RunHeadless(int numGames, ITicTacToePlayer player1, ITicTacToePlayer player2)
         {
             var runner = new HeadlessRunner(player1, player2);
 
@@ -57,7 +57,7 @@ namespace TicTacToe.Console
             Print($"After {runner.NumberOfGames} games, x wins, o wins: {totalXWins}, {totalOWins}");
         }
 
-        private void RunInteractiveGames(int numGames, IPlayer player1, IPlayer player2)
+        private void RunInteractiveGames(int numGames, ITicTacToePlayer player1, ITicTacToePlayer player2)
         {
             for (var i = 0; i < numGames; i++)
             {
@@ -65,7 +65,7 @@ namespace TicTacToe.Console
             }
         }
 
-        private void RunSingleGame(IPlayer player1, IPlayer player2)
+        private void RunSingleGame(ITicTacToePlayer player1, ITicTacToePlayer player2)
         {
             var game = new TicTacToeGame(Board.CreateEmptyBoard(), player1, player2);
 
@@ -86,16 +86,16 @@ namespace TicTacToe.Console
             return int.Parse(ReadLine());
         }
 
-        private IPlayer PromptForPlayer1(PlayerRegister register)
+        private ITicTacToePlayer PromptForPlayer1(PlayerRegister register)
         {
-            Print("Choose player 1 (x)");
+            Print("Choose ticTacToePlayer 1 (x)");
             var input = ReadLine();
             return register.GetPlayerByKey(input, BoardTile.X);
         }
 
-        private IPlayer PromptForPlayer2(PlayerRegister register)
+        private ITicTacToePlayer PromptForPlayer2(PlayerRegister register)
         {
-            Print("Choose player 2 (o)");
+            Print("Choose ticTacToePlayer 2 (o)");
             var input = ReadLine();
             return register.GetPlayerByKey(input, BoardTile.O);
         }

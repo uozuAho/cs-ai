@@ -1,4 +1,4 @@
-﻿using TicTacToe.Agent.MonteCarlo;
+﻿using TicTacToe.Agent.Agents.MonteCarlo;
 using TicTacToe.Console.Test;
 using TicTacToe.Game;
 
@@ -23,7 +23,7 @@ namespace TicTacToe.Console
             _userOutput.PrintLine("Trained agent 'mc' against 'FirstAvailableSlotAgent'");
         }
 
-        private static void TrainAgent(IPlayer opponent)
+        private static void TrainAgent(ITicTacToePlayer opponent)
         {
             var agent = new MonteCarloTicTacToeAgent(BoardTile.X);
             var opponentAgent = new PlayerAgent(opponent);
