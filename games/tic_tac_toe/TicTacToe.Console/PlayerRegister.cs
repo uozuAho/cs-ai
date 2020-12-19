@@ -1,7 +1,9 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.IO;
+using System.Linq;
 using TicTacToe.Agent.Agents;
+using TicTacToe.Agent.Utils;
 using TicTacToe.Game;
 
 namespace TicTacToe.Console
@@ -17,18 +19,6 @@ namespace TicTacToe.Console
             AddPlayer(nameof(RlBookPTableAgent), RlBookPTableAgent.CreateDefaultAgent);
             AddPlayer(nameof(RlBookModifiedPTableAgent), RlBookModifiedPTableAgent.CreateDefaultAgent);
             AddPlayer(nameof(RandomTicTacToeAgent), tile => new RandomTicTacToeAgent(tile));
-        }
-
-        public ITicTacToePlayer GetPlayerByKey(string key, BoardTile playerTile)
-        {
-            switch (key)
-            {
-                case "a": return new ConsoleInputTicTacToePlayer(playerTile);
-                case "b": return new FirstAvailableSlotAgent(playerTile);
-                case "c": return RlBookPTableAgent.CreateDefaultAgent(playerTile);
-                case "d": return RlBookModifiedPTableAgent.CreateDefaultAgent(playerTile);
-            }
-            throw new InvalidOperationException($"Unknown ticTacToePlayer key: {key}");
         }
 
         public IEnumerable<string> AvailablePlayers()
@@ -48,10 +38,14 @@ namespace TicTacToe.Console
 
         public void LoadPolicyFiles()
         {
-            foreach (var filename in Directory.EnumerateFiles(".", "*.json"))
+            foreach (var filename in Directory.EnumerateFiles(".", "*.agent.json"))
             {
-                var name = filename.Replace(".\\", "").Replace(".json", "");
-                AddPlayer(name, tile => new FirstAvailableSlotAgent(tile));
+                var agentName = filename
+                    .Replace(".\\", "")
+                    .Replace(".agent.json", "");
+
+                var policy = BoardActionMap.LoadFromFile(filename);
+                AddPlayer(agentName, tile => new TicTacToeFixedPolicyPlayer(tile, policy));
             }
         }
     }

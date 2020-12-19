@@ -22,7 +22,7 @@ namespace TicTacToe.Console
             var opponent = _register.GetPlayerByName(opponentName, BoardTile.O);
             var agentName = args[2];
             var agent = TrainAgent(opponent);
-            agent.GetCurrentActionMap().SaveToFile($"{agentName}.json");
+            agent.GetCurrentActionMap().SaveToFile($"{agentName}.agent.json");
             _userOutput.PrintLine($"Trained mc agent '{agentName}' against '{opponentName}'");
         }
 
