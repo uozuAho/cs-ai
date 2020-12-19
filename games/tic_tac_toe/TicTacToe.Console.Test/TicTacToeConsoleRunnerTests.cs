@@ -1,3 +1,4 @@
+using System.Linq;
 using NUnit.Framework;
 using TicTacToe.Console.Test.Utils;
 
@@ -62,10 +63,12 @@ namespace TicTacToe.Console.Test
         [Test]
         public void AfterTrain_NewAgentIsInList()
         {
-            _ticTacToeRunner.Run("train", "mc", "FirstAvailableSlotAgent");
+            _ticTacToeRunner.Run("train", "mc", "FirstAvailableSlotAgent", "mc_vs_firstSlot");
             _ticTacToeRunner.Run("list");
 
-            Assert.True(_output.ContainsLine(line => line.Contains("trained MonteCarloTicTacToeAgent")));
+            const string expectedAgent = "mc_vs_firstSlot";
+            Assert.True(_output.ContainsLine(line => line.Contains(expectedAgent)),
+                $"No line containing '{expectedAgent}' in lines:\n" + string.Join("\n", _output.Lines));
         }
 
         [Test]

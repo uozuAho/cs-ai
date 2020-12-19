@@ -10,6 +10,15 @@ namespace TicTacToe.Console.Test.Utils
         private readonly List<string> _capturedLines = new();
         private int _readIndex;
 
+        public IEnumerable<string> Lines
+        {
+            get
+            {
+                ReadToEnd();
+                return _capturedLines;
+            }
+        }
+
         public void PrintLine(string line)
         {
             foreach (var l in line.Split(Environment.NewLine))
