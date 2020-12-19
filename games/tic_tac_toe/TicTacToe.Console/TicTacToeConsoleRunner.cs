@@ -30,7 +30,7 @@ namespace TicTacToe.Console
             {
                 case "play":
                 {
-                    var runner = new InteractiveTicTacToeConsoleRunner(_userInput, _userOutput, _register);
+                    var runner = new InteractiveTicTacToeConsoleRunner(_userOutput, _register);
                     runner.Run(args.Skip(1).ToArray());
                     break;
                 }

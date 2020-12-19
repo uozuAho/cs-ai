@@ -7,13 +7,11 @@ namespace TicTacToe.Console
 {
     public class InteractiveTicTacToeConsoleRunner
     {
-        private readonly ITextInput _userInput;
         private readonly ITextOutput _userOutput;
         private readonly PlayerRegister _register;
 
-        public InteractiveTicTacToeConsoleRunner(ITextInput userInput, ITextOutput userOutput, PlayerRegister register)
+        public InteractiveTicTacToeConsoleRunner(ITextOutput userOutput, PlayerRegister register)
         {
-            _userInput = userInput;
             _userOutput = userOutput;
             _register = register;
         }
@@ -34,15 +32,6 @@ namespace TicTacToe.Console
             else
             {
                 RunHeadless(numGames, player1, player2);
-            }
-        }
-
-        private void ShowAvailablePlayers(PlayerRegister register)
-        {
-            Print("Player choices:");
-            foreach (var description in register.AvailablePlayers())
-            {
-                Print("  " + description);
             }
         }
 
@@ -77,39 +66,15 @@ namespace TicTacToe.Console
 
             Print(RenderBoard(game.Board));
 
-            Print($"The winner is: {game.Winner()}!");
-        }
-
-        private int PromptForNumberOfGames()
-        {
-            Print("How many games? (more than 5 runs headless)");
-            return int.Parse(ReadLine());
-        }
-
-        private ITicTacToePlayer PromptForPlayer1(PlayerRegister register)
-        {
-            Print("Choose ticTacToePlayer 1 (x)");
-            var input = ReadLine();
-            return register.GetPlayerByKey(input, BoardTile.X);
-        }
-
-        private ITicTacToePlayer PromptForPlayer2(PlayerRegister register)
-        {
-            Print("Choose ticTacToePlayer 2 (o)");
-            var input = ReadLine();
-            return register.GetPlayerByKey(input, BoardTile.O);
+            if (game.Winner().HasValue)
+                Print($"The winner is: {game.Winner()}!");
+            else
+                Print("Draw!");
         }
 
         private void Print(string message)
         {
             _userOutput.PrintLine(message);
-        }
-
-        private string ReadLine()
-        {
-            var line = _userInput.ReadLine();
-            if (line == null) throw new InvalidOperationException("no!");
-            return line;
         }
 
         private static string RenderBoard(Board board)
