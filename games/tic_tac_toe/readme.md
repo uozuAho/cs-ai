@@ -2,12 +2,15 @@
 
 Run as a console app:
 
-> cd TicTacToe.Console
-> dotnet run
+```sh
+cd TicTacToe.Console
+# list available agents/players
+dotnet run list
+# train a monte carlo agent against a 'first available slot agent', name it 'john'
+dotnet run train mc FirstAvailableSlotAgent john
+```
 
-This will let you choose 2 players (including yourself), and the number
-of games. There are currently 2 learning agents:
-
+Some agents I made earlier:
 
 ## RlBookPTableAgent
 
@@ -22,14 +25,6 @@ doesn't work. Maybe I've implemented it incorrectly.
 ## RlBookModifiedPTableAgent
 
 Same as above, but actually improves win rate over time.
-
-
-# todo
-
-I want something like:
-
-> dotnet run train policy.json  # trains the agent, saves data to policy
-> dotnet run play policy.json  # plays the trained agent
 
 
 # References
