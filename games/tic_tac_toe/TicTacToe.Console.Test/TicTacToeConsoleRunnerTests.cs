@@ -60,6 +60,15 @@ namespace TicTacToe.Console.Test
         }
 
         [Test]
+        public void AfterTrain_NewAgentIsInList()
+        {
+            _ticTacToeRunner.Run("train", "mc", "FirstAvailableSlotAgent");
+            _ticTacToeRunner.Run("list");
+
+            Assert.True(_output.ContainsLine(line => line.Contains("trained MonteCarloTicTacToeAgent")));
+        }
+
+        [Test]
         public void AfterTrain_TrainedAgentIsPlayable()
         {
             _ticTacToeRunner.Run("train", "mc", "FirstAvailableSlotAgent");

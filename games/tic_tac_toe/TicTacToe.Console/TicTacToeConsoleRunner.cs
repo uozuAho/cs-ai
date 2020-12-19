@@ -18,7 +18,7 @@ namespace TicTacToe.Console
 
         public void Run(params string[] args)
         {
-            if (args.Length == 0)
+            if (args.Length == 0 || args[0] == "-h" || args[0] == "--help")
             {
                 PrintUsage();
                 return;
@@ -40,12 +40,20 @@ namespace TicTacToe.Console
                     trainer.Run(args.Skip(1).ToArray());
                     break;
                 }
+                case "list":
+                {
+                    foreach (var player in _register.AvailablePlayers())
+                    {
+                        Print(player);
+                    }
+                    break;
+                }
             }
         }
 
         private void PrintUsage()
         {
-            Print("usage: run <play|train> [num games]");
+            Print("usage: run <list|play|train> [num games]");
             Print("");
             Print("  Note: train is still a work in progress");
         }

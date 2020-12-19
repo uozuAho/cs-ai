@@ -55,7 +55,7 @@ namespace TicTacToe.Agent.Utils
                 SerializableBoard.FromBoard(a.Item1),
                 SerializableTicTacToeAction.FromAction(a.Item2)));
 
-            File.WriteAllText(path, JsonSerializer.Serialize(serializableActions));
+            File.WriteAllText(path, JsonSerializer.Serialize(serializableActions, new JsonSerializerOptions {WriteIndented = true}));
         }
     }
 }

@@ -1,7 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.IO;
-using TicTacToe.Agent;
 using TicTacToe.Agent.Agents;
 using TicTacToe.Game;
 
@@ -33,10 +32,7 @@ namespace TicTacToe.Console
 
         public IEnumerable<string> AvailablePlayers()
         {
-            yield return "a: ConsoleInputTicTacToePlayer";
-            yield return "b: FirstAvailableSlotAgent";
-            yield return "c: PTableAgent";
-            yield return "d: ModifiedPTableAgent";
+            return _players.Keys;
         }
 
         public ITicTacToePlayer GetPlayerByName(string name, BoardTile playerTile)

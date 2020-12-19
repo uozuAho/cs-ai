@@ -1,5 +1,6 @@
 using System;
 using System.Collections.Generic;
+using System.Linq;
 using NUnit.Framework;
 
 namespace TicTacToe.Console.Test.Utils
@@ -55,6 +56,12 @@ namespace TicTacToe.Console.Test.Utils
                 : lineNumber;
             var actualLine = _capturedLines[positiveLineNumber];
             Assert.AreEqual(line, actualLine, $"at line {lineNumber}");
+        }
+
+        public bool ContainsLine(Predicate<string> predicate)
+        {
+            ReadToEnd();
+            return _capturedLines.Any(line => predicate(line));
         }
 
         private bool AllLinesRead()
