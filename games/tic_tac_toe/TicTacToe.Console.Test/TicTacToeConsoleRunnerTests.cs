@@ -55,9 +55,10 @@ namespace TicTacToe.Console.Test
         [Test]
         public void Train_TrainsAnAgent()
         {
-            _ticTacToeRunner.Run("train", "mc", "FirstAvailableSlotAgent");
+            const string agentName = "mc_agent";
+            _ticTacToeRunner.Run("train", "mc", "FirstAvailableSlotAgent", agentName);
 
-            _output.ExpectLine("Trained agent 'mc' against 'FirstAvailableSlotAgent'");
+            _output.ExpectLine($"Trained mc agent '{agentName}' against 'FirstAvailableSlotAgent'");
         }
 
         [Test]
@@ -74,8 +75,8 @@ namespace TicTacToe.Console.Test
         [Test]
         public void AfterTrain_TrainedAgentIsPlayable()
         {
-            _ticTacToeRunner.Run("train", "mc", "FirstAvailableSlotAgent");
-            _ticTacToeRunner.Run("play", "trained MonteCarloTicTacToeAgent", "FirstAvailableSlotAgent");
+            _ticTacToeRunner.Run("train", "mc", "FirstAvailableSlotAgent", "mc_agent");
+            _ticTacToeRunner.Run("play", "mc_agent", "FirstAvailableSlotAgent");
 
             _output.ReadToEnd();
 

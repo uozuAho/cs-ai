@@ -53,9 +53,12 @@ namespace TicTacToe.Console
 
         private void PrintUsage()
         {
-            Print("usage: run <list|play|train> [num games]");
+            Print("usage: <list|play|train> [num games]");
             Print("");
-            Print("  Note: train is still a work in progress");
+            Print("examples:");
+            Print("");
+            Print("  # train a monte carlo agent against a FirstAvailableSlot agent, save it as 'john'");
+            Print("  train mc FirstAvailableSlotAgent john");
         }
 
         private void Print(string message)

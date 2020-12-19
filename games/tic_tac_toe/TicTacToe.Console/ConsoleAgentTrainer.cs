@@ -18,17 +18,20 @@ namespace TicTacToe.Console
         public void Run(string[] args)
         {
             // var agent = GetAgentFromSomewhere(args[0]);
-            var opponent = _register.GetPlayerByName(args[1], BoardTile.O);
-            TrainAgent(opponent);
-            _userOutput.PrintLine("Trained agent 'mc' against 'FirstAvailableSlotAgent'");
+            var opponentName = args[1];
+            var opponent = _register.GetPlayerByName(opponentName, BoardTile.O);
+            var agentName = args[2];
+            var agent = TrainAgent(opponent);
+            agent.GetCurrentActionMap().SaveToFile($"{agentName}.json");
+            _userOutput.PrintLine($"Trained mc agent '{agentName}' against '{opponentName}'");
         }
 
-        private static void TrainAgent(ITicTacToePlayer opponent)
+        private static MonteCarloTicTacToeAgent TrainAgent(ITicTacToePlayer opponent)
         {
             var agent = new MonteCarloTicTacToeAgent(BoardTile.X);
             var opponentAgent = new PlayerAgent(opponent);
             agent.Train(opponentAgent);
-            agent.GetCurrentActionMap().SaveToFile("trained MonteCarloTicTacToeAgent.json");
+            return agent;
         }
     }
 }
