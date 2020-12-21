@@ -31,9 +31,17 @@ namespace TicTacToe.Console.CommandHandlers
         {
             _register.LoadPolicyFiles();
 
+            _output.PrintLine("Players:");
             foreach (var player in _register.AvailablePlayers())
             {
-                _output.PrintLine(player);
+                _output.PrintLine($"  {player}");
+            }
+
+            _output.PrintLine("");
+            _output.PrintLine("Learning agents:");
+            foreach (var agent in _agentRegister.AvailableAgents())
+            {
+                _output.PrintLine($"  {agent}");
             }
         }
     }

@@ -15,8 +15,6 @@ namespace TicTacToe.Console
         {
             AddPlayer(nameof(ConsoleInputTicTacToePlayer), tile => new ConsoleInputTicTacToePlayer(tile));
             AddPlayer(nameof(FirstAvailableSlotAgent), tile => new FirstAvailableSlotAgent(tile));
-            AddPlayer(nameof(RlBookPTableAgent), RlBookPTableAgent.CreateDefaultAgent);
-            AddPlayer(nameof(RlBookModifiedPTableAgent), RlBookModifiedPTableAgent.CreateDefaultAgent);
             AddPlayer(nameof(RandomTicTacToeAgent), tile => new RandomTicTacToeAgent(tile));
         }
 
