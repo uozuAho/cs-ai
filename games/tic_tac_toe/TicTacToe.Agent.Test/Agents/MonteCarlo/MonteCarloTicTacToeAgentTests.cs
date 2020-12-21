@@ -11,7 +11,7 @@ namespace TicTacToe.Agent.Test.Agents.MonteCarlo
         public void AfterTraining_AlwaysBeatsFirstAvailableSlotAgent()
         {
             var mcAgent = new MonteCarloTicTacToeAgent(BoardTile.X);
-            var opponent = new FirstAvailableSlotAgent(BoardTile.O);
+            var opponent = new FirstAvailableSlotPlayer(BoardTile.O);
 
             mcAgent.Train(opponent);
             var trainedPlayer = mcAgent.ToFixedPolicyPlayer();

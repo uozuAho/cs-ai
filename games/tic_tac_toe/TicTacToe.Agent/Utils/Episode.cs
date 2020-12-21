@@ -1,6 +1,7 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
+using TicTacToe.Agent.Agents;
 using TicTacToe.Agent.Environment;
 using TicTacToe.Game;
 
@@ -19,7 +20,12 @@ namespace TicTacToe.Agent.Utils
             _stateActionTimes = CreateStateActionTimeLookup(Steps);
         }
 
-        public static Episode Generate(ITicTacToeAgent agent, ITicTacToeAgent opponent)
+        public static Episode Generate(ITicTacToePlayer player, ITicTacToePlayer opponent)
+        {
+            return new(GenerateEpisode(player, opponent));
+        }
+
+        public static Episode Generate(ITicTacToeAgent agent, ITicTacToePlayer opponent)
         {
             return new(GenerateEpisode(agent, opponent));
         }
@@ -43,7 +49,13 @@ namespace TicTacToe.Agent.Utils
             return lookup;
         }
 
-        private static IEnumerable<EpisodeStep> GenerateEpisode(ITicTacToeAgent agent, ITicTacToeAgent opponent)
+        private static IEnumerable<EpisodeStep> GenerateEpisode(ITicTacToePlayer player, ITicTacToePlayer opponent)
+        {
+            var agent = new PlayerAgent(player);
+            return GenerateEpisode(agent, opponent);
+        }
+
+        private static IEnumerable<EpisodeStep> GenerateEpisode(ITicTacToeAgent agent, ITicTacToePlayer opponent)
         {
             var env = new TicTacToeEnvironment(opponent);
 

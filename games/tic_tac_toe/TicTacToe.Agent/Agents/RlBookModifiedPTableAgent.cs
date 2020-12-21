@@ -9,7 +9,7 @@ namespace TicTacToe.Agent.Agents
 {
     /// <summary>
     /// A copy of the RL book's p table agent, except that it updates the p table after _all_ state changes.
-    /// It learns to win all games against <see cref="FirstAvailableSlotAgent"/>, once random actions are
+    /// It learns to win all games against <see cref="FirstAvailableSlotPlayer"/>, once random actions are
     /// turned off.
     /// </summary>
     public class RlBookModifiedPTableAgent : ITicTacToePlayer, IGameStateObserver

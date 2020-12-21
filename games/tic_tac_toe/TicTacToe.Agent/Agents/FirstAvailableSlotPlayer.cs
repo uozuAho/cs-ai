@@ -1,14 +1,13 @@
 ﻿using System;
-using TicTacToe.Agent.Environment;
 using TicTacToe.Game;
 
 namespace TicTacToe.Agent.Agents
 {
-    public class FirstAvailableSlotAgent : ITicTacToePlayer, ITicTacToeAgent
+    public class FirstAvailableSlotPlayer : ITicTacToePlayer
     {
         public BoardTile Tile { get; }
 
-        public FirstAvailableSlotAgent(BoardTile playerTile)
+        public FirstAvailableSlotPlayer(BoardTile playerTile)
         {
             Tile = playerTile;
         }
@@ -28,11 +27,6 @@ namespace TicTacToe.Agent.Agents
             }
 
             throw new InvalidOperationException("No available actions");
-        }
-
-        public TicTacToeAction GetAction(TicTacToeEnvironment environment)
-        {
-            return GetAction(environment.CurrentState);
         }
     }
 }

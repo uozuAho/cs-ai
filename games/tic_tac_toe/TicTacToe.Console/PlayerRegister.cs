@@ -14,8 +14,8 @@ namespace TicTacToe.Console
         public PlayerRegister()
         {
             AddPlayer(nameof(ConsoleInputTicTacToePlayer), tile => new ConsoleInputTicTacToePlayer(tile));
-            AddPlayer(nameof(FirstAvailableSlotAgent), tile => new FirstAvailableSlotAgent(tile));
-            AddPlayer(nameof(RandomTicTacToeAgent), tile => new RandomTicTacToeAgent(tile));
+            AddPlayer(nameof(FirstAvailableSlotPlayer), tile => new FirstAvailableSlotPlayer(tile));
+            AddPlayer(nameof(RandomTicTacToePlayer), tile => new RandomTicTacToePlayer(tile));
         }
 
         public IEnumerable<string> AvailablePlayers()

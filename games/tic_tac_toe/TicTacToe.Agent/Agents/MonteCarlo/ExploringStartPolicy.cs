@@ -1,6 +1,7 @@
 ﻿using System;
 using ailib.Utils;
 using TicTacToe.Agent.Environment;
+using TicTacToe.Agent.Utils;
 using TicTacToe.Game;
 
 namespace TicTacToe.Agent.Agents.MonteCarlo
@@ -29,6 +30,16 @@ namespace TicTacToe.Agent.Agents.MonteCarlo
             _isFirstAction = false;
 
             return action;
+        }
+
+        public void Train(ITicTacToePlayer opponent, int? numGamesLimit = null)
+        {
+            throw new NotImplementedException();
+        }
+
+        public BoardActionMap GetCurrentPolicy()
+        {
+            throw new NotImplementedException();
         }
     }
 }

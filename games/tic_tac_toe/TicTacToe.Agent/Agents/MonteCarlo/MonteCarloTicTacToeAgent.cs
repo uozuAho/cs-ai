@@ -29,11 +29,6 @@ namespace TicTacToe.Agent.Agents.MonteCarlo
             return new TicTacToeFixedPolicyPlayer(Tile, _actions);
         }
 
-        public BoardActionMap GetCurrentActionMap()
-        {
-            return _actions;
-        }
-
         public TicTacToeAction GetAction(TicTacToeEnvironment environment)
         {
             var action = _actions.HasActionFor(environment.CurrentState)
@@ -46,7 +41,7 @@ namespace TicTacToe.Agent.Agents.MonteCarlo
             return action;
         }
 
-        public void Train(ITicTacToeAgent opponent, int? numGamesLimit = null)
+        public void Train(ITicTacToePlayer opponent, int? numGamesLimit = null)
         {
             var lastNumStates = 0;
             var noNewStatesSeenForXEpisodes = 0;
@@ -75,7 +70,12 @@ namespace TicTacToe.Agent.Agents.MonteCarlo
             }
         }
 
-        private void ImprovePolicy(ITicTacToeAgent opponent, ActionValues actionValues, Returns returns)
+        public BoardActionMap GetCurrentPolicy()
+        {
+            return _actions;
+        }
+
+        private void ImprovePolicy(ITicTacToePlayer opponent, ActionValues actionValues, Returns returns)
         {
             var rewardSum = 0.0;
             var exploringPolicy = new ExploringStartPolicy(this);

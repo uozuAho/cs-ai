@@ -19,7 +19,7 @@ namespace TicTacToe.Console.Test.CommandHandlers
         {
             // act
             var runner = new PlayCommandHandler(_output, new PlayerRegister());
-            runner.Run("FirstAvailableSlotAgent", "FirstAvailableSlotAgent");
+            runner.Run("FirstAvailableSlotPlayer", "FirstAvailableSlotPlayer");
 
             _output.ReadToEnd();
 
@@ -39,7 +39,7 @@ namespace TicTacToe.Console.Test.CommandHandlers
 
             // act
             var runner = new PlayCommandHandler(_output, new PlayerRegister());
-            runner.Run("FirstAvailableSlotAgent", "FirstAvailableSlotAgent", numGames);
+            runner.Run("FirstAvailableSlotPlayer", "FirstAvailableSlotPlayer", numGames);
 
             // assert
             _output.ReadToEnd();

@@ -27,10 +27,10 @@ namespace TicTacToe.Console.Test.CommandHandlers
         [Test]
         public void AfterTrain_NewAgentIsAvailableInRegister()
         {
-            const string trainedAgentName = "mc_vs_firstSlot";
+            const string trainedAgentName = "mc";
             const int numGames = 1;
 
-            _trainer.Run("FirstAvailableSlotAgent", trainedAgentName, numGames);
+            _trainer.Run(trainedAgentName, "FirstAvailableSlotPlayer", numGames);
             _lister.Run();
 
             Assert.True(_output.ContainsLine(line => line.Contains(trainedAgentName)));
@@ -39,13 +39,15 @@ namespace TicTacToe.Console.Test.CommandHandlers
         [Test]
         public void AfterTrain_TrainedAgentIsPlayable()
         {
-            const string agentName = "mc_agent";
+            const string agentName = "mc";
             const int numGames = 1;
 
-            _trainer.Run("FirstAvailableSlotAgent", agentName, numGames);
-            _runner.Run(agentName, "FirstAvailableSlotAgent");
+            _trainer.Run(agentName, "FirstAvailableSlotPlayer", numGames);
+            _runner.Run(agentName, "FirstAvailableSlotPlayer");
 
-            Assert.True(_output.ContainsLine(line => line.Contains("The winner is:")));
+            Assert.True(
+                _output.ContainsLine(line => line.Contains("The winner is:"))
+                || _output.ContainsLine(line => line.Contains("Draw!")));
         }
     }
 }
