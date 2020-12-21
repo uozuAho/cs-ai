@@ -54,7 +54,7 @@ namespace TicTacToe.Console.Test
         public void Train_TrainsAnAgent()
         {
             const string agentName = "mc_agent";
-            var trainer = new ConsoleAgentTrainer(_output, new PlayerRegister());
+            var trainer = new TrainCommandHandler(_output, new PlayerRegister());
 
             trainer.Run("FirstAvailableSlotAgent", agentName);
 
@@ -66,7 +66,7 @@ namespace TicTacToe.Console.Test
         {
             const string trainedAgentName = "mc_vs_firstSlot";
 
-            var trainer = new ConsoleAgentTrainer(_output, new PlayerRegister());
+            var trainer = new TrainCommandHandler(_output, new PlayerRegister());
             trainer.Run("FirstAvailableSlotAgent", trainedAgentName);
 
             var lister = new ListCommandHandler(new PlayerRegister(), _output);
@@ -79,7 +79,7 @@ namespace TicTacToe.Console.Test
         public void AfterTrain_TrainedAgentIsPlayable()
         {
             const string agentName = "mc_agent";
-            var trainer = new ConsoleAgentTrainer(_output, new PlayerRegister());
+            var trainer = new TrainCommandHandler(_output, new PlayerRegister());
             trainer.Run("FirstAvailableSlotAgent", agentName);
 
             var register = new PlayerRegister();

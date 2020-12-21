@@ -4,22 +4,20 @@ using TicTacToe.Game;
 
 namespace TicTacToe.Console
 {
-    public class ConsoleAgentTrainer
+    public class TrainCommandHandler
     {
         private readonly ITextOutput _userOutput;
         private readonly PlayerRegister _register;
 
-        public ConsoleAgentTrainer(ITextOutput userOutput, PlayerRegister register)
+        public TrainCommandHandler(ITextOutput userOutput, PlayerRegister register)
         {
             _userOutput = userOutput;
             _register = register;
         }
 
-        public void Run(string[] args)
+        public static TrainCommandHandler Default()
         {
-            var opponentName = args[1];
-            var agentName = args[2];
-            Run(opponentName, agentName);
+            return new(new ConsoleTextOutput(), new PlayerRegister());
         }
 
         public void Run(string opponentName, string agentName)
