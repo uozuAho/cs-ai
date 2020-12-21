@@ -1,7 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.IO;
-using System.Linq;
 using TicTacToe.Agent.Agents;
 using TicTacToe.Agent.Utils;
 using TicTacToe.Game;

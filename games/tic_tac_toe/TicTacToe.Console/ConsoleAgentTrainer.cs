@@ -17,10 +17,14 @@ namespace TicTacToe.Console
 
         public void Run(string[] args)
         {
-            // var agent = GetAgentFromSomewhere(args[0]);
             var opponentName = args[1];
-            var opponent = _register.GetPlayerByName(opponentName, BoardTile.O);
             var agentName = args[2];
+            Run(opponentName, agentName);
+        }
+
+        public void Run(string opponentName, string agentName)
+        {
+            var opponent = _register.GetPlayerByName(opponentName, BoardTile.O);
             var agent = TrainAgent(opponent);
             agent.GetCurrentActionMap().SaveToFile($"{agentName}.agent.json");
             _userOutput.PrintLine($"Trained mc agent '{agentName}' against '{opponentName}'");
