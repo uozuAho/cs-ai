@@ -7,11 +7,19 @@ namespace TicTacToe.Console.Test.CommandHandlers
     public class CombinedCommandHandlerTests
     {
         private TestUserOutput _output;
+        private PlayerRegister _playerRegister;
+        private TrainCommandHandler _trainer;
+        private ListCommandHandler _lister;
+        private PlayCommandHandler _runner;
 
         [SetUp]
         public void Setup()
         {
             _output = new TestUserOutput();
+            _playerRegister = new PlayerRegister();
+            _trainer = new TrainCommandHandler(_output, _playerRegister);
+            _lister = new ListCommandHandler(_playerRegister, _output);
+            _runner = new PlayCommandHandler(_output, new PlayerRegister());
         }
 
         [Test]
@@ -20,11 +28,8 @@ namespace TicTacToe.Console.Test.CommandHandlers
             const string trainedAgentName = "mc_vs_firstSlot";
             const int numGames = 1;
 
-            var trainer = new TrainCommandHandler(_output, new PlayerRegister());
-            trainer.Run("FirstAvailableSlotAgent", trainedAgentName, numGames);
-
-            var lister = new ListCommandHandler(new PlayerRegister(), _output);
-            lister.Run();
+            _trainer.Run("FirstAvailableSlotAgent", trainedAgentName, numGames);
+            _lister.Run();
 
             Assert.True(_output.ContainsLine(line => line.Contains(trainedAgentName)));
         }
@@ -35,11 +40,8 @@ namespace TicTacToe.Console.Test.CommandHandlers
             const string agentName = "mc_agent";
             const int numGames = 1;
 
-            var trainer = new TrainCommandHandler(_output, new PlayerRegister());
-            trainer.Run("FirstAvailableSlotAgent", agentName, numGames);
-
-            var runner = new PlayCommandHandler(_output, new PlayerRegister());
-            runner.Run(agentName, "FirstAvailableSlotAgent");
+            _trainer.Run("FirstAvailableSlotAgent", agentName, numGames);
+            _runner.Run(agentName, "FirstAvailableSlotAgent");
 
             Assert.True(_output.ContainsLine(line => line.Contains("The winner is:")));
         }
