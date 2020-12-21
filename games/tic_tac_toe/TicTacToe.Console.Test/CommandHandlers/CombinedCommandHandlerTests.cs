@@ -35,9 +35,7 @@ namespace TicTacToe.Console.Test.CommandHandlers
             var trainer = new TrainCommandHandler(_output, new PlayerRegister());
             trainer.Run("FirstAvailableSlotAgent", agentName);
 
-            var register = new PlayerRegister();
-            register.LoadPolicyFiles();
-            var runner = new PlayCommandHandler(_output, register);
+            var runner = new PlayCommandHandler(_output, new PlayerRegister());
             runner.Run(agentName, "FirstAvailableSlotAgent");
 
             _output.ReadToEnd();

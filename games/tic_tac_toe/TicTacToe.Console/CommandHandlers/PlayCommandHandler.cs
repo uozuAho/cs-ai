@@ -23,6 +23,8 @@ namespace TicTacToe.Console.CommandHandlers
 
         public void Run(string player1Name, string player2Name, int numGames = 1)
         {
+            _register.LoadPolicyFiles();
+
             var player1 = _register.GetPlayerByName(player1Name, BoardTile.X);
             var player2 = _register.GetPlayerByName(player2Name, BoardTile.O);
 
