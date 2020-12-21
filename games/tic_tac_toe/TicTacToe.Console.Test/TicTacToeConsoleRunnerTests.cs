@@ -1,28 +1,25 @@
-using System.Linq;
 using NUnit.Framework;
 using TicTacToe.Console.Test.Utils;
+using TicTacToe.Game;
 
 namespace TicTacToe.Console.Test
 {
     public class TicTacToeConsoleRunnerTests
     {
-        private StubUserInput _user;
         private TestUserOutput _output;
-        private TicTacToeConsoleRunner _ticTacToeRunner;
 
         [SetUp]
         public void Setup()
         {
-            _user = new StubUserInput();
             _output = new TestUserOutput();
-            _ticTacToeRunner = new TicTacToeConsoleRunner(_user, _output, new PlayerRegister());
         }
 
         [Test]
         public void TwoFirstAvailableSlotAgents_PlayOneCompleteGame()
         {
             // act
-            _ticTacToeRunner.Run("play", "FirstAvailableSlotAgent", "FirstAvailableSlotAgent");
+            var runner = new InteractiveTicTacToeConsoleRunner(_output, new PlayerRegister());
+            runner.Run("FirstAvailableSlotAgent", "FirstAvailableSlotAgent");
 
             _output.ReadToEnd();
 
@@ -41,7 +38,8 @@ namespace TicTacToe.Console.Test
             const int numGames = 6;
 
             // act
-            _ticTacToeRunner.Run("play", "FirstAvailableSlotAgent", "FirstAvailableSlotAgent", numGames.ToString());
+            var runner = new InteractiveTicTacToeConsoleRunner(_output, new PlayerRegister());
+            runner.Run("FirstAvailableSlotAgent", "FirstAvailableSlotAgent", numGames);
 
             // assert
             _output.ReadToEnd();
@@ -56,27 +54,39 @@ namespace TicTacToe.Console.Test
         public void Train_TrainsAnAgent()
         {
             const string agentName = "mc_agent";
-            _ticTacToeRunner.Run("train", "mc", "FirstAvailableSlotAgent", agentName);
+            var trainer = new ConsoleAgentTrainer(_output, new PlayerRegister());
+
+            trainer.Run("FirstAvailableSlotAgent", agentName);
 
             _output.ExpectLine($"Trained mc agent '{agentName}' against 'FirstAvailableSlotAgent'");
         }
 
         [Test]
-        public void AfterTrain_NewAgentIsInList()
+        public void AfterTrain_NewAgentIsAvailableInRegister()
         {
-            _ticTacToeRunner.Run("train", "mc", "FirstAvailableSlotAgent", "mc_vs_firstSlot");
-            _ticTacToeRunner.Run("list");
+            const string trainedAgentName = "mc_vs_firstSlot";
 
-            const string expectedAgent = "mc_vs_firstSlot";
-            Assert.True(_output.ContainsLine(line => line.Contains(expectedAgent)),
-                $"No line containing '{expectedAgent}' in lines:\n" + string.Join("\n", _output.Lines));
+            var trainer = new ConsoleAgentTrainer(_output, new PlayerRegister());
+            trainer.Run("FirstAvailableSlotAgent", trainedAgentName);
+
+            var register = new PlayerRegister();
+            register.LoadPolicyFiles();
+
+            var player = register.GetPlayerByName(trainedAgentName, BoardTile.O);
+            Assert.NotNull(player);
         }
 
         [Test]
         public void AfterTrain_TrainedAgentIsPlayable()
         {
-            _ticTacToeRunner.Run("train", "mc", "FirstAvailableSlotAgent", "mc_agent");
-            _ticTacToeRunner.Run("play", "mc_agent", "FirstAvailableSlotAgent");
+            const string agentName = "mc_agent";
+            var trainer = new ConsoleAgentTrainer(_output, new PlayerRegister());
+            trainer.Run("FirstAvailableSlotAgent", agentName);
+
+            var register = new PlayerRegister();
+            register.LoadPolicyFiles();
+            var runner = new InteractiveTicTacToeConsoleRunner(_output, register);
+            runner.Run(agentName, "FirstAvailableSlotAgent");
 
             _output.ReadToEnd();
 
