@@ -1,6 +1,6 @@
 ﻿using System;
 using System.Text;
-using TicTacToe.Console.Test;
+using TicTacToe.Console.Io;
 using TicTacToe.Game;
 
 namespace TicTacToe.Console

@@ -1,5 +1,5 @@
 ﻿using TicTacToe.Agent.Agents.MonteCarlo;
-using TicTacToe.Console.Test;
+using TicTacToe.Console.Io;
 using TicTacToe.Game;
 
 namespace TicTacToe.Console

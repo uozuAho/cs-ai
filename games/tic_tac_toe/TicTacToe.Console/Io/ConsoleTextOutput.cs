@@ -1,6 +1,4 @@
-﻿using TicTacToe.Console.Test;
-
-namespace TicTacToe.Console
+﻿namespace TicTacToe.Console.Io
 {
     public class ConsoleTextOutput : ITextOutput
     {
