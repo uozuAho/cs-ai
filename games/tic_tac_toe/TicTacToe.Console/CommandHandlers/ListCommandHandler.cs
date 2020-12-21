@@ -22,7 +22,7 @@ namespace TicTacToe.Console.CommandHandlers
         {
             _register.LoadPolicyFiles();
 
-            foreach (var player in new PlayerRegister().AvailablePlayers())
+            foreach (var player in _register.AvailablePlayers())
             {
                 _output.PrintLine(player);
             }
