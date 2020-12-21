@@ -83,8 +83,8 @@ namespace TicTacToe.Agent.Test.Agents
         {
             return new(
                 Board.CreateEmptyBoard(),
-                new FirstAvailableSlotAgent(BoardTile.X),
-                new FirstAvailableSlotAgent(BoardTile.O));
+                new FirstAvailableSlotPlayer(BoardTile.X),
+                new FirstAvailableSlotPlayer(BoardTile.O));
         }
     }
 

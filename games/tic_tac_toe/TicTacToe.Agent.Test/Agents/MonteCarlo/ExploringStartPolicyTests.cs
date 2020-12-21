@@ -12,7 +12,7 @@ namespace TicTacToe.Agent.Test.Agents.MonteCarlo
         [Test]
         public void FirstActionIsRandom()
         {
-            var environment = new TicTacToeEnvironment(new FirstAvailableSlotAgent(BoardTile.O));
+            var environment = new TicTacToeEnvironment(new FirstAvailableSlotPlayer(BoardTile.O));
             var innerPolicy = new MonteCarloTicTacToeAgent(BoardTile.X);
 
             var distinctFirstActions = Enumerable.Range(0, 10)

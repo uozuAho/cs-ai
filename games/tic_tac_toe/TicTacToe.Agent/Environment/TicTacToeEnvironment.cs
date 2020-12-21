@@ -12,9 +12,9 @@ namespace TicTacToe.Agent.Environment
     {
         public Board CurrentState { get; private set; } = Board.CreateEmptyBoard(BoardTile.X);
 
-        private readonly ITicTacToeAgent _opponent;
+        private readonly ITicTacToePlayer _opponent;
 
-        public TicTacToeEnvironment(ITicTacToeAgent opponent)
+        public TicTacToeEnvironment(ITicTacToePlayer opponent)
         {
             _opponent = opponent;
             Reset();
@@ -47,7 +47,7 @@ namespace TicTacToe.Agent.Environment
                 throw new InvalidOperationException($"Action caused invalid state: '{CurrentState}'");
 
             if (!CurrentState.IsGameOver)
-                DoAction(_opponent.GetAction(this));
+                DoAction(_opponent.GetAction(CurrentState));
 
             var reward = 0.0;
             if (CurrentState.Winner() == BoardTile.X) reward = 1.0;

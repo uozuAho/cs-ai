@@ -12,8 +12,8 @@ namespace TicTacToe.Console.Test
         {
             var register = new PlayerRegister();
 
-            Assert.AreEqual(typeof(FirstAvailableSlotAgent),
-                register.GetPlayerByName("FirstAvailableSlotAgent", BoardTile.O).GetType());
+            Assert.AreEqual(typeof(FirstAvailableSlotPlayer),
+                register.GetPlayerByName("FirstAvailableSlotPlayer", BoardTile.O).GetType());
 
             Assert.AreEqual(typeof(ConsoleInputTicTacToePlayer),
                 register.GetPlayerByName("ConsoleInputTicTacToePlayer", BoardTile.O).GetType());
@@ -25,10 +25,10 @@ namespace TicTacToe.Console.Test
             var register = new PlayerRegister();
 
             Assert.AreEqual(BoardTile.X,
-                register.GetPlayerByName("FirstAvailableSlotAgent", BoardTile.X).Tile);
+                register.GetPlayerByName("FirstAvailableSlotPlayer", BoardTile.X).Tile);
 
             Assert.AreEqual(BoardTile.O,
-                register.GetPlayerByName("FirstAvailableSlotAgent", BoardTile.O).Tile);
+                register.GetPlayerByName("FirstAvailableSlotPlayer", BoardTile.O).Tile);
         }
     }
 }

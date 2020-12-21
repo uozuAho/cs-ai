@@ -10,14 +10,14 @@ namespace TicTacToe.Agent.Test.Environment
     public class TicTacToeEnvironmentTests
     {
         private TicTacToeEnvironment _env;
-        private ITicTacToeAgent _opponent;
+        private ITicTacToePlayer _opponent;
 
         [SetUp]
         public void Setup()
         {
-            _opponent = Substitute.For<ITicTacToeAgent>();
+            _opponent = Substitute.For<ITicTacToePlayer>();
             _opponent.Tile.Returns(BoardTile.O);
-            _opponent.GetAction(Arg.Any<TicTacToeEnvironment>())
+            _opponent.GetAction(Arg.Any<Board>())
                 .Returns(new TicTacToeAction
                 {
                     Position = 0,
@@ -41,7 +41,7 @@ namespace TicTacToe.Agent.Test.Environment
             var placeXAtTopLeft = new TicTacToeAction {Position = 0, Tile = BoardTile.X};
             var placeOAtTopMiddle = new TicTacToeAction {Position = 1, Tile = BoardTile.O};
 
-            _opponent.GetAction(Arg.Any<TicTacToeEnvironment>())
+            _opponent.GetAction(Arg.Any<Board>())
                 .Returns(placeOAtTopMiddle);
 
             var expectedBoard = Board

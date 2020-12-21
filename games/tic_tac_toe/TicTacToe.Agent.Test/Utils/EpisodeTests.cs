@@ -12,8 +12,8 @@ namespace TicTacToe.Agent.Test.Utils
         public void TwoFirstAvailableSlotAgents_PlayPredictableGame()
         {
             var ep = Episode.Generate(
-                new FirstAvailableSlotAgent(BoardTile.X),
-                new FirstAvailableSlotAgent(BoardTile.O));
+                new FirstAvailableSlotPlayer(BoardTile.X),
+                new FirstAvailableSlotPlayer(BoardTile.O));
 
             Assert.AreEqual(5, ep.Length);
             Assert.AreEqual("   |   |   ", ep.Steps[0].State.ToString());
@@ -30,8 +30,8 @@ namespace TicTacToe.Agent.Test.Utils
         public void TwoFirstAvailableSlotAgents_PlayPredictableGame_TilesReversed()
         {
             var ep = Episode.Generate(
-                new FirstAvailableSlotAgent(BoardTile.O),
-                new FirstAvailableSlotAgent(BoardTile.X));
+                new FirstAvailableSlotPlayer(BoardTile.O),
+                new FirstAvailableSlotPlayer(BoardTile.X));
 
             Assert.AreEqual(5, ep.Length);
             Assert.AreEqual("   |   |   ", ep.Steps[0].State.ToString());
@@ -52,8 +52,8 @@ namespace TicTacToe.Agent.Test.Utils
         public void TimeOfFirstVisit_ToStateAndActionN_IsN(int time)
         {
             var ep = Episode.Generate(
-                new FirstAvailableSlotAgent(BoardTile.X),
-                new FirstAvailableSlotAgent(BoardTile.O));
+                new FirstAvailableSlotPlayer(BoardTile.X),
+                new FirstAvailableSlotPlayer(BoardTile.O));
 
             var stateN = ep.Steps[time].State;
             var actionN = ep.Steps[time].Action;
@@ -65,8 +65,8 @@ namespace TicTacToe.Agent.Test.Utils
         public void TimeOfFirstVisit_ThrowsWhenStateActionPairWasNotVisited()
         {
             var ep = Episode.Generate(
-                new FirstAvailableSlotAgent(BoardTile.X),
-                new FirstAvailableSlotAgent(BoardTile.O));
+                new FirstAvailableSlotPlayer(BoardTile.X),
+                new FirstAvailableSlotPlayer(BoardTile.O));
 
             Assert.Throws<KeyNotFoundException>(() =>
                 ep.TimeOfFirstVisit(Board.CreateFromString("xxx|xxx|xxx"), new TicTacToeAction()));

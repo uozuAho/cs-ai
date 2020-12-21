@@ -4,13 +4,13 @@ using TicTacToe.Game;
 
 namespace TicTacToe.Agent.Agents
 {
-    public class RandomTicTacToeAgent : ITicTacToePlayer
+    public class RandomTicTacToePlayer : ITicTacToePlayer
     {
         public BoardTile Tile { get; }
 
         private readonly Random _random = new();
 
-        public RandomTicTacToeAgent(BoardTile tile)
+        public RandomTicTacToePlayer(BoardTile tile)
         {
             Tile = tile;
         }

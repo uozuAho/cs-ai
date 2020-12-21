@@ -7,24 +7,31 @@ namespace TicTacToe.Console.Test.CommandHandlers
     public class CombinedCommandHandlerTests
     {
         private TestUserOutput _output;
+        private PlayerRegister _playerRegister;
+        private LearningAgentRegister _agentRegister;
+        private TrainCommandHandler _trainer;
+        private ListCommandHandler _lister;
+        private PlayCommandHandler _runner;
 
         [SetUp]
         public void Setup()
         {
             _output = new TestUserOutput();
+            _playerRegister = new PlayerRegister();
+            _agentRegister = new LearningAgentRegister();
+            _trainer = new TrainCommandHandler(_output, _playerRegister, _agentRegister);
+            _lister = new ListCommandHandler(_playerRegister, _agentRegister, _output);
+            _runner = new PlayCommandHandler(_output, new PlayerRegister());
         }
 
         [Test]
         public void AfterTrain_NewAgentIsAvailableInRegister()
         {
-            const string trainedAgentName = "mc_vs_firstSlot";
+            const string trainedAgentName = "mc";
             const int numGames = 1;
 
-            var trainer = new TrainCommandHandler(_output, new PlayerRegister());
-            trainer.Run("FirstAvailableSlotAgent", trainedAgentName, numGames);
-
-            var lister = new ListCommandHandler(new PlayerRegister(), _output);
-            lister.Run();
+            _trainer.Run(trainedAgentName, "FirstAvailableSlotPlayer", numGames);
+            _lister.Run();
 
             Assert.True(_output.ContainsLine(line => line.Contains(trainedAgentName)));
         }
@@ -32,16 +39,15 @@ namespace TicTacToe.Console.Test.CommandHandlers
         [Test]
         public void AfterTrain_TrainedAgentIsPlayable()
         {
-            const string agentName = "mc_agent";
+            const string agentName = "mc";
             const int numGames = 1;
 
-            var trainer = new TrainCommandHandler(_output, new PlayerRegister());
-            trainer.Run("FirstAvailableSlotAgent", agentName, numGames);
+            _trainer.Run(agentName, "FirstAvailableSlotPlayer", numGames);
+            _runner.Run(agentName, "FirstAvailableSlotPlayer");
 
-            var runner = new PlayCommandHandler(_output, new PlayerRegister());
-            runner.Run(agentName, "FirstAvailableSlotAgent");
-
-            Assert.True(_output.ContainsLine(line => line.Contains("The winner is:")));
+            Assert.True(
+                _output.ContainsLine(line => line.Contains("The winner is:"))
+                || _output.ContainsLine(line => line.Contains("Draw!")));
         }
     }
 }

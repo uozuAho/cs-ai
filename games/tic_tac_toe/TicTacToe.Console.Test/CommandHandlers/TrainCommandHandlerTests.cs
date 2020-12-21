@@ -17,12 +17,13 @@ namespace TicTacToe.Console.Test.CommandHandlers
         [Test]
         public void Train_TrainsAnAgent()
         {
-            const string agentName = "mc_agent";
-            var trainer = new TrainCommandHandler(_output, new PlayerRegister());
+            const string agentName = "mc";
+            var trainer = new TrainCommandHandler(
+                _output, new PlayerRegister(), new LearningAgentRegister());
 
-            trainer.Run("FirstAvailableSlotAgent", agentName, 1);
+            trainer.Run(agentName, "FirstAvailableSlotPlayer", 1);
 
-            _output.ExpectLine($"Trained mc agent '{agentName}' against 'FirstAvailableSlotAgent'");
+            _output.ExpectLine($"Trained mc agent '{agentName}' against 'FirstAvailableSlotPlayer'");
         }
     }
 }
