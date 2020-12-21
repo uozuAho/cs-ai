@@ -69,11 +69,10 @@ namespace TicTacToe.Console.Test
             var trainer = new ConsoleAgentTrainer(_output, new PlayerRegister());
             trainer.Run("FirstAvailableSlotAgent", trainedAgentName);
 
-            var register = new PlayerRegister();
-            register.LoadPolicyFiles();
+            var lister = new ListCommandHandler(new PlayerRegister(), _output);
+            lister.Run();
 
-            var player = register.GetPlayerByName(trainedAgentName, BoardTile.O);
-            Assert.NotNull(player);
+            Assert.True(_output.ContainsLine(line => line.Contains(trainedAgentName)));
         }
 
         [Test]

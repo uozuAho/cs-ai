@@ -25,10 +25,7 @@ namespace TicTacToe.Console
                 Handler = CommandHandler.Create(
                     () =>
                     {
-                        foreach (var player in new PlayerRegister().AvailablePlayers())
-                        {
-                            System.Console.WriteLine(player);
-                        }
+                        ListCommandHandler.Default().Run();
                     })
             };
         }
