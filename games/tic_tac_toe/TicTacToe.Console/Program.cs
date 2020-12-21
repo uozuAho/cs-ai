@@ -76,7 +76,7 @@ namespace TicTacToe.Console
             command.Handler = CommandHandler.Create<string, string>(
                 (agentName, opponent) =>
                 {
-                    TrainCommandHandler.Default().Run(opponent, agentName);
+                    TrainCommandHandler.Default().Run(agentName, opponent);
                 });
 
             return command;
