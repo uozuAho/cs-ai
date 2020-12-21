@@ -1,17 +1,85 @@
-﻿namespace TicTacToe.Console
+﻿using System.CommandLine;
+using System.CommandLine.Invocation;
+using TicTacToe.Console.CommandHandlers;
+
+namespace TicTacToe.Console
 {
     public class Program
     {
         public static int Main(string[] args)
         {
-            var runner = new TicTacToeConsoleRunner(
-                new ConsoleTextInput(),
-                new ConsoleTextOutput(),
-                new PlayerRegister());
+            var root = new RootCommand
+            {
+                ListCommand(),
+                PlayCommand(),
+                TrainCommand()
+            };
 
-            runner.Run(args);
+            return root.Invoke(args);
+        }
 
-            return 0;
+        private static Command ListCommand()
+        {
+            return new("list", "List available players")
+            {
+                Handler = CommandHandler.Create(
+                    () =>
+                    {
+                        ListCommandHandler.Default().Run();
+                    })
+            };
+        }
+
+        private static Command PlayCommand()
+        {
+            var command = new Command("play")
+            {
+                new Option<string>("--player1", "X player") {IsRequired = true},
+                new Option<string>("--player2", "O player") {IsRequired = true},
+                new Option<int>("--num-games",
+                    getDefaultValue: () => 1,
+                    "Number of games to play")
+            };
+
+            command.Handler = CommandHandler.Create<string, string, int>(
+                (player1, player2, numGames) =>
+                {
+                    PlayCommandHandler.Default().Run(player1, player2, numGames);
+                });
+
+            return command;
+        }
+
+        private static Command TrainCommand()
+        {
+            var command = new Command("train")
+            {
+                new Option<string>(
+                    "--agent-name",
+                    "save trained policy with this name")
+                {
+                    IsRequired = true
+                },
+
+                new Option<string>(
+                    "--opponent",
+                    "opponent to train against")
+                {
+                    IsRequired = true
+                },
+
+                new Option<int>(
+                    "--limit-training-rounds",
+                    "Limit number of rounds/games played to this number")
+            };
+
+            command.Handler = CommandHandler.Create<string, string>(
+                (agentName, opponent) =>
+                {
+                    TrainCommandHandler.Default().Run(opponent, agentName);
+                });
+
+            return command;
         }
     }
 }

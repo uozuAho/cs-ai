@@ -1,5 +1,6 @@
 using System;
 using System.Collections.Generic;
+using TicTacToe.Console.Io;
 
 namespace TicTacToe.Console.Test.Utils
 {

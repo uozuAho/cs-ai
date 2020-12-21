@@ -2,6 +2,7 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using NUnit.Framework;
+using TicTacToe.Console.Io;
 
 namespace TicTacToe.Console.Test.Utils
 {

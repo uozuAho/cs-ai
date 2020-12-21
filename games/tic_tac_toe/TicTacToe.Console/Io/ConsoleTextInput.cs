@@ -1,4 +1,4 @@
-﻿namespace TicTacToe.Console
+﻿namespace TicTacToe.Console.Io
 {
     public class ConsoleTextInput : ITextInput
     {

@@ -1,29 +1,32 @@
 ﻿using System;
 using System.Text;
-using TicTacToe.Console.Test;
+using TicTacToe.Console.Io;
 using TicTacToe.Game;
 
-namespace TicTacToe.Console
+namespace TicTacToe.Console.CommandHandlers
 {
-    public class InteractiveTicTacToeConsoleRunner
+    public class PlayCommandHandler
     {
         private readonly ITextOutput _userOutput;
         private readonly PlayerRegister _register;
 
-        public InteractiveTicTacToeConsoleRunner(ITextOutput userOutput, PlayerRegister register)
+        public PlayCommandHandler(ITextOutput userOutput, PlayerRegister register)
         {
             _userOutput = userOutput;
             _register = register;
         }
 
-        public void Run(string[] args)
+        public static PlayCommandHandler Default()
         {
-            if (args.Length != 2 && args.Length != 3) throw new ArgumentException("must have 2 players");
+            return new(new ConsoleTextOutput(), new PlayerRegister());
+        }
 
-            var player1 = _register.GetPlayerByName(args[0], BoardTile.X);
-            var player2 = _register.GetPlayerByName(args[1], BoardTile.O);
+        public void Run(string player1Name, string player2Name, int numGames = 1)
+        {
+            _register.LoadPolicyFiles();
 
-            var numGames = args.Length == 3 ? int.Parse(args[2]) : 1;
+            var player1 = _register.GetPlayerByName(player1Name, BoardTile.X);
+            var player2 = _register.GetPlayerByName(player2Name, BoardTile.O);
 
             if (numGames <= 5)
             {

@@ -1,4 +1,4 @@
-namespace TicTacToe.Console.Test
+namespace TicTacToe.Console.Io
 {
     public interface ITextOutput
     {

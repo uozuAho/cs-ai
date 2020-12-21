@@ -46,14 +46,16 @@ namespace TicTacToe.Agent.Agents.MonteCarlo
             return action;
         }
 
-        public void Train(ITicTacToeAgent opponent)
+        public void Train(ITicTacToeAgent opponent, int? numGamesLimit = null)
         {
             var lastNumStates = 0;
             var noNewStatesSeenForXEpisodes = 0;
             var actionValues = new ActionValues();
             var returns = new Returns();
 
-            for (var i = 0; i < 10000; i++)
+            var maxGames = numGamesLimit ?? 10000;
+
+            for (var i = 0; i < maxGames; i++)
             {
                 ImprovePolicy(opponent, actionValues, returns);
 

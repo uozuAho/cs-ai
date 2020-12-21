@@ -1,36 +1,38 @@
 ﻿using TicTacToe.Agent.Agents.MonteCarlo;
-using TicTacToe.Console.Test;
+using TicTacToe.Console.Io;
 using TicTacToe.Game;
 
-namespace TicTacToe.Console
+namespace TicTacToe.Console.CommandHandlers
 {
-    public class ConsoleAgentTrainer
+    public class TrainCommandHandler
     {
         private readonly ITextOutput _userOutput;
         private readonly PlayerRegister _register;
 
-        public ConsoleAgentTrainer(ITextOutput userOutput, PlayerRegister register)
+        public TrainCommandHandler(ITextOutput userOutput, PlayerRegister register)
         {
             _userOutput = userOutput;
             _register = register;
         }
 
-        public void Run(string[] args)
+        public static TrainCommandHandler Default()
         {
-            // var agent = GetAgentFromSomewhere(args[0]);
-            var opponentName = args[1];
+            return new(new ConsoleTextOutput(), new PlayerRegister());
+        }
+
+        public void Run(string opponentName, string agentName, int? numGamesLimit = null)
+        {
             var opponent = _register.GetPlayerByName(opponentName, BoardTile.O);
-            var agentName = args[2];
-            var agent = TrainAgent(opponent);
+            var agent = TrainAgent(opponent, numGamesLimit);
             agent.GetCurrentActionMap().SaveToFile($"{agentName}.agent.json");
             _userOutput.PrintLine($"Trained mc agent '{agentName}' against '{opponentName}'");
         }
 
-        private static MonteCarloTicTacToeAgent TrainAgent(ITicTacToePlayer opponent)
+        private static MonteCarloTicTacToeAgent TrainAgent(ITicTacToePlayer opponent, int? numGamesLimit)
         {
             var agent = new MonteCarloTicTacToeAgent(BoardTile.X);
             var opponentAgent = new PlayerAgent(opponent);
-            agent.Train(opponentAgent);
+            agent.Train(opponentAgent, numGamesLimit);
             return agent;
         }
     }
