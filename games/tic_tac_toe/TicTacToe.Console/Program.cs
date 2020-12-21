@@ -1,6 +1,5 @@
 ﻿using System.CommandLine;
 using System.CommandLine.Invocation;
-using TicTacToe.Console.Io;
 
 namespace TicTacToe.Console
 {
@@ -44,10 +43,7 @@ namespace TicTacToe.Console
             command.Handler = CommandHandler.Create<string, string, int>(
                 (player1, player2, numGames) =>
                 {
-                    var runner = new InteractiveTicTacToeConsoleRunner(
-                        new ConsoleTextOutput(), new PlayerRegister());
-
-                    runner.Run(player1, player2, numGames);
+                    PlayCommandHandler.Default().Run(player1, player2, numGames);
                 });
 
             return command;

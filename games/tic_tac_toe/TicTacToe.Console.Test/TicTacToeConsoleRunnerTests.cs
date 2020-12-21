@@ -18,7 +18,7 @@ namespace TicTacToe.Console.Test
         public void TwoFirstAvailableSlotAgents_PlayOneCompleteGame()
         {
             // act
-            var runner = new InteractiveTicTacToeConsoleRunner(_output, new PlayerRegister());
+            var runner = new PlayCommandHandler(_output, new PlayerRegister());
             runner.Run("FirstAvailableSlotAgent", "FirstAvailableSlotAgent");
 
             _output.ReadToEnd();
@@ -38,7 +38,7 @@ namespace TicTacToe.Console.Test
             const int numGames = 6;
 
             // act
-            var runner = new InteractiveTicTacToeConsoleRunner(_output, new PlayerRegister());
+            var runner = new PlayCommandHandler(_output, new PlayerRegister());
             runner.Run("FirstAvailableSlotAgent", "FirstAvailableSlotAgent", numGames);
 
             // assert
@@ -84,7 +84,7 @@ namespace TicTacToe.Console.Test
 
             var register = new PlayerRegister();
             register.LoadPolicyFiles();
-            var runner = new InteractiveTicTacToeConsoleRunner(_output, register);
+            var runner = new PlayCommandHandler(_output, register);
             runner.Run(agentName, "FirstAvailableSlotAgent");
 
             _output.ReadToEnd();

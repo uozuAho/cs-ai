@@ -5,24 +5,20 @@ using TicTacToe.Game;
 
 namespace TicTacToe.Console
 {
-    public class InteractiveTicTacToeConsoleRunner
+    public class PlayCommandHandler
     {
         private readonly ITextOutput _userOutput;
         private readonly PlayerRegister _register;
 
-        public InteractiveTicTacToeConsoleRunner(ITextOutput userOutput, PlayerRegister register)
+        public PlayCommandHandler(ITextOutput userOutput, PlayerRegister register)
         {
             _userOutput = userOutput;
             _register = register;
         }
 
-        public void Run(string[] args)
+        public static PlayCommandHandler Default()
         {
-            if (args.Length != 2 && args.Length != 3) throw new ArgumentException("must have 2 players");
-
-            var numGames = args.Length == 3 ? int.Parse(args[2]) : 1;
-            
-            Run(args[0], args[1], numGames);
+            return new(new ConsoleTextOutput(), new PlayerRegister());
         }
 
         public void Run(string player1Name, string player2Name, int numGames = 1)
