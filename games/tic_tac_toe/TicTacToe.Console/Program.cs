@@ -66,7 +66,11 @@ namespace TicTacToe.Console
                     "opponent to train against")
                 {
                     IsRequired = true
-                }
+                },
+
+                new Option<int>(
+                    "--limit-training-rounds",
+                    "Limit number of rounds/games played to this number")
             };
 
             command.Handler = CommandHandler.Create<string, string>(

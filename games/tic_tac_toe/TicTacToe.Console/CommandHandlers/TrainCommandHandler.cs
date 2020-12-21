@@ -20,19 +20,19 @@ namespace TicTacToe.Console.CommandHandlers
             return new(new ConsoleTextOutput(), new PlayerRegister());
         }
 
-        public void Run(string opponentName, string agentName)
+        public void Run(string opponentName, string agentName, int? numGamesLimit = null)
         {
             var opponent = _register.GetPlayerByName(opponentName, BoardTile.O);
-            var agent = TrainAgent(opponent);
+            var agent = TrainAgent(opponent, numGamesLimit);
             agent.GetCurrentActionMap().SaveToFile($"{agentName}.agent.json");
             _userOutput.PrintLine($"Trained mc agent '{agentName}' against '{opponentName}'");
         }
 
-        private static MonteCarloTicTacToeAgent TrainAgent(ITicTacToePlayer opponent)
+        private static MonteCarloTicTacToeAgent TrainAgent(ITicTacToePlayer opponent, int? numGamesLimit)
         {
             var agent = new MonteCarloTicTacToeAgent(BoardTile.X);
             var opponentAgent = new PlayerAgent(opponent);
-            agent.Train(opponentAgent);
+            agent.Train(opponentAgent, numGamesLimit);
             return agent;
         }
     }

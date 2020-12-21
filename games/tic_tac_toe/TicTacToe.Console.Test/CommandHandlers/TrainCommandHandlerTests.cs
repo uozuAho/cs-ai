@@ -20,7 +20,7 @@ namespace TicTacToe.Console.Test.CommandHandlers
             const string agentName = "mc_agent";
             var trainer = new TrainCommandHandler(_output, new PlayerRegister());
 
-            trainer.Run("FirstAvailableSlotAgent", agentName);
+            trainer.Run("FirstAvailableSlotAgent", agentName, 1);
 
             _output.ExpectLine($"Trained mc agent '{agentName}' against 'FirstAvailableSlotAgent'");
         }

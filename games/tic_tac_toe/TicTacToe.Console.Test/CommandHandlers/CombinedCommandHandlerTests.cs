@@ -18,9 +18,10 @@ namespace TicTacToe.Console.Test.CommandHandlers
         public void AfterTrain_NewAgentIsAvailableInRegister()
         {
             const string trainedAgentName = "mc_vs_firstSlot";
+            const int numGames = 1;
 
             var trainer = new TrainCommandHandler(_output, new PlayerRegister());
-            trainer.Run("FirstAvailableSlotAgent", trainedAgentName);
+            trainer.Run("FirstAvailableSlotAgent", trainedAgentName, numGames);
 
             var lister = new ListCommandHandler(new PlayerRegister(), _output);
             lister.Run();
@@ -32,15 +33,15 @@ namespace TicTacToe.Console.Test.CommandHandlers
         public void AfterTrain_TrainedAgentIsPlayable()
         {
             const string agentName = "mc_agent";
+            const int numGames = 1;
+
             var trainer = new TrainCommandHandler(_output, new PlayerRegister());
-            trainer.Run("FirstAvailableSlotAgent", agentName);
+            trainer.Run("FirstAvailableSlotAgent", agentName, numGames);
 
             var runner = new PlayCommandHandler(_output, new PlayerRegister());
             runner.Run(agentName, "FirstAvailableSlotAgent");
 
-            _output.ReadToEnd();
-
-            _output.ExpectLine(-1, "The winner is: X!");
+            Assert.True(_output.ContainsLine(line => line.Contains("The winner is:")));
         }
     }
 }
