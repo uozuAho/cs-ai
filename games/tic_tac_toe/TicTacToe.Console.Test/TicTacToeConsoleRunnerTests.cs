@@ -1,4 +1,5 @@
 using NUnit.Framework;
+using TicTacToe.Console.CommandHandlers;
 using TicTacToe.Console.Test.Utils;
 using TicTacToe.Game;
 

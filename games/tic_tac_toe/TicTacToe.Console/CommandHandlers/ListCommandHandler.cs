@@ -1,6 +1,6 @@
 ﻿using TicTacToe.Console.Io;
 
-namespace TicTacToe.Console
+namespace TicTacToe.Console.CommandHandlers
 {
     public class ListCommandHandler
     {

@@ -3,7 +3,7 @@ using System.Text;
 using TicTacToe.Console.Io;
 using TicTacToe.Game;
 
-namespace TicTacToe.Console
+namespace TicTacToe.Console.CommandHandlers
 {
     public class PlayCommandHandler
     {
