@@ -19,7 +19,7 @@ namespace TicTacToe.Console.Test.CommandHandlers
             _output = new TestUserOutput();
             _playerRegister = new PlayerRegister();
             _agentRegister = new LearningAgentRegister();
-            _trainer = new TrainCommandHandler(_output, _playerRegister);
+            _trainer = new TrainCommandHandler(_output, _playerRegister, _agentRegister);
             _lister = new ListCommandHandler(_playerRegister, _agentRegister, _output);
             _runner = new PlayCommandHandler(_output, new PlayerRegister());
         }

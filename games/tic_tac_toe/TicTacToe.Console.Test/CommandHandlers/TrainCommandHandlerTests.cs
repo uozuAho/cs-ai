@@ -18,7 +18,8 @@ namespace TicTacToe.Console.Test.CommandHandlers
         public void Train_TrainsAnAgent()
         {
             const string agentName = "mc_agent";
-            var trainer = new TrainCommandHandler(_output, new PlayerRegister());
+            var trainer = new TrainCommandHandler(
+                _output, new PlayerRegister(), new LearningAgentRegister());
 
             trainer.Run("FirstAvailableSlotAgent", agentName, 1);
 
