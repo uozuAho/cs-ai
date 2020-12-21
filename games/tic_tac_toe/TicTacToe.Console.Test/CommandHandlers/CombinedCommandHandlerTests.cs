@@ -8,6 +8,7 @@ namespace TicTacToe.Console.Test.CommandHandlers
     {
         private TestUserOutput _output;
         private PlayerRegister _playerRegister;
+        private LearningAgentRegister _agentRegister;
         private TrainCommandHandler _trainer;
         private ListCommandHandler _lister;
         private PlayCommandHandler _runner;
@@ -17,8 +18,9 @@ namespace TicTacToe.Console.Test.CommandHandlers
         {
             _output = new TestUserOutput();
             _playerRegister = new PlayerRegister();
+            _agentRegister = new LearningAgentRegister();
             _trainer = new TrainCommandHandler(_output, _playerRegister);
-            _lister = new ListCommandHandler(_playerRegister, _output);
+            _lister = new ListCommandHandler(_playerRegister, _agentRegister, _output);
             _runner = new PlayCommandHandler(_output, new PlayerRegister());
         }
 
