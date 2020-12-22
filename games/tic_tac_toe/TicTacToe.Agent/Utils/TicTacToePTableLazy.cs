@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Linq;
 using TicTacToe.Game;
 
 namespace TicTacToe.Agent.Utils
@@ -13,6 +14,13 @@ namespace TicTacToe.Agent.Utils
         {
             _playerTile = playerTile;
             _pTable = new Dictionary<string, double>();
+        }
+
+        public IEnumerable<(Board, double)> All()
+        {
+            return _pTable.Select(item =>
+                (Board.CreateFromString(item.Key), item.Value)
+            );
         }
 
         public double GetWinProbability(Board board)
