@@ -17,7 +17,7 @@ namespace TicTacToe.Agent.Agents.MonteCarlo
         private const double ChanceOfRandomAction = 0.05;
         private readonly Random _random = new();
 
-        private readonly BoardActionMap _actions = new();
+        private readonly FixedPolicy _actions = new();
 
         public MonteCarloTicTacToeAgent(BoardTile tile)
         {
@@ -27,7 +27,7 @@ namespace TicTacToe.Agent.Agents.MonteCarlo
         public TicTacToeAction GetAction(TicTacToeEnvironment environment)
         {
             var action = _actions.HasActionFor(environment.CurrentState)
-                ? _actions.ActionFor(environment.CurrentState)
+                ? _actions.Action(environment.CurrentState)
                 : _random.Choice(environment.ActionSpace());
 
             if (_random.TrueWithProbability(ChanceOfRandomAction))
@@ -65,7 +65,7 @@ namespace TicTacToe.Agent.Agents.MonteCarlo
             }
         }
 
-        public BoardActionMap GetCurrentPolicy()
+        public FixedPolicy GetCurrentPolicy()
         {
             return _actions;
         }

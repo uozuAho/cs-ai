@@ -23,7 +23,7 @@ namespace TicTacToe.Agent.Agents
             throw new System.NotImplementedException();
         }
 
-        public BoardActionMap GetCurrentPolicy()
+        public FixedPolicy GetCurrentPolicy()
         {
             throw new System.NotImplementedException();
         }

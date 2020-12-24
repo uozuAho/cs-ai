@@ -5,17 +5,17 @@ namespace TicTacToe.Agent.Utils
     public class TicTacToeFixedPolicyPlayer : ITicTacToePlayer
     {
         public BoardTile Tile { get; }
-        private readonly BoardActionMap _actionMap;
+        private readonly FixedPolicy _actionMap;
 
         public TicTacToeFixedPolicyPlayer(PolicyFile policy)
         {
             Tile = policy.Tile;
-            _actionMap = policy.BuildActionMap();
+            _actionMap = policy.ToPolicy();
         }
 
         public TicTacToeAction GetAction(Board board)
         {
-            return _actionMap.ActionFor(board);
+            return _actionMap.Action(board);
         }
     }
 }

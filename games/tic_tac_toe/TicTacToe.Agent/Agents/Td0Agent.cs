@@ -37,9 +37,9 @@ namespace TicTacToe.Agent.Agents
                 : RandomAction(environment);
         }
 
-        public BoardActionMap GetCurrentPolicy()
+        public FixedPolicy GetCurrentPolicy()
         {
-            var map = new BoardActionMap();
+            var map = new FixedPolicy();
             foreach (var (board, _) in _values.All()
                 .Where(bv => bv.Item1.CurrentPlayer == Tile)
                 .Where(bv => !bv.Item1.IsGameOver))

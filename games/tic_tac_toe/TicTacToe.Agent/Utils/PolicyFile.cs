@@ -13,13 +13,13 @@ namespace TicTacToe.Agent.Utils
         BoardTile Tile,
         PolicyFileAction[] Actions)
     {
-        public static PolicyFile FromBoardActionMap(
+        public static PolicyFile FromPolicy(
             string name,
             string description,
             BoardTile boardTile,
-            BoardActionMap map)
+            FixedPolicy policy)
         {
-            var policyActions = map.AllActions().Select(a => new PolicyFileAction(
+            var policyActions = policy.AllActions().Select(a => new PolicyFileAction(
                 a.Item1.ToString(), 0, a.Item2.Position)).ToArray();
 
             return new PolicyFile(name, description, boardTile, policyActions);
@@ -45,18 +45,18 @@ namespace TicTacToe.Agent.Utils
             return file;
         }
 
-        public BoardActionMap BuildActionMap()
+        public FixedPolicy ToPolicy()
         {
-            var map = new BoardActionMap();
+            var policy = new FixedPolicy();
 
             foreach (var (boardString, _, position) in Actions)
             {
                 var board = Board.CreateFromString(boardString, Tile);
                 var action = new TicTacToeAction { Tile = Tile, Position = position };
-                map.SetAction(board, action);
+                policy.SetAction(board, action);
             }
 
-            return map;
+            return policy;
         }
 
         private static JsonSerializerOptions BuildJsonOptions()
