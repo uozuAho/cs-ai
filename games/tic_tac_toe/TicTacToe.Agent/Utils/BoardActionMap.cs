@@ -39,13 +39,10 @@ namespace TicTacToe.Agent.Utils
             return _actionMap.Select(action => (Board.CreateFromString(action.Key), action.Value));
         }
 
-        public void SaveToFile(string path)
+        public void SaveToFile(string path, BoardTile tile)
         {
-            // todo: board tile :(
-            var policyActions = _actionMap.Select(a => new PolicyFileAction(
-                a.Key, 0, a.Value.Position)).ToArray();
-            var policyFile = new PolicyFile("", "", BoardTile.X, policyActions);
-            
+            var policyFile = PolicyFile.FromBoardActionMap("", "", tile, this);
+
             File.WriteAllText(path, JsonSerializer.Serialize(policyFile, BuildJsonOptions()));
         }
 
@@ -79,15 +76,4 @@ namespace TicTacToe.Agent.Utils
             };
         }
     }
-
-    public record PolicyFile(
-        string Name,
-        string Description,
-        BoardTile Tile,
-        PolicyFileAction[] Actions);
-
-    public record PolicyFileAction(
-        string Board,
-        double Value,
-        int Action);
 }

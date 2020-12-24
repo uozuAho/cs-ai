@@ -16,7 +16,7 @@ namespace TicTacToe.Agent.Test.Utils
             map.SetAction(Board.CreateEmptyBoard(), new TicTacToeAction {Position = 2, Tile = BoardTile.O});
 
             // act
-            map.SaveToFile(filePath);
+            map.SaveToFile(filePath, BoardTile.O);
             var loadedMap = BoardActionMap.LoadFromFile(filePath);
 
             // assert
