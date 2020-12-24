@@ -5,27 +5,8 @@ using TicTacToe.Game;
 
 namespace TicTacToe.Agent.Test.Utils
 {
-    internal class BoardActionMapTests
+    internal class PolicyFileTests
     {
-        [Test]
-        public void LoadSavedMap_GetsSameMap()
-        {
-            const string filePath = "BoardActionMapTests_LoadSave.test.json";
-            var map = new BoardActionMap();
-
-            map.SetAction(Board.CreateEmptyBoard(), new TicTacToeAction {Position = 2, Tile = BoardTile.O});
-
-            // act
-            map.SaveToFile(filePath, BoardTile.O);
-            var loadedMap = BoardActionMap.LoadFromFile(filePath);
-
-            // assert
-            var originalActions = map.AllActions().OrderBy(a => a.Item1.ToString()).ToList();
-            var loadedActions = loadedMap.AllActions().OrderBy(a => a.Item1.ToString()).ToList();
-
-            CollectionAssert.AreEqual(originalActions, loadedActions);
-        }
-
         [Test]
         public void FromString()
         {
@@ -41,10 +22,32 @@ namespace TicTacToe.Agent.Test.Utils
         ""action"": 5
     }}]
 }}";
-            var map = BoardActionMap.FromJsonString(mapJson);
-            
-            Assert.AreEqual(1, map.NumStates);
-            Assert.AreEqual(5, map.ActionFor(Board.CreateFromString(boardString, BoardTile.O)).Position);
+            var (name, description, boardTile, policyFileActions) = PolicyFile.FromJsonString(mapJson);
+
+            Assert.AreEqual("billy", name);
+            Assert.AreEqual("stuff", description);
+            Assert.AreEqual(BoardTile.O, boardTile);
+            Assert.AreEqual(1, policyFileActions.Length);
+        }
+
+        [Test]
+        public void LoadSavedMap_GetsSameMap()
+        {
+            const string filePath = "BoardActionMapTests_LoadSave.test.json";
+            var policy = new PolicyFile("abc", "def", BoardTile.X, new[]
+            {
+                new PolicyFileAction(Board.CreateEmptyBoard().ToString(), 1.23, 4)
+            });
+
+            // act
+            policy.Save(filePath);
+            var loadedPolicy = PolicyFile.Load(filePath);
+
+            // assert
+            var originalActions = policy.Actions.OrderBy(a => a.Board).ToList();
+            var loadedActions = loadedPolicy.Actions.OrderBy(a => a.Board).ToList();
+
+            CollectionAssert.AreEqual(originalActions, loadedActions);
         }
     }
 }

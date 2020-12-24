@@ -41,7 +41,7 @@ namespace TicTacToe.Console
                     .Replace(".\\", "")
                     .Replace(".agent.json", "");
 
-                var policy = BoardActionMap.LoadFromFile(filename);
+                var policy = PolicyFile.Load(filename);
                 AddPlayer(agentName, tile => new TicTacToeFixedPolicyPlayer(tile, policy));
             }
         }
