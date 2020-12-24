@@ -41,6 +41,7 @@ namespace TicTacToe.Agent.Agents
         {
             var map = new BoardActionMap();
             foreach (var (board, _) in _values.All()
+                .Where(bv => bv.Item1.CurrentPlayer == Tile)
                 .Where(bv => !bv.Item1.IsGameOver))
             {
                 var bestAction = BestAction(board);
