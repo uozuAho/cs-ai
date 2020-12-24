@@ -42,7 +42,12 @@ namespace TicTacToe.Console
                     .Replace(".agent.json", "");
 
                 var policy = PolicyFile.Load(filename);
-                AddPlayer(agentName, tile => new TicTacToeFixedPolicyPlayer(tile, policy));
+                AddPlayer(agentName, tile =>
+                {
+                    if (policy.Tile != tile) throw new ArgumentException("tile does not match policy tile");
+
+                    return new TicTacToeFixedPolicyPlayer(policy);
+                });
             }
         }
     }

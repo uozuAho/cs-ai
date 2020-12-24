@@ -1,5 +1,4 @@
-﻿using System;
-using TicTacToe.Game;
+﻿using TicTacToe.Game;
 
 namespace TicTacToe.Agent.Utils
 {
@@ -8,16 +7,8 @@ namespace TicTacToe.Agent.Utils
         public BoardTile Tile { get; }
         private readonly BoardActionMap _actionMap;
 
-        public TicTacToeFixedPolicyPlayer(BoardTile tile, BoardActionMap actionMap)
+        public TicTacToeFixedPolicyPlayer(PolicyFile policy)
         {
-            _actionMap = actionMap;
-            Tile = tile;
-        }
-
-        public TicTacToeFixedPolicyPlayer(BoardTile tile, PolicyFile policy)
-        {
-            if (tile != policy.Tile) throw new InvalidOperationException("tile must match policy tile");
-
             Tile = policy.Tile;
             _actionMap = policy.BuildActionMap();
         }

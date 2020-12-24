@@ -24,11 +24,6 @@ namespace TicTacToe.Agent.Agents.MonteCarlo
             Tile = tile;
         }
 
-        public ITicTacToePlayer ToFixedPolicyPlayer()
-        {
-            return new TicTacToeFixedPolicyPlayer(Tile, _actions);
-        }
-
         public TicTacToeAction GetAction(TicTacToeEnvironment environment)
         {
             var action = _actions.HasActionFor(environment.CurrentState)
