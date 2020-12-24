@@ -22,12 +22,12 @@ namespace TicTacToe.Agent.Agents
         private const double LearningRate = 0.05;
         private readonly Random _random = new();
 
-        private TicTacToePTableLazy _values;
+        private StateValueTable _values;
 
         public Td0Agent(BoardTile tile)
         {
             Tile = tile;
-            _values = new TicTacToePTableLazy(Tile);
+            _values = new StateValueTable(Tile);
         }
 
         public TicTacToeAction GetAction(TicTacToeEnvironment environment)
@@ -40,7 +40,8 @@ namespace TicTacToe.Agent.Agents
         public BoardActionMap GetCurrentPolicy()
         {
             var map = new BoardActionMap();
-            foreach (var (board, _) in _values.All())
+            foreach (var (board, _) in _values.All()
+                .Where(bv => !bv.Item1.IsGameOver))
             {
                 var bestAction = BestAction(board);
                 map.SetAction(board, bestAction);
@@ -53,7 +54,7 @@ namespace TicTacToe.Agent.Agents
         {
             var maxGames = numGamesLimit ?? 10000;
             var env = new TicTacToeEnvironment(opponent);
-            _values = new TicTacToePTableLazy(Tile);
+            _values = new StateValueTable(Tile);
 
             // todo: break when td error drops below threshold
             for (var i = 0; i < maxGames; i++)
@@ -62,16 +63,16 @@ namespace TicTacToe.Agent.Agents
 
                 while (!env.CurrentState.IsGameOver)
                 {
-                    var board = env.CurrentState;
-                    var currentValue = _values.GetWinProbability(board);
+                    var currentBoard = env.CurrentState.Clone();
+                    var currentValue = _values.Value(currentBoard);
                     var step = env.Step(GetAction(env));
                     var nextBoard = env.CurrentState;
 
                     var updatedValue =
-                        _values.GetWinProbability(env.CurrentState)
-                        + LearningRate * (step.Reward + _values.GetWinProbability(nextBoard) - currentValue);
+                        _values.Value(currentBoard)
+                        + LearningRate * (step.Reward + _values.Value(nextBoard) - currentValue);
 
-                    _values.UpdateWinProbability(board, updatedValue);
+                    _values.SetValue(currentBoard, updatedValue);
                 }
             }
         }
@@ -85,7 +86,7 @@ namespace TicTacToe.Agent.Agents
                     action = a,
                     board = board.DoAction(a)
                 })
-                .MaxBy(b => _values.GetWinProbability(b.board))
+                .MaxBy(b => _values.Value(b.board))
                 .First().action;
         }
 

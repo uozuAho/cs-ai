@@ -5,49 +5,45 @@ using TicTacToe.Game;
 
 namespace TicTacToe.Agent.Utils
 {
-    [Obsolete("Use " + nameof(StateValueTable))]
-    public class TicTacToePTableLazy : ITicTacToePTable
+    public class StateValueTable
     {
         private readonly BoardTile _playerTile;
-        private readonly Dictionary<string, double> _pTable;
+        private readonly Dictionary<Board, double> _values;
 
-        public TicTacToePTableLazy(BoardTile playerTile)
+        public StateValueTable(BoardTile playerTile)
         {
             _playerTile = playerTile;
-            _pTable = new Dictionary<string, double>();
+            _values = new Dictionary<Board, double>();
         }
 
         public IEnumerable<(Board, double)> All()
         {
-            return _pTable.Select(item =>
-                (Board.CreateFromString(item.Key), item.Value)
-            );
+            // tolist prevents modifying _values via `Value()` during enumeration
+            return _values.Select(v => (v.Key, v.Value)).ToList();
         }
 
-        public double GetWinProbability(Board board)
+        public double Value(Board board)
         {
             if (!board.IsValid())
                 throw new ArgumentException("invalid board: " + board);
 
-            var key = board.ToString();
+            if (_values.ContainsKey(board))
+                return _values[board];
 
-            if (_pTable.ContainsKey(key))
-                return _pTable[key];
+            var winProbability = InitialValue(board);
 
-            var winProbability = CalculateWinProbability(board);
-
-            _pTable[key] = winProbability;
+            _values[board] = winProbability;
             return winProbability;
         }
 
-        public void UpdateWinProbability(Board board, double winProbability)
+        public void SetValue(Board board, double winProbability)
         {
             if (!board.IsValid()) throw new ArgumentException("invalid board: " + board);
 
-            _pTable[board.ToString()] = winProbability;
+            _values[board] = winProbability;
         }
 
-        private double CalculateWinProbability(Board board)
+        private double InitialValue(Board board)
         {
             var winner = board.Winner();
             var isFinished = board.IsFull();
