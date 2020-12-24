@@ -16,18 +16,7 @@ namespace TicTacToe.Agent.Utils
         public static BoardActionMap LoadFromFile(string path)
         {
             var fileContents = File.ReadAllText(path);
-            var actions = JsonSerializer
-                .Deserialize<List<SerializableStateAction>>(fileContents);
-
-            if (actions == null) throw new InvalidOperationException("loaded actions must not be null");
-
-            var map = new BoardActionMap();
-            foreach (var (serializableBoard, serializableAction) in actions)
-            {
-                map.SetAction(serializableBoard.ToBoard(), serializableAction.ToAction());
-            }
-
-            return map;
+            return FromJsonString(fileContents);
         }
 
         public TicTacToeAction ActionFor(Board board)
@@ -52,24 +41,17 @@ namespace TicTacToe.Agent.Utils
 
         public void SaveToFile(string path)
         {
-            var serializableActions = AllActions().Select(a => new SerializableStateAction(
-                SerializableBoard.FromBoard(a.Item1),
-                SerializableTicTacToeAction.FromAction(a.Item2)));
-
-            File.WriteAllText(path, JsonSerializer.Serialize(
-                serializableActions, new JsonSerializerOptions {WriteIndented = true}));
+            // todo: board tile :(
+            var policyActions = _actionMap.Select(a => new PolicyFileAction(
+                a.Key, 0, a.Value.Position)).ToArray();
+            var policyFile = new PolicyFile("", "", BoardTile.X, policyActions);
+            
+            File.WriteAllText(path, JsonSerializer.Serialize(policyFile, BuildJsonOptions()));
         }
 
         public static BoardActionMap FromJsonString(string text)
         {
-            var deser = JsonSerializer.Deserialize<PolicyFile>(text, new JsonSerializerOptions
-            {
-                PropertyNameCaseInsensitive = true,
-                Converters =
-                {
-                    new JsonStringEnumConverter(JsonNamingPolicy.CamelCase)
-                }
-            });
+            var deser = JsonSerializer.Deserialize<PolicyFile>(text, BuildJsonOptions());
 
             if (deser == null) throw new InvalidOperationException("map deserialised to null :(");
 
@@ -82,6 +64,19 @@ namespace TicTacToe.Agent.Utils
             }
 
             return map;
+        }
+
+        private static JsonSerializerOptions BuildJsonOptions()
+        {
+            return new()
+            {
+                PropertyNameCaseInsensitive = true,
+                Converters =
+                {
+                    new JsonStringEnumConverter(JsonNamingPolicy.CamelCase)
+                },
+                WriteIndented = true
+            };
         }
     }
 
