@@ -1,4 +1,5 @@
 ﻿using System.Collections.Generic;
+using System.Linq;
 using MoreLinq.Extensions;
 using TicTacToe.Game;
 
@@ -21,6 +22,11 @@ namespace TicTacToe.Agent.Utils
             var actionValues = _values[state];
 
             return actionValues.MaxBy(av => av.Value).First().Key;
+        }
+
+        public double HighestValue(Board state)
+        {
+            return _values[state].Values.Max();
         }
     }
 }

@@ -23,7 +23,7 @@ namespace TicTacToe.Console.Test.CommandHandlers
 
             trainer.Run(agentName, "FirstAvailableSlotPlayer", 1);
 
-            _output.ExpectLine($"Trained mc agent '{agentName}' against 'FirstAvailableSlotPlayer'");
+            _output.ExpectLine($"Trained agent '{agentName}' against 'FirstAvailableSlotPlayer'");
         }
     }
 }

@@ -41,5 +41,10 @@ namespace TicTacToe.Agent.Agents.MonteCarlo
         {
             throw new NotImplementedException();
         }
+
+        public PolicyFile GetCurrentPolicyFile(string name, string description)
+        {
+            throw new NotImplementedException();
+        }
     }
 }

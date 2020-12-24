@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections.Generic;
 using System.Linq;
 using ailib.Utils;
 using TicTacToe.Agent.Environment;
@@ -17,7 +18,9 @@ namespace TicTacToe.Agent.Agents.MonteCarlo
         private const double ChanceOfRandomAction = 0.05;
         private readonly Random _random = new();
 
-        private readonly FixedPolicy _actions = new();
+        private readonly FixedPolicy _currentPolicy = new();
+        private ActionValues _actionValues = new();
+        private Returns _returns = new();
 
         public MonteCarloTicTacToeAgent(BoardTile tile)
         {
@@ -26,8 +29,8 @@ namespace TicTacToe.Agent.Agents.MonteCarlo
 
         public TicTacToeAction GetAction(TicTacToeEnvironment environment)
         {
-            var action = _actions.HasActionFor(environment.CurrentState)
-                ? _actions.Action(environment.CurrentState)
+            var action = _currentPolicy.HasActionFor(environment.CurrentState)
+                ? _currentPolicy.Action(environment.CurrentState)
                 : _random.Choice(environment.ActionSpace());
 
             if (_random.TrueWithProbability(ChanceOfRandomAction))
@@ -40,23 +43,23 @@ namespace TicTacToe.Agent.Agents.MonteCarlo
         {
             var lastNumStates = 0;
             var noNewStatesSeenForXEpisodes = 0;
-            var actionValues = new ActionValues();
-            var returns = new Returns();
+            _actionValues = new ActionValues();
+            _returns = new Returns();
 
             var maxGames = numGamesLimit ?? 10000;
 
             for (var i = 0; i < maxGames; i++)
             {
-                ImprovePolicy(opponent, actionValues, returns);
+                ImprovePolicy(opponent, _actionValues, _returns);
 
-                if (_actions.NumStates == lastNumStates)
+                if (_currentPolicy.NumStates == lastNumStates)
                     noNewStatesSeenForXEpisodes++;
                 else
                 {
                     noNewStatesSeenForXEpisodes = 0;
                 }
 
-                lastNumStates = _actions.NumStates;
+                lastNumStates = _currentPolicy.NumStates;
 
                 // improvement: make this more meaningful. Maybe stop on value change
                 // falling below a certain threshold
@@ -67,7 +70,20 @@ namespace TicTacToe.Agent.Agents.MonteCarlo
 
         public FixedPolicy GetCurrentPolicy()
         {
-            return _actions;
+            return _currentPolicy;
+        }
+
+        public PolicyFile GetCurrentPolicyFile(string name, string description)
+        {
+            var actions = new List<PolicyFileAction>();
+
+            foreach (var (board, action) in _currentPolicy.AllActions())
+            {
+                var value = _actionValues.HighestValue(board);
+                actions.Add(new PolicyFileAction(board.ToString(), value, action.Position));
+            }
+
+            return new PolicyFile(name, description, Tile, actions.ToArray());
         }
 
         private void ImprovePolicy(ITicTacToePlayer opponent, ActionValues actionValues, Returns returns)
@@ -90,7 +106,7 @@ namespace TicTacToe.Agent.Agents.MonteCarlo
                     returns.Add(state, action, rewardSum);
                     actionValues.Set(state, action, returns.AverageReturnFrom(state, action));
                     var bestAction = actionValues.HighestValueAction(state);
-                    _actions.SetAction(state, bestAction);
+                    _currentPolicy.SetAction(state, bestAction);
                 }
             }
         }

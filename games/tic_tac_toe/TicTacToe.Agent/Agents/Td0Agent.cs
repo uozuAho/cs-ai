@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections.Generic;
 using System.Linq;
 using ailib.Utils;
 using MoreLinq;
@@ -39,16 +40,32 @@ namespace TicTacToe.Agent.Agents
 
         public FixedPolicy GetCurrentPolicy()
         {
-            var map = new FixedPolicy();
+            var policy = new FixedPolicy();
+
             foreach (var (board, _) in _values.All()
                 .Where(bv => bv.Item1.CurrentPlayer == Tile)
                 .Where(bv => !bv.Item1.IsGameOver))
             {
                 var bestAction = BestAction(board);
-                map.SetAction(board, bestAction);
+                policy.SetAction(board, bestAction);
             }
 
-            return map;
+            return policy;
+        }
+
+        public PolicyFile GetCurrentPolicyFile(string name, string description)
+        {
+            var actions = new List<PolicyFileAction>();
+
+            foreach (var (board, value) in _values.All()
+                .Where(bv => bv.Item1.CurrentPlayer == Tile)
+                .Where(bv => !bv.Item1.IsGameOver))
+            {
+                var bestAction = BestAction(board);
+                actions.Add(new PolicyFileAction(board.ToString(), value, bestAction.Position));
+            }
+
+            return new PolicyFile(name, description, Tile, actions.ToArray());
         }
 
         public void Train(ITicTacToePlayer opponent, int? numGamesLimit = null)
