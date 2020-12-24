@@ -25,5 +25,26 @@ namespace TicTacToe.Agent.Test.Utils
 
             CollectionAssert.AreEqual(originalActions, loadedActions);
         }
+
+        [Test]
+        public void FromString()
+        {
+            const string boardString = "x  | o |   ";
+            var mapJson = $@"
+{{
+    ""name"": ""billy"",
+    ""description"": ""stuff"",
+    ""tile"": ""O"",
+    ""actions"": [{{
+        ""board"": ""{boardString}"",
+        ""value"": 2.22,
+        ""action"": 5
+    }}]
+}}";
+            var map = BoardActionMap.FromJsonString(mapJson);
+            
+            Assert.AreEqual(1, map.NumStates);
+            Assert.AreEqual(5, map.ActionFor(Board.CreateFromString(boardString, BoardTile.O)).Position);
+        }
     }
 }

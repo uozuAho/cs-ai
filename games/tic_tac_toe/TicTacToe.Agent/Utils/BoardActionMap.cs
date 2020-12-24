@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.IO;
 using System.Linq;
 using System.Text.Json;
+using System.Text.Json.Serialization;
 using TicTacToe.Game;
 
 namespace TicTacToe.Agent.Utils
@@ -58,5 +59,40 @@ namespace TicTacToe.Agent.Utils
             File.WriteAllText(path, JsonSerializer.Serialize(
                 serializableActions, new JsonSerializerOptions {WriteIndented = true}));
         }
+
+        public static BoardActionMap FromJsonString(string text)
+        {
+            var deser = JsonSerializer.Deserialize<PolicyFile>(text, new JsonSerializerOptions
+            {
+                PropertyNameCaseInsensitive = true,
+                Converters =
+                {
+                    new JsonStringEnumConverter(JsonNamingPolicy.CamelCase)
+                }
+            });
+
+            if (deser == null) throw new InvalidOperationException("map deserialised to null :(");
+
+            var map = new BoardActionMap();
+            foreach (var (boardString, _, position) in deser.Actions)
+            {
+                var board = Board.CreateFromString(boardString, deser.Tile);
+                var action = new TicTacToeAction {Tile = deser.Tile, Position = position};
+                map.SetAction(board, action);
+            }
+
+            return map;
+        }
     }
+
+    public record PolicyFile(
+        string Name,
+        string Description,
+        BoardTile Tile,
+        PolicyFileAction[] Actions);
+
+    public record PolicyFileAction(
+        string Board,
+        double Value,
+        int Action);
 }

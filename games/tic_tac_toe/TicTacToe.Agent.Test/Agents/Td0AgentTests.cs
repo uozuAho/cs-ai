@@ -7,11 +7,11 @@ namespace TicTacToe.Agent.Test.Agents
     internal class Td0AgentTests
     {
         [Test]
-        public void asdf()
+        public void Td0Agent_Trains()
         {
             var agent = new Td0Agent(BoardTile.X);
-            agent.Train(new RandomTicTacToePlayer(BoardTile.O));
-            var policy = agent.GetCurrentPolicy();
+            agent.Train(new RandomTicTacToePlayer(BoardTile.O), 50);
+            Assert.DoesNotThrow(() => agent.GetCurrentPolicy());
         }
     }
 }
