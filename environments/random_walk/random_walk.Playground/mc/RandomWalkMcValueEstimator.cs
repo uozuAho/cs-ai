@@ -10,8 +10,8 @@ namespace random_walk.Playground.mc
 
         public double[] Estimate(RandomWalkEnvironment environment, int? episodeLimit = null)
         {
-            _values = new double[environment.NumPositions];
-            _returns = new StateReturns(environment.NumPositions);
+            _values = new double[environment.NumPositions + 1];
+            _returns = new StateReturns(environment.NumPositions + 1);
 
             var maxEpisodes = episodeLimit ?? 10000;
 
@@ -48,7 +48,7 @@ namespace random_walk.Playground.mc
 
         public StateReturns(int numStates)
         {
-            _returns = Enumerable.Range(0, numStates)
+            _returns = Enumerable.Range(0, numStates + 1)
                 .Select(_ => new List<double>()).ToArray();
         }
 
@@ -65,12 +65,22 @@ namespace random_walk.Playground.mc
 
     internal class Episode
     {
-        public int Length { get; set; }
-        public List<EpisodeStep> Steps { get; set; }
+        public int Length => Steps.Count;
+        public List<EpisodeStep> Steps { get; set; } = new();
 
-        public static Episode Generate(RandomWalkEnvironment randomWalkEnvironment)
+        public static Episode Generate(RandomWalkEnvironment env)
         {
-            return new();
+            var episode = new Episode();
+            env.Reset();
+            RandomWalkStepResult step;
+
+            do
+            {
+                step = env.Step();
+                episode.Steps.Add(new EpisodeStep(step.State, step.Reward));
+            } while (!step.IsDone);
+
+            return episode;
         }
 
         public int TimeOfFirstVisit(int state)
@@ -79,5 +89,5 @@ namespace random_walk.Playground.mc
         }
     }
 
-    internal record EpisodeStep(int State, int Action, double Reward);
+    internal record EpisodeStep(int State, double Reward);
 }

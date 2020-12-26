@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Linq;
 using random_walk.Playground.mc;
 
 namespace random_walk.Playground
@@ -12,7 +13,8 @@ namespace random_walk.Playground
             var mcEstimator = new RandomWalkMcValueEstimator();
             var mcEstimates = mcEstimator.Estimate(env);
 
-            Console.WriteLine($"mc estimates: {string.Join(",", mcEstimates)}");
+            var formattedEstimates = mcEstimates.Select(e => $"{e:F}");
+            Console.WriteLine($"mc estimates: {string.Join(",", formattedEstimates)}");
         }
     }
 }
