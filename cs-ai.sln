@@ -53,9 +53,11 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Blackjack.Test", "environme
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "TicTacToe.Console.Test", "environments\tic_tac_toe\TicTacToe.Console.Test\TicTacToe.Console.Test.csproj", "{F29C42C9-9EA8-45DC-88C8-BEE5DCC0EA88}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "random_walk", "environments\random_walk\random_walk\random_walk.csproj", "{B0406302-D5A0-4382-B87F-895EAE8F65FA}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "random_walk", "environments\random_walk\random_walk\random_walk.csproj", "{B0406302-D5A0-4382-B87F-895EAE8F65FA}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "random_walk.Test", "environments\random_walk\random_walk.Test\random_walk.Test.csproj", "{2E453FA6-54E8-47B5-A892-1873652E0497}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "random_walk.Test", "environments\random_walk\random_walk.Test\random_walk.Test.csproj", "{2E453FA6-54E8-47B5-A892-1873652E0497}"
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "random_walk", "random_walk", "{3D51D444-8E9B-4BCE-84B9-42BD411A8298}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -345,6 +347,9 @@ Global
 		{DCB15E74-08CA-4589-9681-5AAE22D43AE0} = {8D38A93D-47CB-4594-A4A1-A027131A41E0}
 		{3372DFA9-E45B-4007-BE8B-F6D1F26E80FC} = {8D38A93D-47CB-4594-A4A1-A027131A41E0}
 		{F29C42C9-9EA8-45DC-88C8-BEE5DCC0EA88} = {CFFF5EA0-7E3B-4BB9-B1AA-3B3B335ED3C9}
+		{B0406302-D5A0-4382-B87F-895EAE8F65FA} = {3D51D444-8E9B-4BCE-84B9-42BD411A8298}
+		{2E453FA6-54E8-47B5-A892-1873652E0497} = {3D51D444-8E9B-4BCE-84B9-42BD411A8298}
+		{3D51D444-8E9B-4BCE-84B9-42BD411A8298} = {1516DEAC-1A68-4EEC-ABAB-0FD682281281}
 	EndGlobalSection
 	GlobalSection(ExtensibilityGlobals) = postSolution
 		SolutionGuid = {670D9C88-F0D2-41D6-AFB6-3B893AB093E2}
