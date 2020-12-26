@@ -21,7 +21,10 @@ namespace random_walk
 
         public void Reset(int? startingPosition = null)
         {
-            _currentPosition = startingPosition ?? _random.Next(0, NumPositions + 1);
+            if (startingPosition < 0 || startingPosition >= NumPositions)
+                throw new ArgumentException($"position must be between 0 and {NumPositions - 1}");
+
+            _currentPosition = startingPosition ?? _random.Next(0, NumPositions);
         }
 
         public RandomWalkStepResult Step()
@@ -37,11 +40,11 @@ namespace random_walk
             if (IsDone) throw new InvalidOperationException("Cannot step when done");
 
             _currentPosition += action;
-            var reward = _currentPosition > NumPositions ? 1.0 : 0.0;
+            var reward = _currentPosition >= NumPositions ? 1.0 : 0.0;
 
             return new RandomWalkStepResult(_currentPosition, reward, IsDone);
         }
 
-        private bool IsDone => _currentPosition == -1 || _currentPosition > NumPositions;
+        private bool IsDone => _currentPosition == -1 || _currentPosition >= NumPositions;
     }
 }

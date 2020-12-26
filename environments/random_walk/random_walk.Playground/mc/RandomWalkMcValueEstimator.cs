@@ -16,16 +16,16 @@ namespace random_walk.Playground.mc
 
             for (var i = 0; i < maxEpisodes; i++)
             {
-                ImproveEstimates();
+                ImproveEstimates(environment);
             }
 
             return _values;
         }
 
-        private void ImproveEstimates()
+        private void ImproveEstimates(RandomWalkEnvironment environment)
         {
             var rewardSum = 0.0;
-            var episode = RandomWalkEpisode.Generate(new RandomWalkEnvironment(5));
+            var episode = RandomWalkEpisode.Generate(environment);
 
             foreach (var t in Enumerable.Range(0, episode.Length - 1).Reverse())
             {

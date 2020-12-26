@@ -1,9 +1,9 @@
 ﻿using System.Collections.Generic;
 using System.Linq;
 
-namespace random_walk.Playground.mc
+namespace random_walk
 {
-    internal class StateReturns
+    public class StateReturns
     {
         private readonly List<double>[] _returns;
 

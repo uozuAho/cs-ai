@@ -3,7 +3,7 @@ using NUnit.Framework;
 
 namespace random_walk.Test
 {
-    public class Tests
+    public class RandomWalkEnvironmentTests
     {
         [Test]
         public void WhenStartingAtLeftmostPosition_StepLeft_Loses()
@@ -19,12 +19,18 @@ namespace random_walk.Test
         [Test]
         public void WhenStartingAtRightmostPosition_StepRight_Wins()
         {
-            var env = new RandomWalkEnvironment(5, 5);
+            var env = new RandomWalkEnvironment(5, 4);
         
             var (_, reward, isDone) = env.DebugStep(1);
         
             Assert.AreEqual(1, reward);
             Assert.True(isDone);
+        }
+
+        [Test]
+        public void StartingAtInvalidState_Throws()
+        {
+            Assert.Throws<ArgumentException>(() => new RandomWalkEnvironment(5, 5));
         }
 
         [Test]
@@ -42,7 +48,7 @@ namespace random_walk.Test
         [Test]
         public void CannotStep_WhenDone()
         {
-            var env = new RandomWalkEnvironment(5, 5);
+            var env = new RandomWalkEnvironment(5, 4);
             env.DebugStep(1);
 
             // act & assert
