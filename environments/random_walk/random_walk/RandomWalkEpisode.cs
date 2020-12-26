@@ -1,22 +1,22 @@
 ﻿using System.Collections.Generic;
 
-namespace random_walk.Playground.mc
+namespace random_walk
 {
-    internal class Episode
+    public class RandomWalkEpisode
     {
         public int Length => Steps.Count;
-        public List<EpisodeStep> Steps { get; set; } = new();
+        public List<RandomWalkStep> Steps { get; set; } = new();
 
-        public static Episode Generate(RandomWalkEnvironment env)
+        public static RandomWalkEpisode Generate(RandomWalkEnvironment env)
         {
-            var episode = new Episode();
+            var episode = new RandomWalkEpisode();
             env.Reset();
             RandomWalkStepResult step;
 
             do
             {
                 step = env.Step();
-                episode.Steps.Add(new EpisodeStep(step.State, step.Reward));
+                episode.Steps.Add(new RandomWalkStep(step.State, step.Reward));
             } while (!step.IsDone);
 
             return episode;

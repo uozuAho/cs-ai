@@ -44,6 +44,4 @@ namespace random_walk
 
         private bool IsDone => _currentPosition == -1 || _currentPosition > NumPositions;
     }
-
-    public record RandomWalkStepResult(int State, double Reward, bool IsDone);
 }

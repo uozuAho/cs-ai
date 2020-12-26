@@ -1,17 +1,16 @@
-﻿using System.Collections.Generic;
-using System.Linq;
+﻿using System.Linq;
 
 namespace random_walk.Playground.mc
 {
-    class RandomWalkMcValueEstimator
+    internal class RandomWalkMcValueEstimator
     {
         private double[] _values;
         private StateReturns _returns;
 
         public double[] Estimate(RandomWalkEnvironment environment, int? episodeLimit = null)
         {
-            _values = new double[environment.NumPositions + 1];
-            _returns = new StateReturns(environment.NumPositions + 1);
+            _values = new double[environment.NumPositions];
+            _returns = new StateReturns(environment.NumPositions);
 
             var maxEpisodes = episodeLimit ?? 10000;
 
@@ -26,7 +25,7 @@ namespace random_walk.Playground.mc
         private void ImproveEstimates()
         {
             var rewardSum = 0.0;
-            var episode = Episode.Generate(new RandomWalkEnvironment(5));
+            var episode = RandomWalkEpisode.Generate(new RandomWalkEnvironment(5));
 
             foreach (var t in Enumerable.Range(0, episode.Length - 1).Reverse())
             {
@@ -41,53 +40,4 @@ namespace random_walk.Playground.mc
             }
         }
     }
-
-    internal class StateReturns
-    {
-        private readonly List<double>[] _returns;
-
-        public StateReturns(int numStates)
-        {
-            _returns = Enumerable.Range(0, numStates + 1)
-                .Select(_ => new List<double>()).ToArray();
-        }
-
-        public void Add(int state, double value)
-        {
-            _returns[state].Add(value);
-        }
-
-        public double AverageReturnFrom(int state)
-        {
-            return _returns[state].Average();
-        }
-    }
-
-    internal class Episode
-    {
-        public int Length => Steps.Count;
-        public List<EpisodeStep> Steps { get; set; } = new();
-
-        public static Episode Generate(RandomWalkEnvironment env)
-        {
-            var episode = new Episode();
-            env.Reset();
-            RandomWalkStepResult step;
-
-            do
-            {
-                step = env.Step();
-                episode.Steps.Add(new EpisodeStep(step.State, step.Reward));
-            } while (!step.IsDone);
-
-            return episode;
-        }
-
-        public int TimeOfFirstVisit(int state)
-        {
-            return Steps.FindIndex(step => step.State == state);
-        }
-    }
-
-    internal record EpisodeStep(int State, double Reward);
 }
