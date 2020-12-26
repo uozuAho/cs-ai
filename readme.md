@@ -16,7 +16,7 @@ See also
     dotnet test
 ```
 
-games/ has some runnable console projects. Use `dotnet run`
+environments/ has some runnable console projects. Use `dotnet run`
 in their *.console directories.
 
 

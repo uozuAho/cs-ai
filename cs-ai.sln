@@ -7,35 +7,35 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "ailib", "ailib\ailib.csproj
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "ailib.test", "ailib.test\ailib.test.csproj", "{EB4378C2-EBCE-4F19-83D2-C840723705DE}"
 EndProject
-Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "games", "games", "{1516DEAC-1A68-4EEC-ABAB-0FD682281281}"
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "environments", "environments", "{1516DEAC-1A68-4EEC-ABAB-0FD682281281}"
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "pandemic", "pandemic", "{581459CB-F3AC-4CA5-B75A-E99119DB44BA}"
 EndProject
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "pandemic", "games\pandemic\pandemic\pandemic.csproj", "{8B387F46-0B96-42A2-885F-F3F10641AA05}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "pandemic", "environments\pandemic\pandemic\pandemic.csproj", "{8B387F46-0B96-42A2-885F-F3F10641AA05}"
 EndProject
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "pandemic.test", "games\pandemic\pandemic.test\pandemic.test.csproj", "{379B8FD0-1B06-4477-807F-59342F271526}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "pandemic.test", "environments\pandemic\pandemic.test\pandemic.test.csproj", "{379B8FD0-1B06-4477-807F-59342F271526}"
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "vacuum_world", "vacuum_world", "{B4FA845D-CE1F-433F-ADDD-54DE84273511}"
 EndProject
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "vacuum_world", "games\vacuum_world\vacuum_world\vacuum_world.csproj", "{366C8FD7-62E9-4F1F-9033-E0B9C8432476}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "vacuum_world", "environments\vacuum_world\vacuum_world\vacuum_world.csproj", "{366C8FD7-62E9-4F1F-9033-E0B9C8432476}"
 EndProject
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "vacuum_world.console", "games\vacuum_world\vacuum_world.console\vacuum_world.console.csproj", "{0B85BAE0-2336-46D4-A567-2F55D261D70E}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "vacuum_world.console", "environments\vacuum_world\vacuum_world.console\vacuum_world.console.csproj", "{0B85BAE0-2336-46D4-A567-2F55D261D70E}"
 EndProject
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "vacuum_world.test", "games\vacuum_world\vacuum_world.test\vacuum_world.test.csproj", "{1919A696-3E6A-4587-B3C3-B1F409B6235C}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "vacuum_world.test", "environments\vacuum_world\vacuum_world.test\vacuum_world.test.csproj", "{1919A696-3E6A-4587-B3C3-B1F409B6235C}"
 EndProject
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "pandemic.console", "games\pandemic\pandemic.console\pandemic.console.csproj", "{4371599E-EE25-4FB6-BBEB-799EBB5B17A6}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "pandemic.console", "environments\pandemic\pandemic.console\pandemic.console.csproj", "{4371599E-EE25-4FB6-BBEB-799EBB5B17A6}"
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "tic_tac_toe", "tic_tac_toe", "{CFFF5EA0-7E3B-4BB9-B1AA-3B3B335ED3C9}"
 EndProject
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "TicTacToe.Agent", "games\tic_tac_toe\TicTacToe.Agent\TicTacToe.Agent.csproj", "{5847B2ED-D382-44F0-AB3F-F305F14C7D38}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "TicTacToe.Agent", "environments\tic_tac_toe\TicTacToe.Agent\TicTacToe.Agent.csproj", "{5847B2ED-D382-44F0-AB3F-F305F14C7D38}"
 EndProject
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "TicTacToe.Agent.Test", "games\tic_tac_toe\TicTacToe.Agent.Test\TicTacToe.Agent.Test.csproj", "{B2BF9D72-449A-4AF2-8BA6-8689A1AD9EF3}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "TicTacToe.Agent.Test", "environments\tic_tac_toe\TicTacToe.Agent.Test\TicTacToe.Agent.Test.csproj", "{B2BF9D72-449A-4AF2-8BA6-8689A1AD9EF3}"
 EndProject
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "TicTacToe.Console", "games\tic_tac_toe\TicTacToe.Console\TicTacToe.Console.csproj", "{7CC9B11D-27BA-4B4F-9147-7F8F63D79DF9}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "TicTacToe.Console", "environments\tic_tac_toe\TicTacToe.Console\TicTacToe.Console.csproj", "{7CC9B11D-27BA-4B4F-9147-7F8F63D79DF9}"
 EndProject
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "TicTacToe.Game", "games\tic_tac_toe\TicTacToe.Env\TicTacToe.Game.csproj", "{31508C65-587C-4C33-A142-51FBF6473EF8}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "TicTacToe.Game", "environments\tic_tac_toe\TicTacToe.Env\TicTacToe.Game.csproj", "{31508C65-587C-4C33-A142-51FBF6473EF8}"
 EndProject
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "TicTacToe.Game.Test", "games\tic_tac_toe\TicTacToe.Env.Test\TicTacToe.Game.Test.csproj", "{04780C3E-4319-4973-9717-35878459D44E}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "TicTacToe.Game.Test", "environments\tic_tac_toe\TicTacToe.Env.Test\TicTacToe.Game.Test.csproj", "{04780C3E-4319-4973-9717-35878459D44E}"
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "rl_book", "rl_book", "{21C76C21-306E-4EC5-84C7-5CF3BD27EA33}"
 EndProject
@@ -47,11 +47,11 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "RLCommon", "rl_book\RLCommo
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "blackjack", "blackjack", "{8D38A93D-47CB-4594-A4A1-A027131A41E0}"
 EndProject
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Blackjack", "games\blackjack\Blackjack\Blackjack.csproj", "{DCB15E74-08CA-4589-9681-5AAE22D43AE0}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Blackjack", "environments\blackjack\Blackjack\Blackjack.csproj", "{DCB15E74-08CA-4589-9681-5AAE22D43AE0}"
 EndProject
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Blackjack.Test", "games\blackjack\Blackjack.Test\Blackjack.Test.csproj", "{3372DFA9-E45B-4007-BE8B-F6D1F26E80FC}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Blackjack.Test", "environments\blackjack\Blackjack.Test\Blackjack.Test.csproj", "{3372DFA9-E45B-4007-BE8B-F6D1F26E80FC}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "TicTacToe.Console.Test", "games\tic_tac_toe\TicTacToe.Console.Test\TicTacToe.Console.Test.csproj", "{F29C42C9-9EA8-45DC-88C8-BEE5DCC0EA88}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "TicTacToe.Console.Test", "environments\tic_tac_toe\TicTacToe.Console.Test\TicTacToe.Console.Test.csproj", "{F29C42C9-9EA8-45DC-88C8-BEE5DCC0EA88}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
