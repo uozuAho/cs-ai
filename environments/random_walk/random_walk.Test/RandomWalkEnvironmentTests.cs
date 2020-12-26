@@ -10,7 +10,7 @@ namespace random_walk.Test
         {
             var env = new RandomWalkEnvironment(5, 0);
 
-            var (_, reward, isDone) = env.Step(-1);
+            var (_, reward, isDone) = env.DebugStep(-1);
 
             Assert.AreEqual(0, reward);
             Assert.True(isDone);
@@ -21,7 +21,7 @@ namespace random_walk.Test
         {
             var env = new RandomWalkEnvironment(5, 5);
         
-            var (_, reward, isDone) = env.Step(1);
+            var (_, reward, isDone) = env.DebugStep(1);
         
             Assert.AreEqual(1, reward);
             Assert.True(isDone);
@@ -32,7 +32,7 @@ namespace random_walk.Test
         {
             var env = new RandomWalkEnvironment(5, 3);
 
-            var (state, reward, isDone) = env.Step(1);
+            var (state, reward, isDone) = env.DebugStep(1);
 
             Assert.AreEqual(4, state);
             Assert.AreEqual(0, reward);
@@ -43,11 +43,11 @@ namespace random_walk.Test
         public void CannotStep_WhenDone()
         {
             var env = new RandomWalkEnvironment(5, 5);
-            env.Step(1);
+            env.DebugStep(1);
 
             // act & assert
-            Assert.Throws<InvalidOperationException>(() => env.Step(1));
-            Assert.Throws<InvalidOperationException>(() => env.Step(-1));
+            Assert.Throws<InvalidOperationException>(() => env.DebugStep(1));
+            Assert.Throws<InvalidOperationException>(() => env.DebugStep(-1));
         }
     }
 }
