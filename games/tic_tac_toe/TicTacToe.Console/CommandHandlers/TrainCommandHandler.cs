@@ -1,4 +1,5 @@
-﻿using TicTacToe.Console.Io;
+﻿using TicTacToe.Agent.Utils;
+using TicTacToe.Console.Io;
 using TicTacToe.Game;
 
 namespace TicTacToe.Console.CommandHandlers
@@ -34,9 +35,10 @@ namespace TicTacToe.Console.CommandHandlers
             var opponent = _playerRegister.GetPlayerByName(opponentName, BoardTile.O);
 
             agent.Train(opponent, numGamesLimit);
-            agent.GetCurrentPolicy().SaveToFile($"{agentName}.agent.json");
+            var policyFile = agent.GetCurrentPolicyFile(agentName, "");
+            policyFile.Save($"{agentName}.agent.json");
 
-            _userOutput.PrintLine($"Trained mc agent '{agentName}' against '{opponentName}'");
+            _userOutput.PrintLine($"Trained agent '{agentName}' against '{opponentName}'");
         }
     }
 }

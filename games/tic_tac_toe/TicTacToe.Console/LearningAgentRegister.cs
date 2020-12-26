@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using TicTacToe.Agent;
+using TicTacToe.Agent.Agents;
 using TicTacToe.Agent.Agents.MonteCarlo;
 using TicTacToe.Game;
 
@@ -21,6 +22,8 @@ namespace TicTacToe.Console
             // AddAgent(nameof(RlBookModifiedPTableAgent), RlBookModifiedPTableAgent.CreateDefaultAgent);
             AddAgent("mc", "First-visit Monte Carlo agent with exploring starts",
                 tile => new MonteCarloTicTacToeAgent(tile));
+            AddAgent("td0", "One-step on policy temporal difference",
+                tile => new Td0Agent(tile));
         }
 
         public IEnumerable<string> AvailableAgents()

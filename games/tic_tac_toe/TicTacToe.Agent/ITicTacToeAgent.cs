@@ -9,6 +9,7 @@ namespace TicTacToe.Agent
         BoardTile Tile { get; }
         TicTacToeAction GetAction(TicTacToeEnvironment environment);
         void Train(ITicTacToePlayer opponent, int? numGamesLimit = null);
-        BoardActionMap GetCurrentPolicy();
+        FixedPolicy GetCurrentPolicy();
+        PolicyFile GetCurrentPolicyFile(string name, string description);
     }
 }
