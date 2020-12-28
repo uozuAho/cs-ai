@@ -3,6 +3,11 @@ using ailib.Utils;
 
 namespace random_walk
 {
+    /// <summary>
+    /// An N-state random walk, as per p148 of the RL book. There is a
+    /// reward of 0 for walking past the leftmost  state, and 1 for
+    /// the rightmost state.
+    /// </summary>
     public class RandomWalkEnvironment
     {
         public int NumPositions { get; }
