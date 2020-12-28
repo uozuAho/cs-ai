@@ -2,11 +2,12 @@
 
   <PropertyGroup>
     <OutputType>Exe</OutputType>
-    <TargetFramework>net5.0</TargetFramework>
+    <TargetFramework>net5.0-windows</TargetFramework>
   </PropertyGroup>
 
   <ItemGroup>
     <ProjectReference Include="..\..\tic_tac_toe\TicTacToe.Agent\TicTacToe.Agent.csproj" />
+    <ProjectReference Include="..\random_walk.Playground.WPF\random_walk.Playground.WPF.csproj" />
     <ProjectReference Include="..\random_walk\random_walk.csproj" />
   </ItemGroup>
 
