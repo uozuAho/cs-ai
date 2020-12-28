@@ -2,7 +2,7 @@
 
 namespace random_walk.Playground.mc
 {
-    internal class RandomWalkMcValueEstimator
+    internal class McValueEstimator
     {
         private double[] _values;
         private StateReturns _returns;

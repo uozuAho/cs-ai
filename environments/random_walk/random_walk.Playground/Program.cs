@@ -30,7 +30,7 @@ namespace random_walk.Playground
                 5.0 / 6
             };
 
-            var mcEstimator = new RandomWalkMcValueEstimator();
+            var mcEstimator = new McValueEstimator();
             var mcEstimates10 = mcEstimator.Estimate(env, 10);
             var mcEstimates100 = mcEstimator.Estimate(env, 100);
             var mcEstimates1000 = mcEstimator.Estimate(env, 1000);
