@@ -9,7 +9,7 @@ namespace random_walk.Playground.mc
 
         public double[] Estimate(RandomWalkEnvironment environment, int? episodeLimit = null)
         {
-            _values = new double[environment.NumPositions];
+            _values = Enumerable.Range(0, environment.NumPositions).Select(_ => 0.5).ToArray();
             _returns = new StateReturns(environment.NumPositions);
 
             var maxEpisodes = episodeLimit ?? 10000;

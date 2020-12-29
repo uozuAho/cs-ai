@@ -24,12 +24,13 @@ namespace random_walk
             Reset(startingPosition);
         }
 
-        public void Reset(int? startingPosition = null)
+        public int Reset(int? startingPosition = null)
         {
             if (startingPosition < 0 || startingPosition >= NumPositions)
                 throw new ArgumentException($"position must be between 0 and {NumPositions - 1}");
 
             _currentPosition = startingPosition ?? _random.Next(0, NumPositions);
+            return _currentPosition;
         }
 
         public RandomWalkStepResult Step()
