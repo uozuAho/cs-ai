@@ -64,17 +64,17 @@ namespace TicTacToe.Agent.Agents
 
         public StateActionPolicy GetCurrentPolicyFile(string name, string description)
         {
-            var actions = new List<StateAction>();
+            var policy = new StateActionPolicy(name, description, Tile);
 
             foreach (var (board, value) in _values.All()
                 .Where(bv => bv.Item1.CurrentPlayer == Tile)
                 .Where(bv => !bv.Item1.IsGameOver))
             {
                 var bestAction = BestAction(board);
-                actions.Add(new StateAction(board.ToString(), value, bestAction.Position));
+                policy.AddStateAction(board, bestAction.Position, value);
             }
 
-            return new StateActionPolicy(name, description, Tile, actions.ToArray());
+            return policy;
         }
 
         public void Train(ITicTacToePlayer opponent, int? numGamesLimit = null)

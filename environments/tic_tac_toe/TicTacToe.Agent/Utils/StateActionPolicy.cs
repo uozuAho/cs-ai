@@ -1,18 +1,28 @@
-﻿using TicTacToe.Game;
+﻿using System.Collections.Generic;
+using TicTacToe.Game;
 
 namespace TicTacToe.Agent.Utils
 {
+    // todo: make this private
+    // don't use this type in client code
     public record StateAction(string Board, double Value, int Action);
 
     public record StateActionPolicy(
         string Name,
         string Description,
-        BoardTile Tile,
-        StateAction[] Actions) : IPolicyFile
+        BoardTile Tile) : IPolicyFile
     {
+        // only here for (de)serialization, don't use externally
+        public List<StateAction> Actions { get; init; } = new();
+
         public ITicTacToePlayer ToPlayer()
         {
             return new TicTacToeFixedPolicyPlayer(ToPolicy(), Tile);
+        }
+
+        public void AddStateAction(Board board, int position, double value)
+        {
+            Actions.Add(new StateAction(board.ToString(), value, position));
         }
 
         private FixedPolicy ToPolicy()
