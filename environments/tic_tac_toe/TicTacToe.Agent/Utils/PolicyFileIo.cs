@@ -26,14 +26,30 @@ namespace TicTacToe.Agent.Utils
         {
             var fileContents = File.ReadAllText(path);
             var doc = JsonDocument.Parse(fileContents);
-            var docType = doc.RootElement.GetProperty("Type");
+            var docTypeString = doc.RootElement.GetProperty("Type").GetString();
+            if (docTypeString == null) throw new InvalidOperationException("type must not be null");
+            var docType = Enum.Parse(typeof(PolicyFileType), docTypeString, true);
 
-            return FromJsonString(fileContents);
+            return docType switch
+            {
+                PolicyFileType.StateValue => FromStateValueJson(fileContents),
+                PolicyFileType.StateAction => FromStateActionJson(fileContents),
+                _ => throw new InvalidOperationException($"Unknown policy file type {docTypeString}")
+            };
         }
 
-        public static ITicTacToePolicy FromJsonString(string text)
+        public static SerializableStateActionPolicy FromStateActionJson(string text)
         {
             var file = JsonSerializer.Deserialize<SerializableStateActionPolicy>(text, BuildJsonOptions());
+
+            if (file == null) throw new InvalidOperationException("Policy file deserialised to null :(");
+
+            return file;
+        }
+
+        public static SerializableStateValuePolicy FromStateValueJson(string text)
+        {
+            var file = JsonSerializer.Deserialize<SerializableStateValuePolicy>(text, BuildJsonOptions());
 
             if (file == null) throw new InvalidOperationException("Policy file deserialised to null :(");
 

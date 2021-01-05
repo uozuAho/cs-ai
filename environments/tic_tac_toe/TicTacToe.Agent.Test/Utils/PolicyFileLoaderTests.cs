@@ -7,25 +7,17 @@ namespace TicTacToe.Agent.Test.Utils
     internal class PolicyFileLoaderTests
     {
         [Test]
-        public void FromString()
+        public void SaveAndLoad()
         {
-            const string boardString = "x  | o |   ";
-            var mapJson = $@"
-{{
-    ""name"": ""billy"",
-    ""description"": ""stuff"",
-    ""tile"": ""O"",
-    ""actions"": [{{
-        ""board"": ""{boardString}"",
-        ""value"": 2.22,
-        ""action"": 5
-    }}]
-}}";
-            var file = PolicyFileIo.FromJsonString(mapJson);
+            const string name = "name";
+            const string description = "description";
+            const string filename = "PolicyFileLoaderTests.SaveAndLoad.json";
+            
+            PolicyFileIo.Save(new SerializableStateActionPolicy(name, description, BoardTile.X), filename);
+            var loaded = PolicyFileIo.FromFile("PolicyFileLoaderTests.SaveAndLoad.json");
 
-            Assert.AreEqual("billy", file.Name);
-            Assert.AreEqual("stuff", file.Description);
-            Assert.AreEqual(BoardTile.O, file.Tile);
+            Assert.AreEqual(name, loaded.Name);
+            Assert.AreEqual(description, loaded.Description);
         }
     }
 }
