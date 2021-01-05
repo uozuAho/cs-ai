@@ -27,6 +27,12 @@ doesn't work. Maybe I've implemented it incorrectly.
 Same as above, but actually improves win rate over time.
 
 
+## Td0Agent
+
+One-step temporal difference (TD) learning agent, using on-policy learning.
+Estimates the afterstate-value function.
+
+
 # References
 
 - [rl book](https://www.amazon.com/Reinforcement-Learning-Introduction-Adaptive-Computation-ebook/dp/B008H5Q8VA)

@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Diagnostics;
 using System.Linq;
 using ailib.Utils;
 using MoreLinq;
@@ -10,7 +11,10 @@ using TicTacToe.Game;
 namespace TicTacToe.Agent.Agents
 {
     /// <summary>
-    /// One-step temporal difference learning agent. On-policy.
+    /// One-step temporal difference learning agent. On-policy. Learns afterstate-value
+    /// function, ie. the value of the state after the agent's move gets updated. This
+    /// negates the need to model the opponent's behaviour, as it becomes part of the
+    /// value function.
     /// </summary>
     public class Td0Agent : ITicTacToeAgent
     {
@@ -70,29 +74,43 @@ namespace TicTacToe.Agent.Agents
 
         public void Train(ITicTacToePlayer opponent, int? numGamesLimit = null)
         {
+            var gameCount = 0;
             var maxGames = numGamesLimit ?? 10000;
             var env = new TicTacToeEnvironment(opponent);
             _values = new StateValueTable(Tile);
 
-            // todo: break when td error drops below threshold
-            for (var i = 0; i < maxGames; i++)
+            var stopwatch = Stopwatch.StartNew();
+
+            for (; gameCount < maxGames; gameCount++)
             {
+                var maxTdError = 0.0;
                 env.Reset();
+                Board? previousAfterstate = null;
 
                 while (!env.CurrentState.IsGameOver)
                 {
-                    var currentBoard = env.CurrentState.Clone();
-                    var currentValue = _values.Value(currentBoard);
+                    var action = GetAction(env);
+                    var afterstate = env.CurrentState.DoAction(action);
                     var step = env.Step(GetAction(env));
-                    var nextBoard = env.CurrentState;
 
-                    var updatedValue =
-                        _values.Value(currentBoard)
-                        + LearningRate * (step.Reward + _values.Value(nextBoard) - currentValue);
+                    if (previousAfterstate != null)
+                    {
+                        var tdError = step.Reward + _values.Value(afterstate) - _values.Value(previousAfterstate);
+                        var updatedValue = _values.Value(afterstate) + LearningRate * tdError;
 
-                    _values.SetValue(currentBoard, updatedValue);
+                        if (Math.Abs(tdError - maxTdError) > maxTdError)
+                            maxTdError = Math.Abs(tdError - maxTdError);
+
+                        _values.SetValue(afterstate, updatedValue);
+                    }
+
+                    previousAfterstate = afterstate;
                 }
+
+                if (maxTdError < 0.01) break;
             }
+
+            Console.WriteLine($"Played {gameCount} games in {stopwatch.ElapsedMilliseconds} ms");
         }
 
         private TicTacToeAction BestAction(Board board)
