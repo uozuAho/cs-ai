@@ -37,12 +37,7 @@ namespace TicTacToe.Agent.Agents.MonteCarlo
             throw new NotImplementedException();
         }
 
-        public FixedPolicy GetCurrentPolicy()
-        {
-            throw new NotImplementedException();
-        }
-
-        public StateActionPolicy GetCurrentPolicyFile(string name, string description)
+        public ITicTacToePolicy GetCurrentPolicy(string name, string description)
         {
             throw new NotImplementedException();
         }

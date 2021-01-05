@@ -1,5 +1,4 @@
 ﻿using System;
-using System.Collections.Generic;
 using System.Diagnostics;
 using System.Linq;
 using ailib.Utils;
@@ -62,7 +61,7 @@ namespace TicTacToe.Agent.Agents
             return _values;
         }
 
-        public StateActionPolicy GetCurrentPolicyFile(string name, string description)
+        public ITicTacToePolicy GetCurrentPolicy(string name, string description)
         {
             var policy = new StateActionPolicy(name, description, Tile);
 

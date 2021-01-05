@@ -1,5 +1,4 @@
 ﻿using System;
-using System.Collections.Generic;
 using System.Linq;
 using ailib.Utils;
 using TicTacToe.Agent.Environment;
@@ -68,12 +67,7 @@ namespace TicTacToe.Agent.Agents.MonteCarlo
             }
         }
 
-        public FixedPolicy GetCurrentPolicy()
-        {
-            return _currentPolicy;
-        }
-
-        public StateActionPolicy GetCurrentPolicyFile(string name, string description)
+        public ITicTacToePolicy GetCurrentPolicy(string name, string description)
         {
             var policy = new StateActionPolicy(name, description, Tile);
 

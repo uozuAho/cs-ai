@@ -2,6 +2,7 @@
 using System.IO;
 using System.Text.Json;
 using System.Text.Json.Serialization;
+using TicTacToe.Game;
 
 namespace TicTacToe.Agent.Utils
 {
@@ -9,11 +10,15 @@ namespace TicTacToe.Agent.Utils
     {
         public static void Save(ITicTacToePolicy file, string path)
         {
-            if (file is StateActionPolicy policyFile)
-                File.WriteAllText(path, JsonSerializer.Serialize(policyFile, BuildJsonOptions()));
-            else
+            switch (file)
             {
-                throw new InvalidOperationException("Unknown policy");
+                case StateActionPolicy policyFile:
+                    File.WriteAllText(path, JsonSerializer.Serialize(policyFile, BuildJsonOptions()));
+                    break;
+                case StateValuePolicy policyFile:
+                    throw new InvalidOperationException();
+                default:
+                    throw new InvalidOperationException("Unknown policy");
             }
         }
 
@@ -43,6 +48,14 @@ namespace TicTacToe.Agent.Utils
                 },
                 WriteIndented = true
             };
+        }
+    }
+
+    public record StateValuePolicy(string Name, string Description, BoardTile Tile) : ITicTacToePolicy
+    {
+        public ITicTacToePlayer ToPlayer()
+        {
+            throw new NotImplementedException();
         }
     }
 }
