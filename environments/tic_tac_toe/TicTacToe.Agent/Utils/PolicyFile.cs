@@ -1,7 +1,4 @@
-﻿using System.IO;
-using System.Text.Json;
-using System.Text.Json.Serialization;
-using TicTacToe.Game;
+﻿using TicTacToe.Game;
 
 namespace TicTacToe.Agent.Utils
 {
@@ -11,11 +8,6 @@ namespace TicTacToe.Agent.Utils
         BoardTile Tile,
         PolicyFileAction[] Actions) : IPolicyFile
     {
-        public void Save(string path)
-        {
-            File.WriteAllText(path, JsonSerializer.Serialize(this, BuildJsonOptions()));
-        }
-
         public ITicTacToePlayer ToPlayer()
         {
             return new TicTacToeFixedPolicyPlayer(ToPolicy(), Tile);
@@ -33,19 +25,6 @@ namespace TicTacToe.Agent.Utils
             }
 
             return policy;
-        }
-
-        private static JsonSerializerOptions BuildJsonOptions()
-        {
-            return new()
-            {
-                PropertyNameCaseInsensitive = true,
-                Converters =
-                {
-                    new JsonStringEnumConverter(JsonNamingPolicy.CamelCase)
-                },
-                WriteIndented = true
-            };
         }
     }
 }

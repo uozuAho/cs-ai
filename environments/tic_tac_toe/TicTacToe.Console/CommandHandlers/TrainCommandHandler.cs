@@ -36,7 +36,7 @@ namespace TicTacToe.Console.CommandHandlers
 
             agent.Train(opponent, numGamesLimit);
             var policyFile = agent.GetCurrentPolicyFile(agentName, "");
-            policyFile.Save($"{agentName}.agent.json");
+            PolicyFileLoader.Save(policyFile, $"{agentName}.agent.json");
 
             _userOutput.PrintLine($"Trained agent '{agentName}' against '{opponentName}'");
         }

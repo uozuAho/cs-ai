@@ -17,8 +17,9 @@ namespace TicTacToe.Agent.Test.Utils
             });
 
             // act
-            policy.Save(filePath);
+            PolicyFileLoader.Save(policy, filePath);
             var loadedPolicy = (PolicyFile) PolicyFileLoader.FromFile(filePath);
+            Assert.IsNotNull(loadedPolicy);
 
             // assert
             var originalActions = policy.Actions.OrderBy(a => a.Board).ToList();

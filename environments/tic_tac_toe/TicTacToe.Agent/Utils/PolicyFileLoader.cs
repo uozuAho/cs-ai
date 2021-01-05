@@ -7,6 +7,16 @@ namespace TicTacToe.Agent.Utils
 {
     public class PolicyFileLoader
     {
+        public static void Save(IPolicyFile file, string path)
+        {
+            if (file is PolicyFile policyFile)
+                File.WriteAllText(path, JsonSerializer.Serialize(policyFile, BuildJsonOptions()));
+            else
+            {
+                throw new InvalidOperationException("Unknown policy");
+            }
+        }
+
         public static IPolicyFile FromFile(string path)
         {
             var fileContents = File.ReadAllText(path);
