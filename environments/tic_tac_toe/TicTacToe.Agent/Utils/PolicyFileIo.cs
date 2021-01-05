@@ -25,6 +25,9 @@ namespace TicTacToe.Agent.Utils
         public static ITicTacToePolicy FromFile(string path)
         {
             var fileContents = File.ReadAllText(path);
+            var doc = JsonDocument.Parse(fileContents);
+            var docType = doc.RootElement.GetProperty("Type");
+
             return FromJsonString(fileContents);
         }
 
