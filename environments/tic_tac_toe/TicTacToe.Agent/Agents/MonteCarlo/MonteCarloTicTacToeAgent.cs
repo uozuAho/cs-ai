@@ -73,17 +73,17 @@ namespace TicTacToe.Agent.Agents.MonteCarlo
             return _currentPolicy;
         }
 
-        public PolicyFile GetCurrentPolicyFile(string name, string description)
+        public StateActionPolicy GetCurrentPolicyFile(string name, string description)
         {
-            var actions = new List<PolicyFileAction>();
+            var actions = new List<StateAction>();
 
             foreach (var (board, action) in _currentPolicy.AllActions())
             {
                 var value = _actionValues.HighestValue(board);
-                actions.Add(new PolicyFileAction(board.ToString(), value, action.Position));
+                actions.Add(new StateAction(board.ToString(), value, action.Position));
             }
 
-            return new PolicyFile(name, description, Tile, actions.ToArray());
+            return new StateActionPolicy(name, description, Tile, actions.ToArray());
         }
 
         private void ImprovePolicy(ITicTacToePlayer opponent, ActionValues actionValues, Returns returns)

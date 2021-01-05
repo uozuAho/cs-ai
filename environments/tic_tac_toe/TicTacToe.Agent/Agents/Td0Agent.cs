@@ -62,19 +62,19 @@ namespace TicTacToe.Agent.Agents
             return _values;
         }
 
-        public PolicyFile GetCurrentPolicyFile(string name, string description)
+        public StateActionPolicy GetCurrentPolicyFile(string name, string description)
         {
-            var actions = new List<PolicyFileAction>();
+            var actions = new List<StateAction>();
 
             foreach (var (board, value) in _values.All()
                 .Where(bv => bv.Item1.CurrentPlayer == Tile)
                 .Where(bv => !bv.Item1.IsGameOver))
             {
                 var bestAction = BestAction(board);
-                actions.Add(new PolicyFileAction(board.ToString(), value, bestAction.Position));
+                actions.Add(new StateAction(board.ToString(), value, bestAction.Position));
             }
 
-            return new PolicyFile(name, description, Tile, actions.ToArray());
+            return new StateActionPolicy(name, description, Tile, actions.ToArray());
         }
 
         public void Train(ITicTacToePlayer opponent, int? numGamesLimit = null)

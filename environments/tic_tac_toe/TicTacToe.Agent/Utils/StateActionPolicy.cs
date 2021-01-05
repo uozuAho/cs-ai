@@ -2,11 +2,13 @@
 
 namespace TicTacToe.Agent.Utils
 {
-    public record PolicyFile(
+    public record StateAction(string Board, double Value, int Action);
+
+    public record StateActionPolicy(
         string Name,
         string Description,
         BoardTile Tile,
-        PolicyFileAction[] Actions) : IPolicyFile
+        StateAction[] Actions) : IPolicyFile
     {
         public ITicTacToePlayer ToPlayer()
         {

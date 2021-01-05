@@ -9,7 +9,7 @@ namespace TicTacToe.Agent.Utils
     {
         public static void Save(IPolicyFile file, string path)
         {
-            if (file is PolicyFile policyFile)
+            if (file is StateActionPolicy policyFile)
                 File.WriteAllText(path, JsonSerializer.Serialize(policyFile, BuildJsonOptions()));
             else
             {
@@ -25,7 +25,7 @@ namespace TicTacToe.Agent.Utils
 
         public static IPolicyFile FromJsonString(string text)
         {
-            var file = JsonSerializer.Deserialize<PolicyFile>(text, BuildJsonOptions());
+            var file = JsonSerializer.Deserialize<StateActionPolicy>(text, BuildJsonOptions());
 
             if (file == null) throw new InvalidOperationException("Policy file deserialised to null :(");
 

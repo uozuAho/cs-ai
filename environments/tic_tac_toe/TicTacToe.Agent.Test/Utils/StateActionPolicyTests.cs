@@ -5,20 +5,20 @@ using TicTacToe.Game;
 
 namespace TicTacToe.Agent.Test.Utils
 {
-    internal class PolicyFileTests
+    internal class StateActionPolicyTests
     {
         [Test]
         public void LoadSavedMap_GetsSameMap()
         {
             const string filePath = "BoardActionMapTests_LoadSave.test.json";
-            var policy = new PolicyFile("abc", "def", BoardTile.X, new[]
+            var policy = new StateActionPolicy("abc", "def", BoardTile.X, new[]
             {
-                new PolicyFileAction(Board.CreateEmptyBoard().ToString(), 1.23, 4)
+                new StateAction(Board.CreateEmptyBoard().ToString(), 1.23, 4)
             });
 
             // act
             PolicyFileLoader.Save(policy, filePath);
-            var loadedPolicy = (PolicyFile) PolicyFileLoader.FromFile(filePath);
+            var loadedPolicy = (StateActionPolicy) PolicyFileLoader.FromFile(filePath);
             Assert.IsNotNull(loadedPolicy);
 
             // assert

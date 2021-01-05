@@ -10,6 +10,6 @@ namespace TicTacToe.Agent
         TicTacToeAction GetAction(TicTacToeEnvironment environment);
         void Train(ITicTacToePlayer opponent, int? numGamesLimit = null);
         FixedPolicy GetCurrentPolicy();
-        PolicyFile GetCurrentPolicyFile(string name, string description);
+        StateActionPolicy GetCurrentPolicyFile(string name, string description);
     }
 }
