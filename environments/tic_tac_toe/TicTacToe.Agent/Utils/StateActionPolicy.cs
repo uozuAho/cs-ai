@@ -10,7 +10,7 @@ namespace TicTacToe.Agent.Utils
     public record StateActionPolicy(
         string Name,
         string Description,
-        BoardTile Tile) : IPolicyFile
+        BoardTile Tile) : ITicTacToePolicy
     {
         // only here for (de)serialization, don't use externally
         public List<StateAction> Actions { get; init; } = new();

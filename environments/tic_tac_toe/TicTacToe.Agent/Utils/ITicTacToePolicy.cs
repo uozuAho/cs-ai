@@ -2,7 +2,7 @@
 
 namespace TicTacToe.Agent.Utils
 {
-    public interface IPolicyFile
+    public interface ITicTacToePolicy
     {
         string Name { get; }
         string Description { get; }

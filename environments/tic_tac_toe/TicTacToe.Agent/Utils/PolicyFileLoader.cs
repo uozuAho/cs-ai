@@ -7,7 +7,7 @@ namespace TicTacToe.Agent.Utils
 {
     public class PolicyFileLoader
     {
-        public static void Save(IPolicyFile file, string path)
+        public static void Save(ITicTacToePolicy file, string path)
         {
             if (file is StateActionPolicy policyFile)
                 File.WriteAllText(path, JsonSerializer.Serialize(policyFile, BuildJsonOptions()));
@@ -17,13 +17,13 @@ namespace TicTacToe.Agent.Utils
             }
         }
 
-        public static IPolicyFile FromFile(string path)
+        public static ITicTacToePolicy FromFile(string path)
         {
             var fileContents = File.ReadAllText(path);
             return FromJsonString(fileContents);
         }
 
-        public static IPolicyFile FromJsonString(string text)
+        public static ITicTacToePolicy FromJsonString(string text)
         {
             var file = JsonSerializer.Deserialize<StateActionPolicy>(text, BuildJsonOptions());
 
