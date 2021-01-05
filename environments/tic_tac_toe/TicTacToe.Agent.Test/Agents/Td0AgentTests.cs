@@ -1,5 +1,4 @@
-﻿using System.Linq;
-using NUnit.Framework;
+﻿using NUnit.Framework;
 using TicTacToe.Agent.Agents;
 using TicTacToe.Agent.Utils;
 using TicTacToe.Game;
@@ -13,7 +12,7 @@ namespace TicTacToe.Agent.Test.Agents
         {
             var agent = new Td0Agent(BoardTile.X);
             agent.Train(new RandomTicTacToePlayer(BoardTile.O), 50);
-            Assert.DoesNotThrow(() => agent.GetCurrentPolicy());
+            Assert.DoesNotThrow(() => agent.GetCurrentPolicy("name", "description"));
         }
 
         [Test]

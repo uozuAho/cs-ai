@@ -4,7 +4,7 @@ using TicTacToe.Console.Test.Utils;
 
 namespace TicTacToe.Console.Test.CommandHandlers
 {
-    public class CombinedCommandHandlerTests
+    public class AcceptanceTests
     {
         private TestUserOutput _output;
         private PlayerRegister _playerRegister;
@@ -36,10 +36,10 @@ namespace TicTacToe.Console.Test.CommandHandlers
             Assert.True(_output.ContainsLine(line => line.Contains(trainedAgentName)));
         }
 
-        [Test]
-        public void AfterTrain_TrainedAgentIsPlayable()
+        [TestCase("mc")]
+        [TestCase("td0")]
+        public void AfterTrain_TrainedAgentIsPlayable(string agentName)
         {
-            const string agentName = "mc";
             const int numGames = 1;
 
             _trainer.Run(agentName, "FirstAvailableSlotPlayer", numGames);

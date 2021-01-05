@@ -2,7 +2,6 @@
 using System.IO;
 using System.Text.Json;
 using System.Text.Json.Serialization;
-using TicTacToe.Game;
 
 namespace TicTacToe.Agent.Utils
 {
@@ -48,14 +47,6 @@ namespace TicTacToe.Agent.Utils
                 },
                 WriteIndented = true
             };
-        }
-    }
-
-    public record StateValuePolicy(string Name, string Description, BoardTile Tile) : ITicTacToePolicy
-    {
-        public ITicTacToePlayer ToPlayer()
-        {
-            throw new NotImplementedException();
         }
     }
 }

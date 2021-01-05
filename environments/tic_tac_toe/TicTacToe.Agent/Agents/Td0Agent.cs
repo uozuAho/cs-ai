@@ -41,21 +41,6 @@ namespace TicTacToe.Agent.Agents
                 : RandomAction(environment);
         }
 
-        public FixedPolicy GetCurrentPolicy()
-        {
-            var policy = new FixedPolicy();
-
-            foreach (var (board, _) in _values.All()
-                .Where(bv => bv.Item1.CurrentPlayer == Tile)
-                .Where(bv => !bv.Item1.IsGameOver))
-            {
-                var bestAction = BestAction(board);
-                policy.SetAction(board, bestAction);
-            }
-
-            return policy;
-        }
-
         public StateValueTable GetCurrentStateValues()
         {
             return _values;
@@ -63,17 +48,7 @@ namespace TicTacToe.Agent.Agents
 
         public ITicTacToePolicy GetCurrentPolicy(string name, string description)
         {
-            var policy = new StateActionPolicy(name, description, Tile);
-
-            foreach (var (board, value) in _values.All()
-                .Where(bv => bv.Item1.CurrentPlayer == Tile)
-                .Where(bv => !bv.Item1.IsGameOver))
-            {
-                var bestAction = BestAction(board);
-                policy.AddStateAction(board, bestAction.Position, value);
-            }
-
-            return policy;
+            return new StateValuePolicy(name, description, Tile, _values);
         }
 
         public void Train(ITicTacToePlayer opponent, int? numGamesLimit = null)
