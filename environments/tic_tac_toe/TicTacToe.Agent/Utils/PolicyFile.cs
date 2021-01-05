@@ -32,6 +32,11 @@ namespace TicTacToe.Agent.Utils
             File.WriteAllText(path, JsonSerializer.Serialize(this, BuildJsonOptions()));
         }
 
+        public ITicTacToePlayer ToPlayer()
+        {
+            return new TicTacToeFixedPolicyPlayer(ToPolicy(), Tile);
+        }
+
         public FixedPolicy ToPolicy()
         {
             var policy = new FixedPolicy();
