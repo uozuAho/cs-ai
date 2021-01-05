@@ -7,6 +7,7 @@ namespace TicTacToe.Agent.Utils
         string Name { get; }
         string Description { get; }
         BoardTile Tile { get; }
+        PolicyFileType Type { get; }
 
         ITicTacToePlayer ToPlayer();
     }

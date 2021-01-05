@@ -12,6 +12,8 @@ namespace TicTacToe.Agent.Utils
         string Description,
         BoardTile Tile) : ITicTacToePolicy
     {
+        public PolicyFileType Type => PolicyFileType.StateAction;
+
         // only here for (de)serialization, don't use externally
         public List<StateAction> Actions { get; init; } = new();
 

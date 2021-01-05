@@ -9,6 +9,8 @@ namespace TicTacToe.Agent.Utils
 
     public record StateValuePolicy : ITicTacToePolicy
     {
+        public PolicyFileType Type => PolicyFileType.StateValue;
+
         public string Name { get; init; }
         public string Description { get; init; }
         public BoardTile Tile { get; init; }
