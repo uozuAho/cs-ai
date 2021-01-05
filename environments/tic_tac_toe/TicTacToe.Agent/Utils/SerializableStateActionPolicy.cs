@@ -7,7 +7,7 @@ namespace TicTacToe.Agent.Utils
     // don't use this type in client code
     public record StateAction(string Board, double Value, int Action);
 
-    public record StateActionPolicy(
+    public record SerializableStateActionPolicy(
         string Name,
         string Description,
         BoardTile Tile) : ITicTacToePolicy

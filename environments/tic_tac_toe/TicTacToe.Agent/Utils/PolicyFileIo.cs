@@ -11,11 +11,12 @@ namespace TicTacToe.Agent.Utils
         {
             switch (file)
             {
-                case StateActionPolicy policyFile:
+                case SerializableStateActionPolicy policyFile:
                     File.WriteAllText(path, JsonSerializer.Serialize(policyFile, BuildJsonOptions()));
                     break;
                 case StateValuePolicy policyFile:
-                    throw new InvalidOperationException();
+                    File.WriteAllText(path, JsonSerializer.Serialize(policyFile, BuildJsonOptions()));
+                    break;
                 default:
                     throw new InvalidOperationException("Unknown policy");
             }
@@ -29,7 +30,7 @@ namespace TicTacToe.Agent.Utils
 
         public static ITicTacToePolicy FromJsonString(string text)
         {
-            var file = JsonSerializer.Deserialize<StateActionPolicy>(text, BuildJsonOptions());
+            var file = JsonSerializer.Deserialize<SerializableStateActionPolicy>(text, BuildJsonOptions());
 
             if (file == null) throw new InvalidOperationException("Policy file deserialised to null :(");
 

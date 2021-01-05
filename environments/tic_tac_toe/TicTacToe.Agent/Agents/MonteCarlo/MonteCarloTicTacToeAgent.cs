@@ -69,7 +69,8 @@ namespace TicTacToe.Agent.Agents.MonteCarlo
 
         public ITicTacToePolicy GetCurrentPolicy(string name, string description)
         {
-            var policy = new StateActionPolicy(name, description, Tile);
+            // todo: add a persistence layer, don't use serializable stuff directly
+            var policy = new SerializableStateActionPolicy(name, description, Tile);
 
             foreach (var (board, action) in _currentPolicy.AllActions())
             {
