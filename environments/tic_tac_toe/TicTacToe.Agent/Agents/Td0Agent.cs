@@ -57,6 +57,11 @@ namespace TicTacToe.Agent.Agents
             return policy;
         }
 
+        public StateValueTable GetCurrentStateValues()
+        {
+            return _values;
+        }
+
         public PolicyFile GetCurrentPolicyFile(string name, string description)
         {
             var actions = new List<PolicyFileAction>();

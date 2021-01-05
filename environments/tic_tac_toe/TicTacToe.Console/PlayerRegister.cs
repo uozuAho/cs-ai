@@ -46,7 +46,7 @@ namespace TicTacToe.Console
                 {
                     if (policy.Tile != tile) throw new ArgumentException("tile does not match policy tile");
 
-                    return new TicTacToeFixedPolicyPlayer(policy);
+                    return TicTacToeFixedPolicyPlayer.FromPolicyFile(policy);
                 });
             }
         }
