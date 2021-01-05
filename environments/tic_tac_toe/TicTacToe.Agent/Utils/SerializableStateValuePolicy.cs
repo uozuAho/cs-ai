@@ -7,7 +7,7 @@ namespace TicTacToe.Agent.Utils
     // don't use this type in client code
     public record StateValue(string Board, double Value);
 
-    public record StateValuePolicy : ITicTacToePolicy
+    public record SerializableStateValuePolicy : ITicTacToePolicy
     {
         public PolicyFileType Type => PolicyFileType.StateValue;
 
@@ -18,17 +18,7 @@ namespace TicTacToe.Agent.Utils
         // only here for (de)serialization, don't use externally
         public List<StateValue> Values { get; init; } = new();
 
-        private StateValuePolicy(
-            string name,
-            string description,
-            BoardTile tile)
-        {
-            Name = name;
-            Description = description;
-            Tile = tile;
-        }
-
-        public StateValuePolicy(
+        public SerializableStateValuePolicy(
             string name,
             string description,
             BoardTile tile,

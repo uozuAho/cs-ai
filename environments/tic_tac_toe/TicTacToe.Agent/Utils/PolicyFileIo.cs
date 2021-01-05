@@ -14,7 +14,7 @@ namespace TicTacToe.Agent.Utils
                 case SerializableStateActionPolicy policyFile:
                     File.WriteAllText(path, JsonSerializer.Serialize(policyFile, BuildJsonOptions()));
                     break;
-                case StateValuePolicy policyFile:
+                case SerializableStateValuePolicy policyFile:
                     File.WriteAllText(path, JsonSerializer.Serialize(policyFile, BuildJsonOptions()));
                     break;
                 default:
