@@ -18,11 +18,6 @@ namespace TicTacToe.Agent.Utils
             return _policy.Action(board);
         }
 
-        public static ITicTacToePlayer FromPolicy(FixedPolicy policy, BoardTile tile)
-        {
-            return new TicTacToeFixedPolicyPlayer(policy, tile);
-        }
-
         public static ITicTacToePlayer FromPolicyFile(PolicyFile policyFile)
         {
             return new TicTacToeFixedPolicyPlayer(policyFile.ToPolicy(), policyFile.Tile);
