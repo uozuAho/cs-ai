@@ -8,29 +8,6 @@ namespace TicTacToe.Agent.Test.Utils
     internal class PolicyFileTests
     {
         [Test]
-        public void FromString()
-        {
-            const string boardString = "x  | o |   ";
-            var mapJson = $@"
-{{
-    ""name"": ""billy"",
-    ""description"": ""stuff"",
-    ""tile"": ""O"",
-    ""actions"": [{{
-        ""board"": ""{boardString}"",
-        ""value"": 2.22,
-        ""action"": 5
-    }}]
-}}";
-            var (name, description, boardTile, policyFileActions) = PolicyFile.FromJsonString(mapJson);
-
-            Assert.AreEqual("billy", name);
-            Assert.AreEqual("stuff", description);
-            Assert.AreEqual(BoardTile.O, boardTile);
-            Assert.AreEqual(1, policyFileActions.Length);
-        }
-
-        [Test]
         public void LoadSavedMap_GetsSameMap()
         {
             const string filePath = "BoardActionMapTests_LoadSave.test.json";
@@ -41,7 +18,7 @@ namespace TicTacToe.Agent.Test.Utils
 
             // act
             policy.Save(filePath);
-            var loadedPolicy = PolicyFile.Load(filePath);
+            var loadedPolicy = (PolicyFile) PolicyFileLoader.FromFile(filePath);
 
             // assert
             var originalActions = policy.Actions.OrderBy(a => a.Board).ToList();

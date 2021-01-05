@@ -1,5 +1,4 @@
-﻿using System;
-using System.IO;
+﻿using System.IO;
 using System.Text.Json;
 using System.Text.Json.Serialization;
 using TicTacToe.Game;
@@ -10,23 +9,8 @@ namespace TicTacToe.Agent.Utils
         string Name,
         string Description,
         BoardTile Tile,
-        PolicyFileAction[] Actions)
+        PolicyFileAction[] Actions) : IPolicyFile
     {
-        public static PolicyFile Load(string path)
-        {
-            var fileContents = File.ReadAllText(path);
-            return FromJsonString(fileContents);
-        }
-
-        public static PolicyFile FromJsonString(string text)
-        {
-            var file = JsonSerializer.Deserialize<PolicyFile>(text, BuildJsonOptions());
-
-            if (file == null) throw new InvalidOperationException("Policy file deserialised to null :(");
-
-            return file;
-        }
-
         public void Save(string path)
         {
             File.WriteAllText(path, JsonSerializer.Serialize(this, BuildJsonOptions()));
@@ -37,7 +21,7 @@ namespace TicTacToe.Agent.Utils
             return new TicTacToeFixedPolicyPlayer(ToPolicy(), Tile);
         }
 
-        public FixedPolicy ToPolicy()
+        private FixedPolicy ToPolicy()
         {
             var policy = new FixedPolicy();
 
