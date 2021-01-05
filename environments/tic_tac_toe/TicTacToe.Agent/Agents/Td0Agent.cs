@@ -48,7 +48,9 @@ namespace TicTacToe.Agent.Agents
 
         public ITicTacToePolicy GetCurrentPolicy(string name, string description)
         {
-            return new SerializableStateValuePolicy(name, description, Tile, _values);
+            var policy = new SerializableStateValuePolicy(name, description, Tile);
+            policy.SetStateValues(_values);
+            return policy;
         }
 
         public void Train(ITicTacToePlayer opponent, int? numGamesLimit = null)

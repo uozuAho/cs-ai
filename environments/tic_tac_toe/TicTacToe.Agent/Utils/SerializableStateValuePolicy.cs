@@ -16,21 +16,16 @@ namespace TicTacToe.Agent.Utils
         public BoardTile Tile { get; init; }
 
         // only here for (de)serialization, don't use externally
-        public List<StateValue> Values { get; init; } = new();
+        public List<StateValue> Values { get; set; } = new();
 
         public SerializableStateValuePolicy(
             string name,
             string description,
-            BoardTile tile,
-            StateValueTable values)
+            BoardTile tile)
         {
             Name = name;
             Description = description;
             Tile = tile;
-            foreach (var (board, value) in values.All())
-            {
-                AddStateValue(board, value);
-            }
         }
 
         public ITicTacToePlayer ToPlayer()
@@ -43,6 +38,15 @@ namespace TicTacToe.Agent.Utils
             }
 
             return new GreedyStateValuePlayer(stateValueTable, Tile);
+        }
+
+        public void SetStateValues(StateValueTable stateValues)
+        {
+            Values.Clear();
+            foreach (var (board, value) in stateValues.All())
+            {
+                AddStateValue(board, value);
+            }
         }
 
         public void AddStateValue(Board board, double value)
