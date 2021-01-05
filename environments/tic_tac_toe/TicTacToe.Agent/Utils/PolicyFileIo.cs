@@ -5,7 +5,7 @@ using System.Text.Json.Serialization;
 
 namespace TicTacToe.Agent.Utils
 {
-    public class PolicyFileLoader
+    public class PolicyFileIo
     {
         public static void Save(ITicTacToePolicy file, string path)
         {

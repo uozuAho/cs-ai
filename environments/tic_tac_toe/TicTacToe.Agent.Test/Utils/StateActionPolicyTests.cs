@@ -14,8 +14,8 @@ namespace TicTacToe.Agent.Test.Utils
             var policy = new StateActionPolicy("abc", "def", BoardTile.X);
             policy.AddStateAction(Board.CreateEmptyBoard(), 1, 1.23);
 
-            PolicyFileLoader.Save(policy, filePath);
-            var loadedPolicy = (StateActionPolicy) PolicyFileLoader.FromFile(filePath);
+            PolicyFileIo.Save(policy, filePath);
+            var loadedPolicy = (StateActionPolicy) PolicyFileIo.FromFile(filePath);
 
             Assert.IsNotNull(loadedPolicy);
         }

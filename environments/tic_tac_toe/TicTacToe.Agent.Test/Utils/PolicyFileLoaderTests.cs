@@ -21,7 +21,7 @@ namespace TicTacToe.Agent.Test.Utils
         ""action"": 5
     }}]
 }}";
-            var file = PolicyFileLoader.FromJsonString(mapJson);
+            var file = PolicyFileIo.FromJsonString(mapJson);
 
             Assert.AreEqual("billy", file.Name);
             Assert.AreEqual("stuff", file.Description);

@@ -41,7 +41,7 @@ namespace TicTacToe.Console
                     .Replace(".\\", "")
                     .Replace(".agent.json", "");
 
-                var policy = PolicyFileLoader.FromFile(filename);
+                var policy = PolicyFileIo.FromFile(filename);
                 AddPlayer(agentName, tile =>
                 {
                     if (policy.Tile != tile) throw new ArgumentException("tile does not match policy tile");
