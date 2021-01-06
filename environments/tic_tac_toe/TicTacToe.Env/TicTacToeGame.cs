@@ -1,5 +1,4 @@
 ﻿using System;
-using System.Collections.Generic;
 using System.Linq;
 
 namespace TicTacToe.Game
@@ -13,8 +12,6 @@ namespace TicTacToe.Game
 
         private ITicTacToePlayer CurrentTicTacToePlayer => Board.CurrentPlayer == _player1.Tile ? _player1 : _player2;
 
-        private readonly List<IGameStateObserver> _stateObservers = new();
-
         public TicTacToeGame(Board board, ITicTacToePlayer player1, ITicTacToePlayer player2)
         {
             Board = board;
@@ -22,12 +19,6 @@ namespace TicTacToe.Game
             _player2 = player2;
 
             ThrowIfPlayersInvalid();
-
-            foreach (var player in new[] {_player1, _player2})
-            {
-                if (player is IGameStateObserver observer)
-                    _stateObservers.Add(observer);
-            }
         }
 
         public void Run()
@@ -41,18 +32,8 @@ namespace TicTacToe.Game
         public Board DoNextTurn()
         {
             var action = CurrentTicTacToePlayer.GetAction(Board);
-            var previousState = Board;
             Board = Board.DoAction(action);
-            NotifyObservers(previousState, Board);
             return Board;
-        }
-
-        private void NotifyObservers(Board previousState, Board currentState)
-        {
-            foreach (var observer in _stateObservers)
-            {
-                observer.NotifyStateChanged(previousState, currentState);
-            }
         }
 
         public bool IsFinished()

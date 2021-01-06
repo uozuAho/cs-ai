@@ -1,10 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Diagnostics;
-using System.Linq;
-using ailib.Algorithms.Search;
-
-namespace vacuum_world.console
+﻿namespace vacuum_world.console
 {
     internal static class Program
     {

@@ -1,4 +1,4 @@
-﻿namespace dp
+﻿namespace RLCommon
 {
     public interface IRewarder<in TState, in TAction>
     {

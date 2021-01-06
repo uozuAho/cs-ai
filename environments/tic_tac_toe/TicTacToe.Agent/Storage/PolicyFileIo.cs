@@ -2,8 +2,9 @@
 using System.IO;
 using System.Text.Json;
 using System.Text.Json.Serialization;
+using TicTacToe.Agent.Utils;
 
-namespace TicTacToe.Agent.Utils
+namespace TicTacToe.Agent.Storage
 {
     public class PolicyFileIo
     {
@@ -38,7 +39,22 @@ namespace TicTacToe.Agent.Utils
             };
         }
 
-        public static SerializableStateActionPolicy FromStateActionJson(string text)
+        public static bool TryFromFile(string path, out ITicTacToePolicy? policy)
+        {
+            try
+            {
+                policy = FromFile(path);
+                return true;
+            }
+            catch (Exception e)
+            {
+                Console.WriteLine(e);
+                policy = null;
+                return false;
+            }
+        }
+
+        private static SerializableStateActionPolicy FromStateActionJson(string text)
         {
             var file = JsonSerializer.Deserialize<SerializableStateActionPolicy>(text, BuildJsonOptions());
 
@@ -47,7 +63,7 @@ namespace TicTacToe.Agent.Utils
             return file;
         }
 
-        public static SerializableStateValuePolicy FromStateValueJson(string text)
+        private static SerializableStateValuePolicy FromStateValueJson(string text)
         {
             var file = JsonSerializer.Deserialize<SerializableStateValuePolicy>(text, BuildJsonOptions());
 

@@ -13,10 +13,5 @@
                 Tile = action.Tile
             };
         }
-
-        public TicTacToeAction ToAction()
-        {
-            return new() {Position = Position, Tile = Tile};
-        }
     }
 }

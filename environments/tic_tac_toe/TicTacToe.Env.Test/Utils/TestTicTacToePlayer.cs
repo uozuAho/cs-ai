@@ -25,7 +25,7 @@ namespace TicTacToe.Game.Test.Utils
 
         public TicTacToeAction GetAction(Board board)
         {
-            return new TicTacToeAction
+            return new()
             {
                 Tile = Tile,
                 Position = _moves.Dequeue()

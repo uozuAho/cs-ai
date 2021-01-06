@@ -11,15 +11,6 @@ namespace TicTacToe.Console.Test.Utils
         private readonly List<string> _capturedLines = new();
         private int _readIndex;
 
-        public IEnumerable<string> Lines
-        {
-            get
-            {
-                ReadToEnd();
-                return _capturedLines;
-            }
-        }
-
         public void PrintLine(string line)
         {
             foreach (var l in line.Split(Environment.NewLine))
@@ -36,14 +27,6 @@ namespace TicTacToe.Console.Test.Utils
             }
 
             Assert.AreEqual(line, ReadLine());
-        }
-
-        public void ExpectLines(params string[] lines)
-        {
-            foreach (var line in lines)
-            {
-                ExpectLine(line);
-            }
         }
 
         public void ReadToEnd()

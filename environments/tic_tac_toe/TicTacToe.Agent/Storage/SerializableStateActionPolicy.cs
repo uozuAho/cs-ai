@@ -1,7 +1,9 @@
 ﻿using System.Collections.Generic;
+using TicTacToe.Agent.Agents;
+using TicTacToe.Agent.Utils;
 using TicTacToe.Game;
 
-namespace TicTacToe.Agent.Utils
+namespace TicTacToe.Agent.Storage
 {
     // todo: make this private
     // don't use this type in client code
@@ -12,6 +14,7 @@ namespace TicTacToe.Agent.Utils
         string Description,
         BoardTile Tile) : ITicTacToePolicy
     {
+        // ReSharper disable once UnusedMember.Global : used for (de)serialisation
         public PolicyFileType Type => PolicyFileType.StateAction;
 
         // only here for (de)serialization, don't use externally

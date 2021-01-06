@@ -1,5 +1,5 @@
-﻿using System.Linq;
-using NUnit.Framework;
+﻿using NUnit.Framework;
+using TicTacToe.Agent.Storage;
 using TicTacToe.Agent.Utils;
 using TicTacToe.Game;
 

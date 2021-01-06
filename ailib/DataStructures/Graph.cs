@@ -1,6 +1,5 @@
 using System;
 using System.Collections.Generic;
-using System.Linq;
 
 namespace ailib.DataStructures
 {
@@ -26,7 +25,7 @@ namespace ailib.DataStructures
         {
             ValidateIdx(from);
             ValidateIdx(to);
-            _adjacent[from].Add(new Edge(from, to, weight));
+            _adjacent[from].Add(new Edge(from, to));
         }
 
         private void ValidateIdx(int n)

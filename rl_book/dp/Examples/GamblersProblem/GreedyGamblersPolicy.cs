@@ -1,6 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
+﻿using System.Linq;
 
 namespace dp.Examples.GamblersProblem
 {
@@ -43,8 +41,6 @@ namespace dp.Examples.GamblersProblem
             var maxActionValue = double.MinValue;
             var maxAction = new GamblersWorldAction(0);
 
-            var actionValues = new List<(GamblersWorldAction, double)>();
-
             foreach (var action in world.AvailableActions(state))
             {
                 var actionValue = 0.0;
@@ -57,8 +53,6 @@ namespace dp.Examples.GamblersProblem
                     actionValue += pNextState * (reward + nextStateValue);
                 }
 
-                actionValues.Add((action, actionValue));
-
                 if (actionValue > maxActionValue)
                 {
                     maxActionValue = actionValue;
@@ -67,14 +61,6 @@ namespace dp.Examples.GamblersProblem
             }
 
             return maxAction;
-        }
-
-        public void Print()
-        {
-            for (var i = 0; i < _actions.Length; i++)
-            {
-                Console.WriteLine($"{i}: {_actions[i]}");
-            }
         }
     }
 }

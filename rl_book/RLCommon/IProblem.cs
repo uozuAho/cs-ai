@@ -1,6 +1,6 @@
 ﻿using System.Collections.Generic;
 
-namespace dp
+namespace RLCommon
 {
     public interface IProblem<TState, TAction>
     {

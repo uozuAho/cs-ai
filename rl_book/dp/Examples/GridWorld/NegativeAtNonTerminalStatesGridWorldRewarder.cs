@@ -1,4 +1,6 @@
-﻿namespace dp.Examples.GridWorld
+﻿using RLCommon;
+
+namespace dp.Examples.GridWorld
 {
     public class NegativeAtNonTerminalStatesGridWorldRewarder :
         IGridWorldRewarder,

@@ -1,4 +1,6 @@
-﻿namespace dp.Examples.GamblersProblem
+﻿using RLCommon;
+
+namespace dp.Examples.GamblersProblem
 {
     public class UniformRandomGamblersPolicy : IGamblersPolicy, IPolicy<GamblersWorldState, GamblersWorldAction>
     {

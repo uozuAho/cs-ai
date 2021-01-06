@@ -15,7 +15,6 @@ namespace ailib.Algorithms.Search
         
         private readonly ISearchProblem<TState, TAction> _problem;
         private readonly Dictionary<TState, SearchNode<TState, TAction>> _explored;
-        private SearchNode<TState, TAction> _goal;
 
         internal GenericSearch(ISearchProblem<TState, TAction> problem)
         {
@@ -82,7 +81,6 @@ namespace ailib.Algorithms.Search
                 if (_explored.ContainsKey(childState) || Frontier.ContainsState(childState)) continue;
                 
                 if (_problem.IsGoal(childState)) {
-                    _goal = child;
                     CurrentState = childState;
                     IsFinished = true;
                     IsSolved = true;
