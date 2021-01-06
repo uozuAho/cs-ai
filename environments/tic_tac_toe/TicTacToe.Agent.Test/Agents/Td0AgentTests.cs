@@ -1,4 +1,6 @@
-﻿using NUnit.Framework;
+﻿using System;
+using System.Linq;
+using NUnit.Framework;
 using TicTacToe.Agent.Agents;
 using TicTacToe.Agent.Utils;
 using TicTacToe.Game;
@@ -27,6 +29,18 @@ namespace TicTacToe.Agent.Test.Agents
             game.Run();
 
             Assert.IsTrue(game.IsFinished());
+        }
+
+        [Test]
+        public void AllStateValues_AreBetween_0_and_1()
+        {
+            var agent = new Td0Agent(BoardTile.X);
+            var opponent = new FirstAvailableSlotPlayer(BoardTile.O);
+            agent.Train(opponent, 50);
+
+            var stateValues = agent.GetCurrentStateValues().All().ToList();
+
+            Assert.IsTrue(stateValues.All(sv => Math.Abs(sv.Item2) >= 0.0 && Math.Abs(sv.Item2) <= 1.0));
         }
     }
 }

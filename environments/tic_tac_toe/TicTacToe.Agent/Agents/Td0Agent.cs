@@ -11,9 +11,18 @@ namespace TicTacToe.Agent.Agents
 {
     /// <summary>
     /// One-step temporal difference learning agent. On-policy. Learns afterstate-value
-    /// function, ie. the value of the state after the agent's move gets updated. This
-    /// negates the need to model the opponent's behaviour, as it becomes part of the
-    /// value function.
+    /// function, ie. the value of a state gets updated based on the value of the next
+    /// state after the agent's move:
+    ///
+    ///     state ---agent move---> state ---opponent move---> state
+    ///       ^                                                  |
+    ///       |__________________________________________________|
+    ///                     update value estimate
+    /// 
+    /// This negates the need to model the opponent's behaviour, as it becomes part of
+    /// the value function.
+    ///
+    /// This is the same agent as described in the RL book's intro.
     /// </summary>
     public class Td0Agent : ITicTacToeAgent
     {
@@ -36,9 +45,9 @@ namespace TicTacToe.Agent.Agents
 
         public TicTacToeAction GetAction(TicTacToeEnvironment environment)
         {
-            return ShouldPickBestAction()
-                ? BestAction(environment.CurrentState)
-                : RandomAction(environment);
+            return ShouldDoExploratoryAction()
+                ? RandomAction(environment)
+                : BestAction(environment.CurrentState);
         }
 
         public StateValueTable GetCurrentStateValues()
@@ -64,31 +73,25 @@ namespace TicTacToe.Agent.Agents
 
             for (; gameCount < maxGames; gameCount++)
             {
-                var maxTdError = 0.0;
                 env.Reset();
                 Board? previousAfterstate = null;
 
                 while (!env.CurrentState.IsGameOver)
                 {
-                    var action = GetAction(env);
+                    var isExploratoryAction = ShouldDoExploratoryAction();
+                    var action = isExploratoryAction ? RandomAction(env) : BestAction(env.CurrentState);
                     var afterstate = env.CurrentState.DoAction(action);
-                    var step = env.Step(GetAction(env));
+                    env.Step(action);
 
-                    if (previousAfterstate != null)
+                    if (previousAfterstate != null && !isExploratoryAction)
                     {
-                        var tdError = step.Reward + _values.Value(afterstate) - _values.Value(previousAfterstate);
-                        var updatedValue = _values.Value(afterstate) + LearningRate * tdError;
+                        var tdError = _values.Value(afterstate) - _values.Value(previousAfterstate);
+                        var updatedValue = _values.Value(previousAfterstate) + LearningRate * tdError;
 
-                        if (Math.Abs(tdError - maxTdError) > maxTdError)
-                            maxTdError = Math.Abs(tdError - maxTdError);
-
-                        _values.SetValue(afterstate, updatedValue);
+                        _values.SetValue(previousAfterstate, updatedValue);
                     }
-
                     previousAfterstate = afterstate;
                 }
-
-                if (maxTdError < 0.01) break;
             }
 
             Console.WriteLine($"Played {gameCount} games in {stopwatch.ElapsedMilliseconds} ms");
@@ -112,9 +115,9 @@ namespace TicTacToe.Agent.Agents
             return _random.Choice(env.ActionSpace());
         }
 
-        private bool ShouldPickBestAction()
+        private bool ShouldDoExploratoryAction()
         {
-            return _random.NextDouble() > ChanceOfRandomAction;
+            return _random.NextDouble() < ChanceOfRandomAction;
         }
     }
 }
