@@ -1,6 +1,6 @@
 namespace vacuum_world
 {
-    public struct Point2D
+    public readonly struct Point2D
     {
         public int X { get; }
         public int Y { get; }

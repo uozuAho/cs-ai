@@ -1,4 +1,4 @@
-﻿namespace dp
+﻿namespace RLCommon
 {
     public interface IPolicy<in TState, in TAction>
     {

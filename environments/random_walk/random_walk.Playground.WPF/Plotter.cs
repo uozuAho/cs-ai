@@ -4,7 +4,7 @@ namespace random_walk.Playground.WPF
 {
     public class Plotter
     {
-        public Plot Plt => _window.onlyOne.plt;
+        public Plot Plt => _window.OnlyOne.plt;
 
         private readonly MainWindow _window;
 
