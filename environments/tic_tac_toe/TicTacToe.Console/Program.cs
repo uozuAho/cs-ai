@@ -55,7 +55,7 @@ namespace TicTacToe.Console
             var command = new Command("train")
             {
                 new Option<string>(
-                    "--agent-name",
+                    "--agent",
                     "save trained policy with this name")
                 {
                     IsRequired = true
@@ -73,10 +73,10 @@ namespace TicTacToe.Console
                     "Limit number of rounds/games played to this number")
             };
 
-            command.Handler = CommandHandler.Create<string, string>(
-                (agentName, opponent) =>
+            command.Handler = CommandHandler.Create<string, string, int>(
+                (agent, opponent, limitTrainingRounds) =>
                 {
-                    TrainCommandHandler.Default().Run(agentName, opponent);
+                    TrainCommandHandler.Default().Run(agent, opponent, limitTrainingRounds);
                 });
 
             return command;
