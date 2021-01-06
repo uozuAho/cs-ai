@@ -56,13 +56,17 @@ namespace TicTacToe.Console
                     .Replace(".\\", "")
                     .Replace(".agent.json", "");
 
-                var policy = PolicyFileIo.FromFile(filename);
-                AddPlayer(agentName, tile =>
+                if (PolicyFileIo.TryFromFile(filename, out var policy))
                 {
-                    if (policy.Tile != tile) throw new ArgumentException("tile does not match policy tile");
+                    if (policy == null) throw new InvalidOperationException("policy must not be null");
 
-                    return policy.ToPlayer();
-                });
+                    AddPlayer(agentName, tile =>
+                    {
+                        if (policy.Tile != tile) throw new ArgumentException("tile does not match policy tile");
+
+                        return policy.ToPlayer();
+                    });
+                }
             }
         }
     }

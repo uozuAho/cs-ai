@@ -39,7 +39,22 @@ namespace TicTacToe.Agent.Storage
             };
         }
 
-        public static SerializableStateActionPolicy FromStateActionJson(string text)
+        public static bool TryFromFile(string path, out ITicTacToePolicy? policy)
+        {
+            try
+            {
+                policy = FromFile(path);
+                return true;
+            }
+            catch (Exception e)
+            {
+                Console.WriteLine(e);
+                policy = null;
+                return false;
+            }
+        }
+
+        private static SerializableStateActionPolicy FromStateActionJson(string text)
         {
             var file = JsonSerializer.Deserialize<SerializableStateActionPolicy>(text, BuildJsonOptions());
 
@@ -48,7 +63,7 @@ namespace TicTacToe.Agent.Storage
             return file;
         }
 
-        public static SerializableStateValuePolicy FromStateValueJson(string text)
+        private static SerializableStateValuePolicy FromStateValueJson(string text)
         {
             var file = JsonSerializer.Deserialize<SerializableStateValuePolicy>(text, BuildJsonOptions());
 

@@ -14,6 +14,7 @@ namespace TicTacToe.Agent.Storage
         string Description,
         BoardTile Tile) : ITicTacToePolicy
     {
+        // ReSharper disable once UnusedMember.Global : used for (de)serialisation
         public PolicyFileType Type => PolicyFileType.StateAction;
 
         // only here for (de)serialization, don't use externally

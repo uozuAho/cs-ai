@@ -7,10 +7,11 @@ namespace TicTacToe.Agent.Storage
 {
     // todo: make this private
     // don't use this type in client code
-    public record StateValue(string Board, double Value);
+    internal record StateValue(string Board, double Value);
 
-    public record SerializableStateValuePolicy : ITicTacToePolicy
+    internal record SerializableStateValuePolicy : ITicTacToePolicy
     {
+        // ReSharper disable once UnusedMember.Global : used for (de)serialisation
         public PolicyFileType Type => PolicyFileType.StateValue;
 
         public string Name { get; init; }
