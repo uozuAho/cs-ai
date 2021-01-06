@@ -23,6 +23,20 @@ namespace TicTacToe.Console
             return _players.Keys;
         }
 
+        public bool TryFindPlayer(string name, BoardTile tile, out ITicTacToePlayer? player)
+        {
+            try
+            {
+                player = GetPlayerByName(name, tile);
+                return true;
+            }
+            catch (KeyNotFoundException)
+            {
+                player = null;
+                return false;
+            }
+        }
+
         public ITicTacToePlayer GetPlayerByName(string name, BoardTile playerTile)
         {
             return _players[name](playerTile);

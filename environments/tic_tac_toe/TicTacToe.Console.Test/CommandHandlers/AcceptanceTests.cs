@@ -34,6 +34,14 @@ namespace TicTacToe.Console.Test.CommandHandlers
                 || _consoleCapture.ContainsLine(line => line.Contains("Draw!")));
         }
 
+        [Test]
+        public void Play_InvalidPlayer_ShowsHelpfulMessage()
+        {
+            RunCli("play --player1 InvalidPlayerName --player2 FirstAvailableSlotPlayer");
+
+            Assert.True(_consoleCapture.ContainsLine(line => line.Contains("Invalid player 'InvalidPlayerName'")));
+        }
+
         private static void RunCli(string input)
         {
             Program.Main(ToArgs(input));

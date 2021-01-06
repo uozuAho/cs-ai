@@ -25,16 +25,36 @@ namespace TicTacToe.Console.CommandHandlers
         {
             _register.LoadPolicyFiles();
 
-            var player1 = _register.GetPlayerByName(player1Name, BoardTile.X);
-            var player2 = _register.GetPlayerByName(player2Name, BoardTile.O);
+            if (!TryFindPlayer(player1Name, BoardTile.X, out var player1))
+            {
+                _userOutput.PrintLine($"Invalid player '{player1Name}'");
+                return;
+            }
+            if (!TryFindPlayer(player2Name, BoardTile.O, out var player2))
+            {
+                _userOutput.PrintLine($"Invalid player '{player2Name}'");
+                return;
+            }
 
             if (numGames <= 5)
             {
-                RunInteractiveGames(numGames, player1, player2);
+                RunInteractiveGames(numGames, player1!, player2!);
             }
             else
             {
-                RunHeadless(numGames, player1, player2);
+                RunHeadless(numGames, player1!, player2!);
+            }
+        }
+
+        private bool TryFindPlayer(string name, BoardTile tile, out ITicTacToePlayer? player)
+        {
+            if (_register.TryFindPlayer(name, tile, out player))
+                return true;
+            else
+            {
+                _userOutput.PrintLine($"Invalid player '{name}'");
+                player = null;
+                return false;
             }
         }
 
