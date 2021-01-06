@@ -7,6 +7,13 @@ using TicTacToe.Game;
 
 namespace TicTacToe.Agent.Agents.MonteCarlo
 {
+    /// <summary>
+    /// Monte Carlo learning agent.
+    /// - On-policy
+    /// - e-greedy
+    /// - first-visit
+    /// - exploring starts
+    /// </summary>
     public class MonteCarloTicTacToeAgent : ITicTacToeAgent
     {
         public BoardTile Tile { get; }
