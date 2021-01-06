@@ -1,5 +1,4 @@
 ﻿using NUnit.Framework;
-using TicTacToe.Agent;
 using TicTacToe.Agent.Agents;
 using TicTacToe.Game;
 
