@@ -1,6 +1,6 @@
 ﻿using TicTacToe.Game;
 
-namespace TicTacToe.Agent.Utils
+namespace TicTacToe.Agent.Storage
 {
     public record SerializableStateAction(SerializableBoard Board, SerializableTicTacToeAction Action);
 }

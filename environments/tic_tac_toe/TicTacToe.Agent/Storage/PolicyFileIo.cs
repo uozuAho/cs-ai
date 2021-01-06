@@ -2,8 +2,9 @@
 using System.IO;
 using System.Text.Json;
 using System.Text.Json.Serialization;
+using TicTacToe.Agent.Utils;
 
-namespace TicTacToe.Agent.Utils
+namespace TicTacToe.Agent.Storage
 {
     public class PolicyFileIo
     {

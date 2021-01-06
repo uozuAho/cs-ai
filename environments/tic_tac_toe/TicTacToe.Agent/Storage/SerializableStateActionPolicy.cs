@@ -1,8 +1,9 @@
 ﻿using System.Collections.Generic;
 using TicTacToe.Agent.Agents;
+using TicTacToe.Agent.Utils;
 using TicTacToe.Game;
 
-namespace TicTacToe.Agent.Utils
+namespace TicTacToe.Agent.Storage
 {
     // todo: make this private
     // don't use this type in client code

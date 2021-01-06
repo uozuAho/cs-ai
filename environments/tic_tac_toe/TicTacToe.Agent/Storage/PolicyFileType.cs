@@ -1,4 +1,4 @@
-﻿namespace TicTacToe.Agent.Utils
+﻿namespace TicTacToe.Agent.Storage
 {
     public enum PolicyFileType
     {
