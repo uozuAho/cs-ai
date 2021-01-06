@@ -7,12 +7,13 @@ namespace TicTacToe.Agent.Utils
 {
     public class StateValueTable
     {
-        private readonly BoardTile _playerTile;
+        public BoardTile Tile { get; }
+
         private readonly Dictionary<Board, double> _values;
 
-        public StateValueTable(BoardTile playerTile)
+        public StateValueTable(BoardTile tile)
         {
-            _playerTile = playerTile;
+            Tile = tile;
             _values = new Dictionary<Board, double>();
         }
 
@@ -48,8 +49,8 @@ namespace TicTacToe.Agent.Utils
             var winner = board.Winner();
             var isFinished = board.IsFull();
 
-            if (winner == _playerTile)         return 1.0;
-            if (winner == _playerTile.Other()) return 0.0;
+            if (winner == Tile)         return 1.0;
+            if (winner == Tile.Other()) return 0.0;
             if (isFinished)                    return 0.0;  // draw
 
             // no winner, not finished

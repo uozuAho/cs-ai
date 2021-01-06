@@ -3,6 +3,7 @@ using System.IO;
 using System.Text.Json;
 using System.Text.Json.Serialization;
 using TicTacToe.Agent.Utils;
+using TicTacToe.Game;
 
 namespace TicTacToe.Agent.Storage
 {
@@ -21,6 +22,13 @@ namespace TicTacToe.Agent.Storage
                 default:
                     throw new InvalidOperationException("Unknown policy");
             }
+        }
+
+        public static void Save(StateValueTable stateValues, string name, string description, string path)
+        {
+            var s = new SerializableStateValuePolicy(name, description, stateValues.Tile);
+            s.SetStateValues(stateValues);
+            Save(s, path);
         }
 
         public static ITicTacToePolicy FromFile(string path)
@@ -52,6 +60,19 @@ namespace TicTacToe.Agent.Storage
                 policy = null;
                 return false;
             }
+        }
+
+        public static StateValueTable LoadStateValueTable(string path)
+        {
+            var policy = FromStateValueJson(File.ReadAllText(path));
+            var table = new StateValueTable(policy.Tile);
+
+            foreach (var (board, value) in policy.Values)
+            {
+                table.SetValue(Board.CreateFromString(board), value);
+            }
+
+            return table;
         }
 
         private static SerializableStateActionPolicy FromStateActionJson(string text)
