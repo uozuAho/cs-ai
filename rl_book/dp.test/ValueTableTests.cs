@@ -2,6 +2,7 @@ using System;
 using dp.Examples.GamblersProblem;
 using dp.Examples.GridWorld;
 using NUnit.Framework;
+using RLCommon;
 
 namespace dp.test
 {
