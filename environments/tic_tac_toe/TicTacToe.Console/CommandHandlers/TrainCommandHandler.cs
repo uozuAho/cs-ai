@@ -32,11 +32,18 @@ namespace TicTacToe.Console.CommandHandlers
         public void Run(string agentName, string opponentName, int? numGamesLimit = null)
         {
             var agent = _agentRegister.GetAgentByName(agentName, BoardTile.X);
-            var opponent = _playerRegister.GetPlayerByName(opponentName, BoardTile.O);
 
-            agent.Train(opponent, numGamesLimit);
-            var policyFile = agent.GetCurrentPolicyFile(agentName, "");
-            policyFile.Save($"{agentName}.agent.json");
+            _playerRegister.LoadPolicyFiles();
+
+            if (!_playerRegister.TryFindPlayer(opponentName, BoardTile.O, out var opponent))
+            {
+                _userOutput.PrintLine($"Invalid opponent '{opponentName}'");
+                return;
+            }
+
+            agent.Train(opponent!, numGamesLimit);
+            var policyFile = agent.GetCurrentPolicy(agentName, "");
+            PolicyFileIo.Save(policyFile, $"{agentName}.agent.json");
 
             _userOutput.PrintLine($"Trained agent '{agentName}' against '{opponentName}'");
         }

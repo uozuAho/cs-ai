@@ -23,6 +23,20 @@ namespace TicTacToe.Console
             return _players.Keys;
         }
 
+        public bool TryFindPlayer(string name, BoardTile tile, out ITicTacToePlayer? player)
+        {
+            try
+            {
+                player = GetPlayerByName(name, tile);
+                return true;
+            }
+            catch (KeyNotFoundException)
+            {
+                player = null;
+                return false;
+            }
+        }
+
         public ITicTacToePlayer GetPlayerByName(string name, BoardTile playerTile)
         {
             return _players[name](playerTile);
@@ -41,12 +55,12 @@ namespace TicTacToe.Console
                     .Replace(".\\", "")
                     .Replace(".agent.json", "");
 
-                var policy = PolicyFile.Load(filename);
+                var policy = PolicyFileIo.FromFile(filename);
                 AddPlayer(agentName, tile =>
                 {
                     if (policy.Tile != tile) throw new ArgumentException("tile does not match policy tile");
 
-                    return new TicTacToeFixedPolicyPlayer(policy);
+                    return policy.ToPlayer();
                 });
             }
         }

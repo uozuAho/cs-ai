@@ -1,5 +1,4 @@
 ﻿using System;
-using System.Collections.Generic;
 using System.Linq;
 using ailib.Utils;
 using TicTacToe.Agent.Environment;
@@ -8,6 +7,13 @@ using TicTacToe.Game;
 
 namespace TicTacToe.Agent.Agents.MonteCarlo
 {
+    /// <summary>
+    /// Monte Carlo learning agent.
+    /// - On-policy
+    /// - e-greedy
+    /// - first-visit
+    /// - exploring starts
+    /// </summary>
     public class MonteCarloTicTacToeAgent : ITicTacToeAgent
     {
         public BoardTile Tile { get; }
@@ -68,22 +74,18 @@ namespace TicTacToe.Agent.Agents.MonteCarlo
             }
         }
 
-        public FixedPolicy GetCurrentPolicy()
+        public ITicTacToePolicy GetCurrentPolicy(string name, string description)
         {
-            return _currentPolicy;
-        }
-
-        public PolicyFile GetCurrentPolicyFile(string name, string description)
-        {
-            var actions = new List<PolicyFileAction>();
+            // todo: add a persistence layer, don't use serializable stuff directly
+            var policy = new SerializableStateActionPolicy(name, description, Tile);
 
             foreach (var (board, action) in _currentPolicy.AllActions())
             {
                 var value = _actionValues.HighestValue(board);
-                actions.Add(new PolicyFileAction(board.ToString(), value, action.Position));
+                policy.AddStateAction(board, action.Position, value);
             }
 
-            return new PolicyFile(name, description, Tile, actions.ToArray());
+            return policy;
         }
 
         private void ImprovePolicy(ITicTacToePlayer opponent, ActionValues actionValues, Returns returns)

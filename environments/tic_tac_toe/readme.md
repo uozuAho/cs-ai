@@ -6,25 +6,12 @@ Run as a console app:
 cd TicTacToe.Console
 # list available agents/players
 dotnet run list
-# train a monte carlo agent against a 'first available slot agent', name it 'john'
-dotnet run train mc FirstAvailableSlotAgent john
+# train a monte carlo agent against a 'first available slot agent'
+dotnet run train --agent mc --opponent FirstAvailableSlotAgent
+# play a game against the trained agent
+dotnet run play --player1 mc --player2 ConsoleInputTicTacToePlayer
 ```
 
-Some agents I made earlier:
-
-## RlBookPTableAgent
-
-This agent creates a table of all possible game states, and the probability of
-winning from each state. As it plays, it updates the table when it either wins/
-loses from a given state.
-
-This is implemented as per the example in the introduction of the [rl book], and
-doesn't work. Maybe I've implemented it incorrectly.
-
-
-## RlBookModifiedPTableAgent
-
-Same as above, but actually improves win rate over time.
 
 
 # References

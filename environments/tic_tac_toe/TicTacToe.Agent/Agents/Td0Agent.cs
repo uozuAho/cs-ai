@@ -1,5 +1,5 @@
 ﻿using System;
-using System.Collections.Generic;
+using System.Diagnostics;
 using System.Linq;
 using ailib.Utils;
 using MoreLinq;
@@ -10,7 +10,19 @@ using TicTacToe.Game;
 namespace TicTacToe.Agent.Agents
 {
     /// <summary>
-    /// One-step temporal difference learning agent. On-policy.
+    /// One-step temporal difference learning agent. On-policy. Learns afterstate-value
+    /// function, ie. the value of a state gets updated based on the value of the next
+    /// state after the agent's move:
+    ///
+    ///     state ---agent move---> state ---opponent move---> state
+    ///       ^                                                  |
+    ///       |__________________________________________________|
+    ///                     update value estimate
+    /// 
+    /// This negates the need to model the opponent's behaviour, as it becomes part of
+    /// the value function.
+    ///
+    /// This is the same agent as described in the RL book's intro.
     /// </summary>
     public class Td0Agent : ITicTacToeAgent
     {
@@ -33,66 +45,56 @@ namespace TicTacToe.Agent.Agents
 
         public TicTacToeAction GetAction(TicTacToeEnvironment environment)
         {
-            return ShouldPickBestAction()
-                ? BestAction(environment.CurrentState)
-                : RandomAction(environment);
+            return ShouldDoExploratoryAction()
+                ? RandomAction(environment)
+                : BestAction(environment.CurrentState);
         }
 
-        public FixedPolicy GetCurrentPolicy()
+        public StateValueTable GetCurrentStateValues()
         {
-            var policy = new FixedPolicy();
+            return _values;
+        }
 
-            foreach (var (board, _) in _values.All()
-                .Where(bv => bv.Item1.CurrentPlayer == Tile)
-                .Where(bv => !bv.Item1.IsGameOver))
-            {
-                var bestAction = BestAction(board);
-                policy.SetAction(board, bestAction);
-            }
-
+        public ITicTacToePolicy GetCurrentPolicy(string name, string description)
+        {
+            var policy = new SerializableStateValuePolicy(name, description, Tile);
+            policy.SetStateValues(_values);
             return policy;
-        }
-
-        public PolicyFile GetCurrentPolicyFile(string name, string description)
-        {
-            var actions = new List<PolicyFileAction>();
-
-            foreach (var (board, value) in _values.All()
-                .Where(bv => bv.Item1.CurrentPlayer == Tile)
-                .Where(bv => !bv.Item1.IsGameOver))
-            {
-                var bestAction = BestAction(board);
-                actions.Add(new PolicyFileAction(board.ToString(), value, bestAction.Position));
-            }
-
-            return new PolicyFile(name, description, Tile, actions.ToArray());
         }
 
         public void Train(ITicTacToePlayer opponent, int? numGamesLimit = null)
         {
+            var gameCount = 0;
             var maxGames = numGamesLimit ?? 10000;
             var env = new TicTacToeEnvironment(opponent);
             _values = new StateValueTable(Tile);
 
-            // todo: break when td error drops below threshold
-            for (var i = 0; i < maxGames; i++)
+            var stopwatch = Stopwatch.StartNew();
+
+            for (; gameCount < maxGames; gameCount++)
             {
                 env.Reset();
+                Board? previousAfterstate = null;
 
                 while (!env.CurrentState.IsGameOver)
                 {
-                    var currentBoard = env.CurrentState.Clone();
-                    var currentValue = _values.Value(currentBoard);
-                    var step = env.Step(GetAction(env));
-                    var nextBoard = env.CurrentState;
+                    var isExploratoryAction = ShouldDoExploratoryAction();
+                    var action = isExploratoryAction ? RandomAction(env) : BestAction(env.CurrentState);
+                    var afterstate = env.CurrentState.DoAction(action);
+                    env.Step(action);
 
-                    var updatedValue =
-                        _values.Value(currentBoard)
-                        + LearningRate * (step.Reward + _values.Value(nextBoard) - currentValue);
+                    if (previousAfterstate != null && !isExploratoryAction)
+                    {
+                        var tdError = _values.Value(afterstate) - _values.Value(previousAfterstate);
+                        var updatedValue = _values.Value(previousAfterstate) + LearningRate * tdError;
 
-                    _values.SetValue(currentBoard, updatedValue);
+                        _values.SetValue(previousAfterstate, updatedValue);
+                    }
+                    previousAfterstate = afterstate;
                 }
             }
+
+            Console.WriteLine($"Played {gameCount} games in {stopwatch.ElapsedMilliseconds} ms");
         }
 
         private TicTacToeAction BestAction(Board board)
@@ -113,9 +115,9 @@ namespace TicTacToe.Agent.Agents
             return _random.Choice(env.ActionSpace());
         }
 
-        private bool ShouldPickBestAction()
+        private bool ShouldDoExploratoryAction()
         {
-            return _random.NextDouble() > ChanceOfRandomAction;
+            return _random.NextDouble() < ChanceOfRandomAction;
         }
     }
 }
