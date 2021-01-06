@@ -1,3 +1,4 @@
+using System.IO;
 using NUnit.Framework;
 using TicTacToe.Console.CommandHandlers;
 using TicTacToe.Console.Test.Utils;
@@ -12,6 +13,8 @@ namespace TicTacToe.Console.Test.CommandHandlers
         private TrainCommandHandler _trainer;
         private ListCommandHandler _lister;
         private PlayCommandHandler _runner;
+        private MemoryStream _ms;
+        private StreamWriter _sw;
 
         [SetUp]
         public void Setup()
@@ -22,18 +25,32 @@ namespace TicTacToe.Console.Test.CommandHandlers
             _trainer = new TrainCommandHandler(_output, _playerRegister, _agentRegister);
             _lister = new ListCommandHandler(_playerRegister, _agentRegister, _output);
             _runner = new PlayCommandHandler(_output, new PlayerRegister());
+
+            _ms = new MemoryStream();
+            _sw = new StreamWriter(_ms);
+            System.Console.SetOut(_sw);
         }
 
         [Test]
         public void AfterTrain_NewAgentIsAvailableInRegister()
         {
-            const string trainedAgentName = "mc";
-            const int numGames = 1;
+            Program.Main(ToArgs(
+                "train --agent mc --opponent FirstAvailableSlotPlayer --limit-training-rounds 1"));
 
-            _trainer.Run(trainedAgentName, "FirstAvailableSlotPlayer", numGames);
-            _lister.Run();
+            _sw.Flush();
+            _ms.Seek(0, SeekOrigin.Begin);
+            using var sr = new StreamReader(_ms);
+            while (!sr.EndOfStream)
+            {
+                _output.PrintLine(sr.ReadLine());
+            }
 
-            Assert.True(_output.ContainsLine(line => line.Contains(trainedAgentName)));
+            Assert.True(_output.ContainsLine(line => line.Contains("mc")));
+        }
+
+        private static string[] ToArgs(string text)
+        {
+            return text.Split();
         }
 
         [TestCase("mc")]
