@@ -3,7 +3,6 @@ using System.Collections.Generic;
 using System.IO;
 using TicTacToe.Agent.Agents;
 using TicTacToe.Agent.Storage;
-using TicTacToe.Agent.Utils;
 using TicTacToe.Game;
 
 namespace TicTacToe.Console

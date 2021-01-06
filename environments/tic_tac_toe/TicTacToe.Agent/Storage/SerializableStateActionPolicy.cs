@@ -7,9 +7,9 @@ namespace TicTacToe.Agent.Storage
 {
     // todo: make this private
     // don't use this type in client code
-    public record StateAction(string Board, double Value, int Action);
+    internal record StateAction(string Board, double Value, int Action);
 
-    public record SerializableStateActionPolicy(
+    internal record SerializableStateActionPolicy(
         string Name,
         string Description,
         BoardTile Tile) : ITicTacToePolicy
