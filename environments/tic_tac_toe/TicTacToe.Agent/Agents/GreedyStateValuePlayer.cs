@@ -1,8 +1,9 @@
 ﻿using System.Linq;
 using MoreLinq.Extensions;
+using TicTacToe.Agent.Utils;
 using TicTacToe.Game;
 
-namespace TicTacToe.Agent.Utils
+namespace TicTacToe.Agent.Agents
 {
     public class GreedyStateValuePlayer : ITicTacToePlayer
     {

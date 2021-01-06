@@ -1,6 +1,7 @@
-﻿using TicTacToe.Game;
+﻿using TicTacToe.Agent.Utils;
+using TicTacToe.Game;
 
-namespace TicTacToe.Agent.Utils
+namespace TicTacToe.Agent.Agents
 {
     public class TicTacToeFixedPolicyPlayer : ITicTacToePlayer
     {
