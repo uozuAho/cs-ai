@@ -71,7 +71,6 @@ namespace TicTacToe.Agent.Agents
                 var gameLength = int.MaxValue;
                 var tau = 0;
                 var states = new List<Board> {currentState};
-                var rewards = new List<double> {0.0};
 
                 for (var t = 0; tau < gameLength - 1; t++)
                 {
@@ -79,33 +78,39 @@ namespace TicTacToe.Agent.Agents
 
                     if (t < gameLength)
                     {
-                        var isExploratoryAction = ShouldDoExploratoryAction();
-                        var action = isExploratoryAction ? RandomAction(env) : BestAction(env.CurrentState);
-                        var step = env.Step(action);
+                        var step = env.Step(GetAction(env));
                         states.Add(step.Board);
-                        rewards.Add(step.Reward);
                         if (step.Board.IsGameOver)
                             gameLength = t + 1;
                     }
 
                     if (tau >= 0)
                     {
-                        var stepN = Math.Min(tau + _numSteps, gameLength);
-                        var tauState = states[tau];
-                        var nState = states[stepN];
-                        // Note that reward is not included here, as the value table pre-defines
-                        // game-over state values. Alternatively, we would need a special terminal
-                        // state after game-over, that has zero reward for transitioning to.
-                        // var rewardsSum = rewards.Skip(tau + 1).Take(stepsAhead).Sum();
-                        var tdError = _values.Value(nState) - _values.Value(tauState);
-                        var updatedValue = _values.Value(tauState) + LearningRate * tdError;
-
-                        _values.SetValue(tauState, updatedValue);
+                        // note that values are updated on exploratory moves,
+                        // which differs from the TD0 agent
+                        ImproveValueEstimate(tau, gameLength, states);
                     }
                 }
             }
 
             Console.WriteLine($"Played {gameCount} games in {stopwatch.ElapsedMilliseconds} ms");
+        }
+
+        private void ImproveValueEstimate(int tau, int gameLength, List<Board> states)
+        {
+            var stepN = Math.Min(tau + _numSteps, gameLength);
+            var tauState = states[tau];
+            var nState = states[stepN];
+            // Note that reward is not included here, as the value table pre-defines
+            // game-over state values. Alternatively, we would need a special terminal
+            // state after game-over, that has zero reward for transitioning to.
+            //
+            // if rewards were to be used:
+            // var rewardsSum = rewards.Skip(tau + 1).Take(stepsAhead).Sum();
+            var tdError = _values.Value(nState) - _values.Value(tauState);
+            var updatedValue = _values.Value(tauState) + LearningRate * tdError;
+
+            _values.SetValue(tauState, updatedValue);
         }
 
         private TicTacToeAction BestAction(Board board)

@@ -11,7 +11,7 @@ using TicTacToe.Game;
 namespace TicTacToe.Agent.Agents
 {
     /// <summary>
-    /// One-step temporal difference learning agent. On-policy. Learns afterstate-value
+    /// One-step temporal difference learning agent. Off-policy (?). Learns afterstate-value
     /// function, ie. the value of a state gets updated based on the value of the next
     /// state after the agent's move:
     ///
@@ -89,6 +89,9 @@ namespace TicTacToe.Agent.Agents
                     var afterstate = env.CurrentState.DoAction(action);
                     env.Step(action);
 
+                    // Note that values are not updated after exploratory moves.
+                    // Does this make this off-policy learning? If yes, why is
+                    // there no importance sampling?
                     if (previousAfterstate != null && !isExploratoryAction)
                     {
                         var tdError = _values.Value(afterstate) - _values.Value(previousAfterstate);
