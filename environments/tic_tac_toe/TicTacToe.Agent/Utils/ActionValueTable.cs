@@ -5,7 +5,7 @@ using TicTacToe.Game;
 
 namespace TicTacToe.Agent.Utils
 {
-    public class ActionValues
+    public class ActionValueTable
     {
         private readonly Dictionary<Board, Dictionary<TicTacToeAction, double>> _values = new();
 
@@ -15,6 +15,11 @@ namespace TicTacToe.Agent.Utils
                 _values[state][action] = value;
             else
                 _values[state] = new Dictionary<TicTacToeAction, double> {{action, value}};
+        }
+
+        public IEnumerable<(Board, TicTacToeAction)> HighestValueActions()
+        {
+            return _values.Select(kv => (kv.Key, HighestValueAction(kv.Key)));
         }
 
         public TicTacToeAction HighestValueAction(Board state)

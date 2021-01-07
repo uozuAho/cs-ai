@@ -14,7 +14,7 @@ namespace TicTacToe.Agent.Test.Agents
         {
             var agent = new Td0Agent(BoardTile.X);
             agent.Train(new RandomTicTacToePlayer(BoardTile.O), 50);
-            Assert.DoesNotThrow(() => agent.GetCurrentPolicy("name", "description"));
+            Assert.DoesNotThrow(() => agent.GetCurrentValues("name", "description"));
         }
 
         [Test]

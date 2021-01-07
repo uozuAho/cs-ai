@@ -31,6 +31,24 @@ namespace TicTacToe.Agent.Storage
             Save(s, path);
         }
 
+        public static void Save(
+            ActionValueTable actionValues,
+            string agentName,
+            string description,
+            string path,
+            BoardTile tile)
+        {
+            var s = new SerializableStateActionPolicy(agentName, description, tile);
+            foreach (var (board, action) in actionValues.HighestValueActions())
+            {
+                s.AddStateAction(
+                    board,
+                    action.Position,
+                    actionValues.HighestValue(board));
+            }
+            Save(s, path);
+        }
+
         public static ITicTacToePolicy FromFile(string path)
         {
             var fileContents = File.ReadAllText(path);
