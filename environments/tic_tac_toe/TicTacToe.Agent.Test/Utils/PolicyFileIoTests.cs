@@ -1,6 +1,7 @@
 ﻿using System.IO;
 using NUnit.Framework;
 using TicTacToe.Agent.Storage;
+using TicTacToe.Agent.Utils;
 using TicTacToe.Game;
 
 namespace TicTacToe.Agent.Test.Utils
@@ -14,7 +15,8 @@ namespace TicTacToe.Agent.Test.Utils
             const string description = "description";
             const string filename = "PolicyFileIoTests.SaveAndLoad.json";
 
-            PolicyFileIo.Save(new SerializableStateActionPolicy(name, description, BoardTile.X), filename);
+            var stateValues = new StateValueTable(BoardTile.X);
+            PolicyFileIo.Save(stateValues, name, description, filename);
             var policy = PolicyFileIo.FromFile("PolicyFileIoTests.SaveAndLoad.json");
 
             Assert.AreEqual(name, policy.Name);

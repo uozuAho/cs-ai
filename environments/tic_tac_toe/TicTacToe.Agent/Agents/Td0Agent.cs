@@ -56,11 +56,16 @@ namespace TicTacToe.Agent.Agents
             return _values;
         }
 
-        public ITicTacToePolicy GetCurrentPolicy(string name, string description)
+        public ITicTacToePolicy GetCurrentValues(string name, string description)
         {
-            var policy = new SerializableStateValuePolicy(name, description, Tile);
+            var policy = new SerializableStateValueTable(name, description, Tile);
             policy.SetStateValues(_values);
             return policy;
+        }
+
+        public void SaveTrainedValues(string agentName, string path)
+        {
+            PolicyFileIo.Save(_values, agentName, "", path);
         }
 
         public void Train(ITicTacToePlayer opponent, int? numGamesLimit = null)

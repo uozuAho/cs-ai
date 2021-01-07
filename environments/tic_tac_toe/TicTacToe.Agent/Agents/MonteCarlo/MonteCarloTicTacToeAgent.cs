@@ -26,7 +26,7 @@ namespace TicTacToe.Agent.Agents.MonteCarlo
         private readonly Random _random = new();
 
         private readonly FixedPolicy _currentPolicy = new();
-        private ActionValues _actionValues = new();
+        private ActionValueTable _actionValues = new();
         private Returns _returns = new();
 
         public MonteCarloTicTacToeAgent(BoardTile tile)
@@ -50,7 +50,7 @@ namespace TicTacToe.Agent.Agents.MonteCarlo
         {
             var lastNumStates = 0;
             var noNewStatesSeenForXEpisodes = 0;
-            _actionValues = new ActionValues();
+            _actionValues = new ActionValueTable();
             _returns = new Returns();
 
             var maxGames = numGamesLimit ?? 10000;
@@ -75,21 +75,12 @@ namespace TicTacToe.Agent.Agents.MonteCarlo
             }
         }
 
-        public ITicTacToePolicy GetCurrentPolicy(string name, string description)
+        public void SaveTrainedValues(string agentName, string path)
         {
-            // todo: add a persistence layer, don't use serializable stuff directly
-            var policy = new SerializableStateActionPolicy(name, description, Tile);
-
-            foreach (var (board, action) in _currentPolicy.AllActions())
-            {
-                var value = _actionValues.HighestValue(board);
-                policy.AddStateAction(board, action.Position, value);
-            }
-
-            return policy;
+            PolicyFileIo.Save(_actionValues, agentName, "", path, Tile);
         }
 
-        private void ImprovePolicy(ITicTacToePlayer opponent, ActionValues actionValues, Returns returns)
+        private void ImprovePolicy(ITicTacToePlayer opponent, ActionValueTable actionValueTable, Returns returns)
         {
             var rewardSum = 0.0;
             var exploringPolicy = new ExploringStartPolicy(this);
@@ -107,8 +98,8 @@ namespace TicTacToe.Agent.Agents.MonteCarlo
                 if (episode.TimeOfFirstVisit(state, action) == t)
                 {
                     returns.Add(state, action, rewardSum);
-                    actionValues.Set(state, action, returns.AverageReturnFrom(state, action));
-                    var bestAction = actionValues.HighestValueAction(state);
+                    actionValueTable.Set(state, action, returns.AverageReturnFrom(state, action));
+                    var bestAction = actionValueTable.HighestValueAction(state);
                     _currentPolicy.SetAction(state, bestAction);
                 }
             }

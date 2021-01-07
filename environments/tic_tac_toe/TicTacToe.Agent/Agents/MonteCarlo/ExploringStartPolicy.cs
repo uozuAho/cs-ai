@@ -1,7 +1,6 @@
 ﻿using System;
 using ailib.Utils;
 using TicTacToe.Agent.Environment;
-using TicTacToe.Agent.Utils;
 using TicTacToe.Game;
 
 namespace TicTacToe.Agent.Agents.MonteCarlo
@@ -37,7 +36,7 @@ namespace TicTacToe.Agent.Agents.MonteCarlo
             throw new NotImplementedException();
         }
 
-        public ITicTacToePolicy GetCurrentPolicy(string name, string description)
+        public void SaveTrainedValues(string agentName, string path)
         {
             throw new NotImplementedException();
         }

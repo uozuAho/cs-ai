@@ -11,13 +11,13 @@ namespace TicTacToe.Agent.Test.Utils
         public void HighestValueAction_ThrowsKeyError_ForNonExistentState()
         {
             Assert.Throws<KeyNotFoundException>(() =>
-                new ActionValues().HighestValueAction(Board.CreateEmptyBoard()));
+                new ActionValueTable().HighestValueAction(Board.CreateEmptyBoard()));
         }
 
         [Test]
         public void HighestValueAction_ReturnsHighestValueAction()
         {
-            var values = new ActionValues();
+            var values = new ActionValueTable();
             var state = Board.CreateEmptyBoard();
             var action0 = new TicTacToeAction();
             var action1 = new TicTacToeAction();
@@ -33,7 +33,7 @@ namespace TicTacToe.Agent.Test.Utils
         [Test]
         public void GivenASingleStateAndAction_HighestValueAction_ReturnsOnlyAction()
         {
-            var values = new ActionValues();
+            var values = new ActionValueTable();
             var state = Board.CreateEmptyBoard();
             var action = new TicTacToeAction();
 
@@ -45,7 +45,7 @@ namespace TicTacToe.Agent.Test.Utils
         [Test]
         public void DuplicateBoards_AreTreatedAsEqual()
         {
-            var values = new ActionValues();
+            var values = new ActionValueTable();
             var emptyBoard1 = Board.CreateEmptyBoard();
             var emptyBoard2 = Board.CreateEmptyBoard();
             var action1 = new TicTacToeAction();
@@ -61,7 +61,7 @@ namespace TicTacToe.Agent.Test.Utils
         [Test]
         public void DuplicateActions_AreTreatedAsEqual()
         {
-            var values = new ActionValues();
+            var values = new ActionValueTable();
             var board = Board.CreateEmptyBoard();
             var action1 = new TicTacToeAction {Position = 2, Tile = BoardTile.X};
             var action2 = new TicTacToeAction {Position = 2, Tile = BoardTile.X};

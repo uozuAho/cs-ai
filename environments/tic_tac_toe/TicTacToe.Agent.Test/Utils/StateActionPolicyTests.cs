@@ -11,13 +11,12 @@ namespace TicTacToe.Agent.Test.Utils
         public void LoadSavedMap_IsNotNull()
         {
             const string filePath = "BoardActionMapTests_LoadSave.test.json";
-            var policy = new SerializableStateActionPolicy("abc", "def", BoardTile.X);
-            policy.AddStateAction(Board.CreateEmptyBoard(), 1, 1.23);
+            var stateValues = new StateValueTable(BoardTile.X);
 
-            PolicyFileIo.Save(policy, filePath);
-            var loadedPolicy = (SerializableStateActionPolicy) PolicyFileIo.FromFile(filePath);
+            PolicyFileIo.Save(stateValues, "name", "description", filePath);
+            var loadedStateValues = PolicyFileIo.LoadStateValueTable(filePath);
 
-            Assert.IsNotNull(loadedPolicy);
+            Assert.IsNotNull(loadedStateValues);
         }
     }
 }

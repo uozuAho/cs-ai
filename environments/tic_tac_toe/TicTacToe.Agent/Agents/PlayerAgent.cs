@@ -23,7 +23,7 @@ namespace TicTacToe.Agent.Agents
             throw new System.NotImplementedException();
         }
 
-        public ITicTacToePolicy GetCurrentPolicy(string name, string description)
+        public void SaveTrainedValues(string agentName, string path)
         {
             throw new System.NotImplementedException();
         }
