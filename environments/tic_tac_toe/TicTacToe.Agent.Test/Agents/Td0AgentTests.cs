@@ -2,7 +2,7 @@
 using System.Linq;
 using NUnit.Framework;
 using TicTacToe.Agent.Agents;
-using TicTacToe.Agent.Utils;
+using TicTacToe.Agent.Storage;
 using TicTacToe.Game;
 
 namespace TicTacToe.Agent.Test.Agents
@@ -29,6 +29,20 @@ namespace TicTacToe.Agent.Test.Agents
             game.Run();
 
             Assert.IsTrue(game.IsFinished());
+        }
+
+        [Test]
+        public void Saves_And_Loads()
+        {
+            var agent = new Td0Agent(BoardTile.X);
+            var opponent = new FirstAvailableSlotPlayer(BoardTile.O);
+            agent.Train(opponent, 1);
+
+            var path = $"{nameof(Td0AgentTests)}.{nameof(Saves_And_Loads)}.agent.json";
+            agent.SaveTrainedValues("asdf", path);
+
+            var stateValueTable = PolicyFileIo.LoadStateValueTable(path);
+            Assert.NotNull(stateValueTable);
         }
 
         [Test]

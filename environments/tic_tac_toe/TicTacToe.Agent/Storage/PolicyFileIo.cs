@@ -9,26 +9,15 @@ namespace TicTacToe.Agent.Storage
 {
     public class PolicyFileIo
     {
-        public static void Save(ITicTacToePolicy file, string path)
+        public static void Save(
+            StateValueTable stateValues,
+            string name,
+            string description,
+            string path)
         {
-            switch (file)
-            {
-                case SerializableStateActionPolicy policyFile:
-                    File.WriteAllText(path, JsonSerializer.Serialize(policyFile, BuildJsonOptions()));
-                    break;
-                case SerializableStateValuePolicy policyFile:
-                    File.WriteAllText(path, JsonSerializer.Serialize(policyFile, BuildJsonOptions()));
-                    break;
-                default:
-                    throw new InvalidOperationException("Unknown policy");
-            }
-        }
-
-        public static void Save(StateValueTable stateValues, string name, string description, string path)
-        {
-            var s = new SerializableStateValuePolicy(name, description, stateValues.Tile);
-            s.SetStateValues(stateValues);
-            Save(s, path);
+            var table = new SerializableStateValueTable(name, description, stateValues.Tile);
+            table.SetStateValues(stateValues);
+            File.WriteAllText(path, JsonSerializer.Serialize(table, BuildJsonOptions()));
         }
 
         public static void Save(
@@ -46,7 +35,7 @@ namespace TicTacToe.Agent.Storage
                     action.Position,
                     actionValues.HighestValue(board));
             }
-            Save(s, path);
+            File.WriteAllText(path, JsonSerializer.Serialize(s, BuildJsonOptions()));
         }
 
         public static ITicTacToePolicy FromFile(string path)
@@ -93,6 +82,20 @@ namespace TicTacToe.Agent.Storage
             return table;
         }
 
+        public static ActionValueTable LoadStateActionTable(string path)
+        {
+            var policy = FromStateActionJson(File.ReadAllText(path));
+            var table = new ActionValueTable();
+
+            foreach (var (board, value, position) in policy.Actions)
+            {
+                var action = new TicTacToeAction {Position = position, Tile = policy.Tile};
+                table.Set(Board.CreateFromString(board), action, value);
+            }
+
+            return table;
+        }
+
         private static SerializableStateActionPolicy FromStateActionJson(string text)
         {
             var file = JsonSerializer.Deserialize<SerializableStateActionPolicy>(text, BuildJsonOptions());
@@ -102,9 +105,9 @@ namespace TicTacToe.Agent.Storage
             return file;
         }
 
-        private static SerializableStateValuePolicy FromStateValueJson(string text)
+        private static SerializableStateValueTable FromStateValueJson(string text)
         {
-            var file = JsonSerializer.Deserialize<SerializableStateValuePolicy>(text, BuildJsonOptions());
+            var file = JsonSerializer.Deserialize<SerializableStateValueTable>(text, BuildJsonOptions());
 
             if (file == null) throw new InvalidOperationException("Policy file deserialised to null :(");
 

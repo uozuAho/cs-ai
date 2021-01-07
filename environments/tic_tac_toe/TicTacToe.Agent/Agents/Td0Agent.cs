@@ -58,7 +58,7 @@ namespace TicTacToe.Agent.Agents
 
         public ITicTacToePolicy GetCurrentValues(string name, string description)
         {
-            var policy = new SerializableStateValuePolicy(name, description, Tile);
+            var policy = new SerializableStateValueTable(name, description, Tile);
             policy.SetStateValues(_values);
             return policy;
         }

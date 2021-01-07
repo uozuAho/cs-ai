@@ -5,8 +5,6 @@ using TicTacToe.Game;
 
 namespace TicTacToe.Agent.Storage
 {
-    // todo: make this private
-    // don't use this type in client code
     internal record StateAction(string Board, double Value, int Action);
 
     internal record SerializableStateActionPolicy(

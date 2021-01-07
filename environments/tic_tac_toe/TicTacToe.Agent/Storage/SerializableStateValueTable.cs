@@ -5,11 +5,9 @@ using TicTacToe.Game;
 
 namespace TicTacToe.Agent.Storage
 {
-    // todo: make this private
-    // don't use this type in client code
     internal record StateValue(string Board, double Value);
 
-    internal record SerializableStateValuePolicy : ITicTacToePolicy
+    internal record SerializableStateValueTable : ITicTacToePolicy
     {
         // ReSharper disable once UnusedMember.Global : used for (de)serialisation
         public PolicyFileType Type => PolicyFileType.StateValue;
@@ -21,7 +19,7 @@ namespace TicTacToe.Agent.Storage
         // only here for (de)serialization, don't use externally
         public List<StateValue> Values { get; set; } = new();
 
-        public SerializableStateValuePolicy(
+        public SerializableStateValueTable(
             string name,
             string description,
             BoardTile tile)
