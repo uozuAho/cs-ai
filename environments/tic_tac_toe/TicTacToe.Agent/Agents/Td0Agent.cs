@@ -92,6 +92,9 @@ namespace TicTacToe.Agent.Agents
                     if (previousAfterstate != null && !isExploratoryAction)
                     {
                         var tdError = _values.Value(afterstate) - _values.Value(previousAfterstate);
+                        // Note that reward is not included here, as the value table pre-defines
+                        // game-over state values. Alternatively, we would need a special terminal
+                        // state after game-over, that has zero reward for transitioning to.
                         var updatedValue = _values.Value(previousAfterstate) + LearningRate * tdError;
 
                         _values.SetValue(previousAfterstate, updatedValue);

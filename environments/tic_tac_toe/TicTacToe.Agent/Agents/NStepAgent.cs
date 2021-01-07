@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections.Generic;
 using System.Diagnostics;
 using System.Linq;
 using ailib.Utils;
@@ -21,12 +22,14 @@ namespace TicTacToe.Agent.Agents
         private const double LearningRate = 0.05;
         private readonly Random _random = new();
 
+        private readonly int _numSteps;
         private StateValueTable _values;
 
-        public NStepAgent(BoardTile tile)
+        public NStepAgent(BoardTile tile, int numSteps)
         {
             Tile = tile;
             _values = new StateValueTable(Tile);
+            _numSteps = numSteps;
         }
 
         public TicTacToeAction GetAction(TicTacToeEnvironment environment)
@@ -64,24 +67,41 @@ namespace TicTacToe.Agent.Agents
 
             for (; gameCount < maxGames; gameCount++)
             {
-                env.Reset();
-                Board? previousAfterstate = null;
+                var currentState = env.Reset();
+                var gameLength = int.MaxValue;
+                var tau = 0;
+                var states = new List<Board> {currentState};
+                var rewards = new List<double> {0.0};
 
-                while (!env.CurrentState.IsGameOver)
+                for (var t = 0; tau < gameLength - 1; t++)
                 {
-                    var isExploratoryAction = ShouldDoExploratoryAction();
-                    var action = isExploratoryAction ? RandomAction(env) : BestAction(env.CurrentState);
-                    var afterstate = env.CurrentState.DoAction(action);
-                    env.Step(action);
+                    tau = t - _numSteps + 1;
 
-                    if (previousAfterstate != null && !isExploratoryAction)
+                    if (t < gameLength)
                     {
-                        var tdError = _values.Value(afterstate) - _values.Value(previousAfterstate);
-                        var updatedValue = _values.Value(previousAfterstate) + LearningRate * tdError;
-
-                        _values.SetValue(previousAfterstate, updatedValue);
+                        var isExploratoryAction = ShouldDoExploratoryAction();
+                        var action = isExploratoryAction ? RandomAction(env) : BestAction(env.CurrentState);
+                        var step = env.Step(action);
+                        states.Add(step.Board);
+                        rewards.Add(step.Reward);
+                        if (step.Board.IsGameOver)
+                            gameLength = t + 1;
                     }
-                    previousAfterstate = afterstate;
+
+                    if (tau >= 0)
+                    {
+                        var stepN = Math.Min(tau + _numSteps, gameLength);
+                        var tauState = states[tau];
+                        var nState = states[stepN];
+                        // Note that reward is not included here, as the value table pre-defines
+                        // game-over state values. Alternatively, we would need a special terminal
+                        // state after game-over, that has zero reward for transitioning to.
+                        // var rewardsSum = rewards.Skip(tau + 1).Take(stepsAhead).Sum();
+                        var tdError = _values.Value(nState) - _values.Value(tauState);
+                        var updatedValue = _values.Value(tauState) + LearningRate * tdError;
+
+                        _values.SetValue(tauState, updatedValue);
+                    }
                 }
             }
 
