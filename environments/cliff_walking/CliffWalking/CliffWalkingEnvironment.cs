@@ -14,19 +14,41 @@ namespace CliffWalking
     /// </summary>
     public class CliffWalkingEnvironment
     {
+        private static readonly Position BottomLeft = new(0, 0);
+
         private Position _currentPosition = new(0, 0);
 
         public Step Step(CliffWalkingAction action)
         {
             Move(action);
+            var reward = Reward();
+            if (IsOnCliff())
+                _currentPosition = BottomLeft;
 
-            return new Step(_currentPosition, -1.0, false);
+            return new Step(_currentPosition, reward, false);
         }
 
         public IEnumerable<CliffWalkingAction> ActionSpace()
         {
             yield return CliffWalkingAction.Up;
             yield return CliffWalkingAction.Right;
+        }
+
+        private double Reward()
+        {
+            if (IsOnCliff())
+            {
+                return -100;
+            }
+
+            return -1;
+        }
+
+        private bool IsOnCliff()
+        {
+            return _currentPosition.Y == 0
+                   && _currentPosition.X > 0
+                   && _currentPosition.X < 11;
         }
 
         private void Move(CliffWalkingAction action)
