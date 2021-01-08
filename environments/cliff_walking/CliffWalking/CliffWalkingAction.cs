@@ -3,6 +3,8 @@
     public enum CliffWalkingAction
     {
         Up,
-        Right
+        Right,
+        Down,
+        Left
     }
 }
