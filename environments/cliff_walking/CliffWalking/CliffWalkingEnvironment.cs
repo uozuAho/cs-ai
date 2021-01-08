@@ -16,6 +16,9 @@ namespace CliffWalking
     {
         private static readonly Position BottomLeft = new(0, 0);
 
+        private static readonly CliffWalkingAction[] AllActions =
+            (CliffWalkingAction[]) Enum.GetValues(typeof(CliffWalkingAction));
+
         private Position _currentPosition;
 
         public CliffWalkingEnvironment()
@@ -40,8 +43,18 @@ namespace CliffWalking
 
         public IEnumerable<CliffWalkingAction> ActionSpace()
         {
-            yield return CliffWalkingAction.Up;
-            yield return CliffWalkingAction.Right;
+            var actions = AllActions.Select(a => a).ToList();
+
+            if (_currentPosition.X == 0)
+                actions.Remove(CliffWalkingAction.Left);
+            if (_currentPosition.X == 11)
+                actions.Remove(CliffWalkingAction.Right);
+            if (_currentPosition.Y == 0)
+                actions.Remove(CliffWalkingAction.Down);
+            if (_currentPosition.Y == 3)
+                actions.Remove(CliffWalkingAction.Up);
+
+            return actions;
         }
 
         private double Reward()
