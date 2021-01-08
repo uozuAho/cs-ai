@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections.Generic;
 using System.Diagnostics;
 using System.Linq;
 using ailib.Utils;
@@ -11,21 +12,15 @@ using TicTacToe.Game;
 namespace TicTacToe.Agent.Agents
 {
     /// <summary>
-    /// One-step temporal difference learning agent. Off-policy (?). Learns afterstate-value
-    /// function, ie. the value of a state gets updated based on the value of the next
-    /// state after the agent's move:
+    /// N-Step TD agent. On-policy. Like the TD0 agent, learns an afterstate
+    /// value function (I think).
     ///
-    ///     state ---agent move---> state ---opponent move---> state
-    ///       ^                                                  |
-    ///       |__________________________________________________|
-    ///                     update value estimate
-    /// 
-    /// This negates the need to model the opponent's behaviour, as it becomes part of
-    /// the value function.
-    ///
-    /// This is the same agent as described in the RL book's intro.
+    /// To do:
+    /// - ensure afterstate values are estimated correctly
+    /// - compare to TD0 agent. one difference is that the td0 agent is off policy (I think)
+    /// - compare to MC agent. Which of all the above learns the 'best'?
     /// </summary>
-    public class Td0Agent : ITicTacToeAgent
+    public class NStepAgent
     {
         public BoardTile Tile { get; }
 
@@ -36,12 +31,14 @@ namespace TicTacToe.Agent.Agents
         private const double LearningRate = 0.05;
         private readonly Random _random = new();
 
+        private readonly int _numSteps;
         private StateValueTable _values;
 
-        public Td0Agent(BoardTile tile)
+        public NStepAgent(BoardTile tile, int numSteps)
         {
             Tile = tile;
             _values = new StateValueTable(Tile);
+            _numSteps = numSteps;
         }
 
         public TicTacToeAction GetAction(TicTacToeEnvironment environment)
@@ -79,34 +76,50 @@ namespace TicTacToe.Agent.Agents
 
             for (; gameCount < maxGames; gameCount++)
             {
-                env.Reset();
-                Board? previousAfterstate = null;
+                var currentState = env.Reset();
+                var gameLength = int.MaxValue;
+                var tau = 0;
+                var states = new List<Board> {currentState};
 
-                while (!env.CurrentState.IsGameOver)
+                for (var t = 0; tau < gameLength - 1; t++)
                 {
-                    var isExploratoryAction = ShouldDoExploratoryAction();
-                    var action = isExploratoryAction ? RandomAction(env) : BestAction(env.CurrentState);
-                    var afterstate = env.CurrentState.DoAction(action);
-                    env.Step(action);
+                    tau = t - _numSteps + 1;
 
-                    // Note that values are not updated after exploratory moves.
-                    // Does this make this off-policy learning? If yes, why is
-                    // there no importance sampling?
-                    if (previousAfterstate != null && !isExploratoryAction)
+                    if (t < gameLength)
                     {
-                        var tdError = _values.Value(afterstate) - _values.Value(previousAfterstate);
-                        // Note that reward is not included here, as the value table pre-defines
-                        // game-over state values. Alternatively, we would need a special terminal
-                        // state after game-over, that has zero reward for transitioning to.
-                        var updatedValue = _values.Value(previousAfterstate) + LearningRate * tdError;
-
-                        _values.SetValue(previousAfterstate, updatedValue);
+                        var step = env.Step(GetAction(env));
+                        states.Add(step.Board);
+                        if (step.Board.IsGameOver)
+                            gameLength = t + 1;
                     }
-                    previousAfterstate = afterstate;
+
+                    if (tau >= 0)
+                    {
+                        // note that values are updated on exploratory moves,
+                        // which differs from the TD0 agent
+                        ImproveValueEstimate(tau, gameLength, states);
+                    }
                 }
             }
 
             Console.WriteLine($"Played {gameCount} games in {stopwatch.ElapsedMilliseconds} ms");
+        }
+
+        private void ImproveValueEstimate(int tau, int gameLength, List<Board> states)
+        {
+            var stepN = Math.Min(tau + _numSteps, gameLength);
+            var tauState = states[tau];
+            var nState = states[stepN];
+            // Note that reward is not included here, as the value table pre-defines
+            // game-over state values. Alternatively, we would need a special terminal
+            // state after game-over, that has zero reward for transitioning to.
+            //
+            // if rewards were to be used:
+            // var rewardsSum = rewards.Skip(tau + 1).Take(stepsAhead).Sum();
+            var tdError = _values.Value(nState) - _values.Value(tauState);
+            var updatedValue = _values.Value(tauState) + LearningRate * tdError;
+
+            _values.SetValue(tauState, updatedValue);
         }
 
         private TicTacToeAction BestAction(Board board)
