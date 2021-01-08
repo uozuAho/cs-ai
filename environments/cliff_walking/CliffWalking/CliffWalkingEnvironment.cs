@@ -15,6 +15,8 @@ namespace CliffWalking
     public class CliffWalkingEnvironment
     {
         private static readonly Position BottomLeft = new(0, 0);
+        private static readonly Position BottomRight = new(11, 0);
+        private static readonly Position GoalPosition = BottomRight;
 
         private static readonly CliffWalkingAction[] AllActions =
             (CliffWalkingAction[]) Enum.GetValues(typeof(CliffWalkingAction));
@@ -28,6 +30,9 @@ namespace CliffWalking
 
         public CliffWalkingEnvironment(Position startingPosition)
         {
+            if (startingPosition == GoalPosition)
+                throw new ArgumentException("Cannot start at goal");
+
             _currentPosition = startingPosition;
         }
 
@@ -38,7 +43,7 @@ namespace CliffWalking
             if (IsOnCliff())
                 _currentPosition = BottomLeft;
 
-            return new Step(_currentPosition, reward, false);
+            return new Step(_currentPosition, reward, _currentPosition == GoalPosition);
         }
 
         public IEnumerable<CliffWalkingAction> ActionSpace()

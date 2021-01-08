@@ -5,6 +5,11 @@ namespace CliffWalking.Test
 {
     internal class CliffWalkingEnvironmentTests
     {
+        private static readonly Position StartingPosition = new(0, 0);
+        private static readonly Position GoalPosition = new (11, 0);
+        private static readonly Position SomewhereInTheMiddle = new (6, 2);
+        private static readonly Position TopRight = new (11, 3);
+
         [Test]
         public void AtStart_ActionSpace_IsUpAndRight()
         {
@@ -15,31 +20,6 @@ namespace CliffWalking.Test
             var actions = env.ActionSpace();
 
             CollectionAssert.AreEquivalent(upAndRight, actions);
-        }
-
-        [Test]
-        public void InMiddle_ActionSpace_IsAllDirections()
-        {
-            var middle = new Position(6, 2);
-            var env = new CliffWalkingEnvironment(middle);
-            var allDirections = Enum.GetValues(typeof(CliffWalkingAction));
-
-            var actions = env.ActionSpace();
-
-            CollectionAssert.AreEquivalent(allDirections, actions);
-        }
-
-        [Test]
-        public void AtTopRight_ActionSpace_IsDownAndLeft()
-        {
-            var topRight = new Position(11, 3);
-            var env = new CliffWalkingEnvironment(topRight);
-            var downAndLeft = new[]
-                {CliffWalkingAction.Down, CliffWalkingAction.Left};
-
-            var actions = env.ActionSpace();
-
-            CollectionAssert.AreEquivalent(downAndLeft, actions);
         }
 
         [Test]
@@ -55,11 +35,70 @@ namespace CliffWalking.Test
         }
 
         [Test]
-        public void AttemptInvalidAction_Throws()
+        public void InMiddle_ActionSpace_IsAllDirections()
         {
-            var env = new CliffWalkingEnvironment();
+            var env = new CliffWalkingEnvironment(SomewhereInTheMiddle);
+            var allDirections = Enum.GetValues(typeof(CliffWalkingAction));
 
-            Assert.Throws<InvalidOperationException>(() => env.Step(CliffWalkingAction.Left));
+            var actions = env.ActionSpace();
+
+            CollectionAssert.AreEquivalent(allDirections, actions);
+        }
+
+        [Test]
+        public void InMiddle_StepRight_MovesRight()
+        {
+            var env = new CliffWalkingEnvironment(SomewhereInTheMiddle);
+            var expectedPosition = new Position(SomewhereInTheMiddle.X + 1, SomewhereInTheMiddle.Y);
+
+            var (observation, reward, isDone) = env.Step(CliffWalkingAction.Right);
+
+            Assert.AreEqual(expectedPosition, observation);
+            Assert.AreEqual(reward, -1);
+            Assert.AreEqual(false, isDone);
+        }
+
+        [Test]
+        public void AtTopRight_ActionSpace_IsDownAndLeft()
+        {
+            var env = new CliffWalkingEnvironment(TopRight);
+            var downAndLeft = new[]
+                {CliffWalkingAction.Down, CliffWalkingAction.Left};
+
+            var actions = env.ActionSpace();
+
+            CollectionAssert.AreEquivalent(downAndLeft, actions);
+        }
+
+        [Test]
+        public void StepIntoGoalPosition_IsDone()
+        {
+            var justAboveGoal = new Position(GoalPosition.X, GoalPosition.Y + 1);
+            var env = new CliffWalkingEnvironment(justAboveGoal);
+
+            var (observation, reward, isDone) = env.Step(CliffWalkingAction.Down);
+
+            Assert.AreEqual(true, isDone);
+            Assert.AreEqual(GoalPosition, observation);
+            Assert.AreEqual(-1, reward);
+        }
+
+        [Test]
+        public void CannotStart_AtGoal()
+        {
+            Assert.Throws<ArgumentException>(() =>
+                new CliffWalkingEnvironment(GoalPosition));
+        }
+
+        [TestCase(0, 0, CliffWalkingAction.Left)]
+        [TestCase(0, 3, CliffWalkingAction.Up)]
+        [TestCase(11, 1, CliffWalkingAction.Right)]
+        public void AttemptInvalidAction_Throws(
+            int startX, int startY, CliffWalkingAction action)
+        {
+            var env = new CliffWalkingEnvironment(new Position(startX, startY));
+
+            Assert.Throws<InvalidOperationException>(() => env.Step(action));
         }
 
         [TestCase(0, 0, CliffWalkingAction.Right)]
@@ -68,13 +107,12 @@ namespace CliffWalking.Test
         public void StepIntoCliff_ResetsPositionToStart_AndRewardsNegative100(
             int startX, int startY, CliffWalkingAction action)
         {
-            var bottomLeft = new Position(0, 0);
-            var startingPosition = new Position(startX, startY);
-            var env = new CliffWalkingEnvironment(startingPosition);
+            var initialPosition = new Position(startX, startY);
+            var env = new CliffWalkingEnvironment(initialPosition);
 
             var (observation, reward, _) = env.Step(action);
 
-            Assert.AreEqual(bottomLeft, observation);
+            Assert.AreEqual(StartingPosition, observation);
             Assert.AreEqual(-100, reward);
         }
     }
