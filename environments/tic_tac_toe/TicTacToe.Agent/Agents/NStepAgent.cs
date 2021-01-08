@@ -11,6 +11,15 @@ using TicTacToe.Game;
 
 namespace TicTacToe.Agent.Agents
 {
+    /// <summary>
+    /// N-Step TD agent. On-policy. Like the TD0 agent, learns an afterstate
+    /// value function (I think).
+    ///
+    /// To do:
+    /// - ensure afterstate values are estimated correctly
+    /// - compare to TD0 agent. one difference is that the td0 agent is off policy (I think)
+    /// - compare to MC agent. Which of all the above learns the 'best'?
+    /// </summary>
     public class NStepAgent
     {
         public BoardTile Tile { get; }
