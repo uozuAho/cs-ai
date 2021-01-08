@@ -36,25 +36,18 @@ namespace CliffWalking.Test
             Assert.Throws<InvalidOperationException>(() => env.Step(CliffWalkingAction.Left));
         }
 
-        [Test]
-        public void StepIntoCliff_RewardsNegative100()
-        {
-            var env = new CliffWalkingEnvironment();
-
-            var step = env.Step(CliffWalkingAction.Right);
-
-            Assert.AreEqual(-100, step.Reward);
-        }
-
-        [Test]
-        public void StepIntoCliff_ResetsPositionToStart()
+        [TestCase(0, 0, CliffWalkingAction.Right)]
+        public void StepIntoCliff_ResetsPositionToStart_AndRewardsNegative100(
+            int startX, int startY, CliffWalkingAction action)
         {
             var bottomLeft = new Position(0, 0);
-            var env = new CliffWalkingEnvironment();
+            var startingPosition = new Position(startX, startY);
+            var env = new CliffWalkingEnvironment(startingPosition);
 
-            var step = env.Step(CliffWalkingAction.Right);
+            var (observation, reward, _) = env.Step(action);
 
-            Assert.AreEqual(bottomLeft, step.Observation);
+            Assert.AreEqual(bottomLeft, observation);
+            Assert.AreEqual(-100, reward);
         }
     }
 }

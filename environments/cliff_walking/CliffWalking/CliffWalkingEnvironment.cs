@@ -16,7 +16,17 @@ namespace CliffWalking
     {
         private static readonly Position BottomLeft = new(0, 0);
 
-        private Position _currentPosition = new(0, 0);
+        private Position _currentPosition;
+
+        public CliffWalkingEnvironment()
+        {
+            _currentPosition = BottomLeft;
+        }
+
+        public CliffWalkingEnvironment(Position startingPosition)
+        {
+            _currentPosition = startingPosition;
+        }
 
         public Step Step(CliffWalkingAction action)
         {
