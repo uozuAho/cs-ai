@@ -6,4 +6,9 @@
     <WarningsAsErrors>nullable</WarningsAsErrors>
   </PropertyGroup>
 
+  <ItemGroup>
+    <ProjectReference Include="..\..\..\ailib\ailib.csproj" />
+    <ProjectReference Include="..\CliffWalking\CliffWalking.csproj" />
+  </ItemGroup>
+
 </Project>

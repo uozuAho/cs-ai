@@ -15,6 +15,7 @@ namespace CliffWalking
     public class CliffWalkingEnvironment
     {
         private static readonly Position BottomLeft = new(0, 0);
+        private static readonly Position DefaultStartingPosition = BottomLeft;
         private static readonly Position BottomRight = new(11, 0);
         private static readonly Position GoalPosition = BottomRight;
 
@@ -23,9 +24,8 @@ namespace CliffWalking
 
         private Position _currentPosition;
 
-        public CliffWalkingEnvironment()
+        public CliffWalkingEnvironment() : this(DefaultStartingPosition)
         {
-            _currentPosition = BottomLeft;
         }
 
         public CliffWalkingEnvironment(Position startingPosition)
@@ -36,12 +36,18 @@ namespace CliffWalking
             _currentPosition = startingPosition;
         }
 
+        public Position Reset()
+        {
+            _currentPosition = DefaultStartingPosition;
+            return _currentPosition;
+        }
+
         public Step Step(CliffWalkingAction action)
         {
             Move(action);
             var reward = Reward();
             if (IsOnCliff())
-                _currentPosition = BottomLeft;
+                _currentPosition = DefaultStartingPosition;
 
             return new Step(_currentPosition, reward, _currentPosition == GoalPosition);
         }
