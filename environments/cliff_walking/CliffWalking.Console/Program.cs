@@ -11,7 +11,23 @@ namespace CliffWalking.Console
             var env = new CliffWalkingEnvironment();
             var agent = new Td0CliffWalker();
 
-            var values = agent.ImproveEstimates(env);
+            var values = agent.ImproveEstimates(env, 10000);
+
+            System.Console.WriteLine("Values:");
+            StateActionValuesConsoleRenderer.RenderValues(values);
+            System.Console.WriteLine("");
+            System.Console.WriteLine("Greedy path:");
+            ConsolePathRenderer.RenderPath(GreedyPath(env, values));
+
+            values = agent.ImproveEstimates(env, 50000);
+
+            System.Console.WriteLine("Values:");
+            StateActionValuesConsoleRenderer.RenderValues(values);
+            System.Console.WriteLine("");
+            System.Console.WriteLine("Greedy path:");
+            ConsolePathRenderer.RenderPath(GreedyPath(env, values));
+
+            values = agent.ImproveEstimates(env, 500000);
 
             System.Console.WriteLine("Values:");
             StateActionValuesConsoleRenderer.RenderValues(values);
