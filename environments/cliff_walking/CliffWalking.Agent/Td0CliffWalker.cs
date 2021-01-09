@@ -16,12 +16,12 @@ namespace CliffWalking.Agent
 
         private readonly StateActionValues _stateActionValues = new();
 
-        public StateActionValues ImproveEstimates(CliffWalkingEnvironment env)
+        public StateActionValues ImproveEstimates(CliffWalkingEnvironment env, int iterations=10000)
         {
             var iterationCount = 0;
             var stopwatch = Stopwatch.StartNew();
 
-            for (; iterationCount < 123; iterationCount++)
+            for (; iterationCount < iterations; iterationCount++)
             {
                 var state = env.Reset();
                 var action = GetAction(env, state);

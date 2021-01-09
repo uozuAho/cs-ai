@@ -24,9 +24,8 @@ namespace CliffWalking
 
         private Position _currentPosition;
 
-        public CliffWalkingEnvironment()
+        public CliffWalkingEnvironment() : this(DefaultStartingPosition)
         {
-            _currentPosition = DefaultStartingPosition;
         }
 
         public CliffWalkingEnvironment(Position startingPosition)
