@@ -1,5 +1,4 @@
 ﻿using System;
-using System.Collections.Generic;
 using System.Diagnostics;
 using System.Linq;
 using ailib.Utils;
@@ -13,48 +12,47 @@ namespace CliffWalking.Agent
         // possible improvement: reduce over time during training
         private const double ChanceOfRandomAction = 0.05;
         private const double LearningRate = 0.05;
-        private const double DefaultActionValue = 0.0;
         private readonly Random _random = new();
 
-        private readonly Dictionary<Position, Dictionary<CliffWalkingAction, double>> _stateActionValues = new();
+        private readonly StateActionValues _stateActionValues = new();
 
-        public void ImproveEstimates(
-            CliffWalkingEnvironment environment,
-            Dictionary<Position, Dictionary<CliffWalkingAction, double>> actionValues)
+        public StateActionValues ImproveEstimates(CliffWalkingEnvironment env)
         {
             var iterationCount = 0;
-
             var stopwatch = Stopwatch.StartNew();
 
             for (; iterationCount < 123; iterationCount++)
             {
-                environment.Reset();
+                var state = env.Reset();
+                var action = GetAction(env, state);
+                var nextAction = action;
+                var isDone = false;
 
-                // while (!env.CurrentState.IsGameOver)
-                // {
-                //     var isExploratoryAction = ShouldDoExploratoryAction();
-                //     var action = isExploratoryAction ? RandomAction(env) : BestAction(env.CurrentState);
-                //     var afterstate = env.CurrentState.DoAction(action);
-                //     env.Step(action);
-                //
-                //     // Note that values are not updated after exploratory moves.
-                //     // Does this make this off-policy learning? If yes, why is
-                //     // there no importance sampling?
-                //     if (previousAfterstate != null && !isExploratoryAction)
-                //     {
-                //         var tdError = _values.Value(afterstate) - _values.Value(previousAfterstate);
-                //         // Note that reward is not included here, as the value table pre-defines
-                //         // game-over state values. Alternatively, we would need a special terminal
-                //         // state after game-over, that has zero reward for transitioning to.
-                //         var updatedValue = _values.Value(previousAfterstate) + LearningRate * tdError;
-                //
-                //         _values.SetValue(previousAfterstate, updatedValue);
-                //     }
-                //     previousAfterstate = afterstate;
-                // }
+                while (!isDone)
+                {
+                    var (nextState, reward, done) = env.Step(nextAction);
+                    nextAction = GetAction(env, nextState);
+                    isDone = done;
+
+                    var tdError = reward + Value(nextState, nextAction) - Value(state, action);
+                    var updatedValue = Value(state, action) + LearningRate * tdError;
+                    SetValue(state, action, updatedValue);
+
+                    state = nextState;
+                    action = nextAction;
+                }
             }
 
             Console.WriteLine($"Ran {iterationCount} iterations in {stopwatch.ElapsedMilliseconds} ms");
+
+            return _stateActionValues;
+        }
+
+        private CliffWalkingAction GetAction(CliffWalkingEnvironment env, Position state)
+        {
+            return ShouldDoExploratoryAction()
+                ? RandomAction(env)
+                : BestAction(env, state);
         }
 
         private CliffWalkingAction BestAction(CliffWalkingEnvironment env, Position currentPosition)
@@ -72,15 +70,12 @@ namespace CliffWalking.Agent
 
         private double Value(Position position, CliffWalkingAction action)
         {
-            if (_stateActionValues.TryGetValue(position, out var actionValues))
-            {
-                if (actionValues.TryGetValue(action, out var value))
-                {
-                    return value;
-                }
-            }
+            return _stateActionValues.Value(position, action);
+        }
 
-            return DefaultActionValue;
+        private void SetValue(Position position, CliffWalkingAction action, double value)
+        {
+            _stateActionValues.SetValue(position, action, value);
         }
 
         private CliffWalkingAction RandomAction(CliffWalkingEnvironment env)

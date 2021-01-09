@@ -26,7 +26,7 @@ namespace CliffWalking
 
         public CliffWalkingEnvironment()
         {
-            Reset();
+            _currentPosition = DefaultStartingPosition;
         }
 
         public CliffWalkingEnvironment(Position startingPosition)
