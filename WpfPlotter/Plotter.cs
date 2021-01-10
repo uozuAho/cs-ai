@@ -2,6 +2,9 @@
 
 namespace WpfPlotter
 {
+    /// <summary>
+    /// Windows plotter. Uses ScottPlot. To use, make your project target net5.0-windows.
+    /// </summary>
     public class Plotter
     {
         public Plot Plt => _window.OnlyOne.plt;
