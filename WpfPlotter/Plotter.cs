@@ -1,6 +1,6 @@
 ﻿using ScottPlot;
 
-namespace random_walk.Playground.WPF
+namespace WpfPlotter
 {
     public class Plotter
     {
