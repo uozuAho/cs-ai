@@ -9,7 +9,7 @@ namespace CliffWalking.Agent
     /// 1-step temporal difference policy improver
     /// - Q-learning: updates assume the optimal action is chosen, ie. off-policy
     /// </summary>
-    public class QLearningCliffWalker
+    public class QLearningCliffWalker : ICliffWalkingAgent
     {
         // e-greedy constant: probability of choosing a random action instead
         // of the greedy action
@@ -20,10 +20,12 @@ namespace CliffWalking.Agent
 
         private readonly StateActionValues _stateActionValues = new();
 
-        public StateActionValues ImproveEstimates(CliffWalkingEnvironment env, int iterations=10000)
+        public StateActionValues ImproveEstimates(
+            CliffWalkingEnvironment env, out TrainingDiagnostics diagnostics, int iterations=10000)
         {
             var iterationCount = 0;
             var stopwatch = Stopwatch.StartNew();
+            diagnostics = new TrainingDiagnostics();
 
             for (; iterationCount < iterations; iterationCount++)
             {
@@ -31,10 +33,12 @@ namespace CliffWalking.Agent
                 var action = GetAction(env, state);
                 var nextAction = action;
                 var isDone = false;
+                var rewardSum = 0.0;
 
                 while (!isDone)
                 {
                     var (nextState, reward, done) = env.Step(nextAction);
+                    rewardSum += reward;
                     // next action is e-greedy
                     nextAction = GetAction(env, nextState);
                     // assumed next action is best
@@ -48,6 +52,8 @@ namespace CliffWalking.Agent
                     state = nextState;
                     action = nextAction;
                 }
+
+                diagnostics.RewardSumPerEpisode.Add(rewardSum);
             }
 
             Console.WriteLine($"Ran {iterationCount} iterations in {stopwatch.ElapsedMilliseconds} ms");
