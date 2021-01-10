@@ -3,7 +3,8 @@
 namespace WpfPlotter
 {
     /// <summary>
-    /// Windows plotter. Uses ScottPlot. To use, make your project target net5.0-windows.
+    /// Windows plotter. Uses ScottPlot. To use, make your project target net5.0-windows,
+    /// and add the STAThread attribute to your program.
     /// </summary>
     public class Plotter
     {

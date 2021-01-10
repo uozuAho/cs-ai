@@ -22,7 +22,7 @@ namespace CliffWalking.Console
             ConsolePathRenderer.RenderPath(GreedyPath(env, values));
 
             var qAgent = new QLearningCliffWalker();
-            var qValues = qAgent.ImproveEstimates(env, 10000);
+            var qValues = qAgent.ImproveEstimates(env, out var qDiags, 10000);
 
             System.Console.WriteLine("");
             System.Console.WriteLine("q learning avg Values:");

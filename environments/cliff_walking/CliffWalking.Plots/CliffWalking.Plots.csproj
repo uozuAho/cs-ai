@@ -1,0 +1,14 @@
+<Project Sdk="Microsoft.NET.Sdk">
+
+  <PropertyGroup>
+    <OutputType>Exe</OutputType>
+    <TargetFramework>net5.0-windows</TargetFramework>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <ProjectReference Include="..\..\..\WpfPlotter\WpfPlotter.csproj" />
+    <ProjectReference Include="..\CliffWalking.Agent\CliffWalking.Agent.csproj" />
+    <ProjectReference Include="..\CliffWalking\CliffWalking.csproj" />
+  </ItemGroup>
+
+</Project>
