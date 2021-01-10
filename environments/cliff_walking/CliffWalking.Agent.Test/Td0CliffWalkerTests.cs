@@ -10,7 +10,7 @@ namespace CliffWalking.Agent.Test
             var env = new CliffWalkingEnvironment();
             var agent = new Td0CliffWalker();
 
-            var values = agent.ImproveEstimates(env);
+            var values = agent.ImproveEstimates(env, out var diags);
 
             Assert.IsNotEmpty(values.ActionValues(new Position(0, 0)));
         }

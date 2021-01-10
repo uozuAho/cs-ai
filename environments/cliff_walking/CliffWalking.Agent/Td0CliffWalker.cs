@@ -21,10 +21,12 @@ namespace CliffWalking.Agent
 
         private readonly StateActionValues _stateActionValues = new();
 
-        public StateActionValues ImproveEstimates(CliffWalkingEnvironment env, int iterations=10000)
+        public StateActionValues ImproveEstimates(
+            CliffWalkingEnvironment env, out TrainingDiagnostics diagnostics, int iterations=10000)
         {
             var iterationCount = 0;
             var stopwatch = Stopwatch.StartNew();
+            diagnostics = new TrainingDiagnostics();
 
             for (; iterationCount < iterations; iterationCount++)
             {
@@ -32,12 +34,14 @@ namespace CliffWalking.Agent
                 var action = GetAction(env, state);
                 var nextAction = action;
                 var isDone = false;
+                var rewardSum = 0.0;
 
                 while (!isDone)
                 {
                     var (nextState, reward, done) = env.Step(nextAction);
                     nextAction = GetAction(env, nextState);
                     isDone = done;
+                    rewardSum += reward;
 
                     var tdError = reward + Value(nextState, nextAction) - Value(state, action);
                     var updatedValue = Value(state, action) + LearningRate * tdError;
@@ -46,6 +50,8 @@ namespace CliffWalking.Agent
                     state = nextState;
                     action = nextAction;
                 }
+
+                diagnostics.RewardSumPerEpisode.Add(rewardSum);
             }
 
             Console.WriteLine($"Ran {iterationCount} iterations in {stopwatch.ElapsedMilliseconds} ms");

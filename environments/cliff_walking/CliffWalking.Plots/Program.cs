@@ -10,17 +10,21 @@ namespace CliffWalking.Plots
         [STAThread]
         static void Main(string[] args)
         {
+            const int numEpisodes = 500;
             var env = new CliffWalkingEnvironment();
-            var agent = new QLearningCliffWalker();
+            var td0Agent = new Td0CliffWalker();
+            var qLearningAgent = new QLearningCliffWalker();
 
-            var values = agent.ImproveEstimates(env, out var diagnostics, 500);
+            td0Agent.ImproveEstimates(env, out var tdDiags, numEpisodes);
+            qLearningAgent.ImproveEstimates(env, out var qLearningDiags, numEpisodes);
 
             var plotter = new Plotter();
             var plt = plotter.Plt;
 
-            plt.Title("Hello");
-            var dataX = Enumerable.Range(0, 500).Select(i => (double) i).ToArray();
-            plt.PlotScatter(dataX, diagnostics.RewardSumPerEpisode.ToArray(), label: "stuff");
+            plt.Title("Sum of rewards per episode");
+            var dataX = Enumerable.Range(0, numEpisodes).Select(i => (double) i).ToArray();
+            plt.PlotScatter(dataX, tdDiags.RewardSumPerEpisode.ToArray(), label: "TD 0 (Sarsa)");
+            plt.PlotScatter(dataX, qLearningDiags.RewardSumPerEpisode.ToArray(), label: "Q learning");
 
             plotter.Show();
         }
