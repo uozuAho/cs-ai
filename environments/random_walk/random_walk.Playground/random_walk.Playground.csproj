@@ -7,7 +7,7 @@
 
   <ItemGroup>
     <ProjectReference Include="..\..\tic_tac_toe\TicTacToe.Agent\TicTacToe.Agent.csproj" />
-    <ProjectReference Include="..\random_walk.Playground.WPF\random_walk.Playground.WPF.csproj" />
+    <ProjectReference Include="..\..\..\random_walk.Playground.WPF\random_walk.Playground.WPF.csproj" />
     <ProjectReference Include="..\random_walk\random_walk.csproj" />
   </ItemGroup>
 
