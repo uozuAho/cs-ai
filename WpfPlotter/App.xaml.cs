@@ -1,6 +1,6 @@
 ﻿using System.Windows;
 
-namespace random_walk.Playground.WPF
+namespace WpfPlotter
 {
     /// <summary>
     /// Interaction logic for App.xaml

@@ -2,7 +2,7 @@
 using System.Collections.Generic;
 using System.Linq;
 using random_walk.Playground.mc;
-using random_walk.Playground.WPF;
+using WpfPlotter;
 
 namespace random_walk.Playground
 {
