@@ -35,10 +35,13 @@ namespace CliffWalking.Agent
                 while (!isDone)
                 {
                     var (nextState, reward, done) = env.Step(nextAction);
+                    // next action is e-greedy
                     nextAction = GetAction(env, nextState);
+                    // assumed next action is best
+                    var bestNextAction = BestAction(env, nextState);
                     isDone = done;
 
-                    var tdError = reward + Value(nextState, nextAction) - Value(state, action);
+                    var tdError = reward + Value(nextState, bestNextAction) - Value(state, action);
                     var updatedValue = Value(state, action) + LearningRate * tdError;
                     SetValue(state, action, updatedValue);
 
