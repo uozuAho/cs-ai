@@ -7,10 +7,9 @@ namespace CliffWalking.Agent
 {
     /// <summary>
     /// 1-step temporal difference policy improver
-    /// - SARSA
-    /// - on policy
+    /// - Q-learning: updates assume the optimal action is chosen, ie. off-policy
     /// </summary>
-    public class Td0CliffWalker
+    public class QLearningCliffWalker
     {
         // e-greedy constant: probability of choosing a random action instead
         // of the greedy action
@@ -36,10 +35,13 @@ namespace CliffWalking.Agent
                 while (!isDone)
                 {
                     var (nextState, reward, done) = env.Step(nextAction);
+                    // next action is e-greedy
                     nextAction = GetAction(env, nextState);
+                    // assumed next action is best
+                    var bestNextAction = BestAction(env, nextState);
                     isDone = done;
 
-                    var tdError = reward + Value(nextState, nextAction) - Value(state, action);
+                    var tdError = reward + Value(nextState, bestNextAction) - Value(state, action);
                     var updatedValue = Value(state, action) + LearningRate * tdError;
                     SetValue(state, action, updatedValue);
 

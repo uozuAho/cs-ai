@@ -9,31 +9,29 @@ namespace CliffWalking.Console
         static void Main(string[] args)
         {
             var env = new CliffWalkingEnvironment();
-            var agent = new Td0CliffWalker();
+            var td0Agent = new Td0CliffWalker();
 
-            var values = agent.ImproveEstimates(env, 10000);
+            var values = td0Agent.ImproveEstimates(env, 10000);
 
-            System.Console.WriteLine("Values:");
-            StateActionValuesConsoleRenderer.RenderValues(values);
+            System.Console.WriteLine("td 0 avg Values:");
+            StateActionValuesConsoleRenderer.RenderAverageValues(values);
+            System.Console.WriteLine("td 0 highest Values:");
+            StateActionValuesConsoleRenderer.RenderHighestValues(values);
             System.Console.WriteLine("");
-            System.Console.WriteLine("Greedy path:");
+            System.Console.WriteLine("td 0 Greedy path:");
             ConsolePathRenderer.RenderPath(GreedyPath(env, values));
 
-            values = agent.ImproveEstimates(env, 50000);
+            var qAgent = new QLearningCliffWalker();
+            var qValues = qAgent.ImproveEstimates(env, 10000);
 
-            System.Console.WriteLine("Values:");
-            StateActionValuesConsoleRenderer.RenderValues(values);
             System.Console.WriteLine("");
-            System.Console.WriteLine("Greedy path:");
-            ConsolePathRenderer.RenderPath(GreedyPath(env, values));
-
-            values = agent.ImproveEstimates(env, 500000);
-
-            System.Console.WriteLine("Values:");
-            StateActionValuesConsoleRenderer.RenderValues(values);
+            System.Console.WriteLine("q learning avg Values:");
+            StateActionValuesConsoleRenderer.RenderAverageValues(qValues);
+            System.Console.WriteLine("q learning highest Values:");
+            StateActionValuesConsoleRenderer.RenderHighestValues(qValues);
             System.Console.WriteLine("");
-            System.Console.WriteLine("Greedy path:");
-            ConsolePathRenderer.RenderPath(GreedyPath(env, values));
+            System.Console.WriteLine("q learning Greedy path:");
+            ConsolePathRenderer.RenderPath(GreedyPath(env, qValues));
         }
 
         private static IEnumerable<Position> GreedyPath(
