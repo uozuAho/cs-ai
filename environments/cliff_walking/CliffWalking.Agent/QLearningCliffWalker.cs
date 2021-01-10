@@ -9,7 +9,7 @@ namespace CliffWalking.Agent
     /// 1-step temporal difference policy improver
     /// - Q-learning: updates assume the optimal action is chosen, ie. off-policy
     /// </summary>
-    public class QLearningCliffWalker
+    public class QLearningCliffWalker : ICliffWalkingAgent
     {
         // e-greedy constant: probability of choosing a random action instead
         // of the greedy action

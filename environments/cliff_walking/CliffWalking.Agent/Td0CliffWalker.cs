@@ -10,7 +10,7 @@ namespace CliffWalking.Agent
     /// - SARSA
     /// - on policy
     /// </summary>
-    public class Td0CliffWalker
+    public class Td0CliffWalker : ICliffWalkingAgent
     {
         // e-greedy constant: probability of choosing a random action instead
         // of the greedy action
