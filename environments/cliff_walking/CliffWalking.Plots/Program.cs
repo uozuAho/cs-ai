@@ -15,7 +15,7 @@ namespace CliffWalking.Plots
             var td0Agent = new Td0CliffWalker();
             var qLearningAgent = new QLearningCliffWalker();
 
-            td0Agent.ImproveEstimates(env, out var tdDiags, numEpisodes);
+            var tdAverageRewards = CollectAverageRewardSums(td0Agent, env, numEpisodes);
             qLearningAgent.ImproveEstimates(env, out var qLearningDiags, numEpisodes);
 
             var plotter = new Plotter();
@@ -23,10 +23,27 @@ namespace CliffWalking.Plots
 
             plt.Title("Sum of rewards per episode");
             var dataX = Enumerable.Range(0, numEpisodes).Select(i => (double) i).ToArray();
-            plt.PlotScatter(dataX, tdDiags.RewardSumPerEpisode.ToArray(), label: "TD 0 (Sarsa)");
+            plt.PlotScatter(dataX, tdAverageRewards, label: "TD 0 (Sarsa)");
             plt.PlotScatter(dataX, qLearningDiags.RewardSumPerEpisode.ToArray(), label: "Q learning");
 
             plotter.Show();
+        }
+
+        private static double[] CollectAverageRewardSums(
+            Td0CliffWalker td0Agent, CliffWalkingEnvironment env, int numEpisodes, int numRuns=20)
+        {
+            var rewardSumSums = new double[numEpisodes];
+
+            for (var i = 0; i < numRuns; i++)
+            {
+                td0Agent.ImproveEstimates(env, out var tdDiags, numEpisodes);
+                for (var j = 0; j < numEpisodes; j++)
+                {
+                    rewardSumSums[j] += tdDiags.RewardSumPerEpisode[j];
+                }
+            }
+
+            return rewardSumSums.Select(s => s / numRuns).ToArray();
         }
     }
 }
