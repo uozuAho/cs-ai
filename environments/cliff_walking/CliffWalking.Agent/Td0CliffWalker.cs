@@ -12,14 +12,20 @@ namespace CliffWalking.Agent
     /// </summary>
     public class Td0CliffWalker : ICliffWalkingAgent
     {
-        // e-greedy constant: probability of choosing a random action instead
-        // of the greedy action
-        // possible improvement: reduce over time during training
-        private const double ChanceOfRandomAction = 0.05;
-        private const double LearningRate = 0.05;
+        private readonly double _chanceOfRandomAction;
+        private readonly double _learningRate;
         private readonly Random _random = new();
-
         private readonly StateActionValues _stateActionValues = new();
+
+        /// <summary>
+        /// </summary>
+        /// <param name="chanceOfRandomAction">Also known as epsilon</param>
+        /// <param name="learningRate"></param>
+        public Td0CliffWalker(double chanceOfRandomAction, double learningRate)
+        {
+            _chanceOfRandomAction = chanceOfRandomAction;
+            _learningRate = learningRate;
+        }
 
         public StateActionValues ImproveEstimates(
             CliffWalkingEnvironment env, out TrainingDiagnostics diagnostics, int iterations=10000)
@@ -44,7 +50,7 @@ namespace CliffWalking.Agent
                     rewardSum += reward;
 
                     var tdError = reward + Value(nextState, nextAction) - Value(state, action);
-                    var updatedValue = Value(state, action) + LearningRate * tdError;
+                    var updatedValue = Value(state, action) + _learningRate * tdError;
                     SetValue(state, action, updatedValue);
 
                     state = nextState;
@@ -96,7 +102,7 @@ namespace CliffWalking.Agent
 
         private bool ShouldDoExploratoryAction()
         {
-            return _random.NextDouble() < ChanceOfRandomAction;
+            return _random.NextDouble() < _chanceOfRandomAction;
         }
     }
 }

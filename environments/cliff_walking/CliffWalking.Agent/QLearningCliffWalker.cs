@@ -14,11 +14,16 @@ namespace CliffWalking.Agent
         // e-greedy constant: probability of choosing a random action instead
         // of the greedy action
         // possible improvement: reduce over time during training
-        private const double ChanceOfRandomAction = 0.05;
-        private const double LearningRate = 0.05;
+        private readonly double _chanceOfRandomAction;
+        private readonly double _learningRate;
         private readonly Random _random = new();
-
         private readonly StateActionValues _stateActionValues = new();
+
+        public QLearningCliffWalker(double chanceOfRandomAction, double learningRate)
+        {
+            _chanceOfRandomAction = chanceOfRandomAction;
+            _learningRate = learningRate;
+        }
 
         public StateActionValues ImproveEstimates(
             CliffWalkingEnvironment env, out TrainingDiagnostics diagnostics, int iterations=10000)
@@ -46,7 +51,7 @@ namespace CliffWalking.Agent
                     isDone = done;
 
                     var tdError = reward + Value(nextState, bestNextAction) - Value(state, action);
-                    var updatedValue = Value(state, action) + LearningRate * tdError;
+                    var updatedValue = Value(state, action) + _learningRate * tdError;
                     SetValue(state, action, updatedValue);
 
                     state = nextState;
@@ -98,7 +103,7 @@ namespace CliffWalking.Agent
 
         private bool ShouldDoExploratoryAction()
         {
-            return _random.NextDouble() < ChanceOfRandomAction;
+            return _random.NextDouble() < _chanceOfRandomAction;
         }
     }
 }
