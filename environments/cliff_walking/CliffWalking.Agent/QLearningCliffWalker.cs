@@ -19,7 +19,7 @@ namespace CliffWalking.Agent
         private readonly Random _random = new();
         private readonly StateActionValues _stateActionValues = new();
 
-        public QLearningCliffWalker(double chanceOfRandomAction, double learningRate)
+        public QLearningCliffWalker(double chanceOfRandomAction = 0.1, double learningRate = 0.1)
         {
             _chanceOfRandomAction = chanceOfRandomAction;
             _learningRate = learningRate;
