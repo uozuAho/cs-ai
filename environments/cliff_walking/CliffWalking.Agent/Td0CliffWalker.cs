@@ -60,8 +60,6 @@ namespace CliffWalking.Agent
                 diagnostics.RewardSumPerEpisode.Add(rewardSum);
             }
 
-            Console.WriteLine($"Ran {iterationCount} iterations in {stopwatch.ElapsedMilliseconds} ms");
-
             return _stateActionValues;
         }
 
