@@ -49,8 +49,7 @@ namespace CliffWalking.Agent
                     isDone = done;
                     rewardSum += reward;
 
-                    var tdError = reward + Value(nextState, nextAction) - Value(state, action);
-                    var updatedValue = Value(state, action) + _learningRate * tdError;
+                    var updatedValue = SarsaEstimateValue(state, action, reward, nextState, nextAction);
                     SetValue(state, action, updatedValue);
 
                     state = nextState;
@@ -61,6 +60,18 @@ namespace CliffWalking.Agent
             }
 
             return _stateActionValues;
+        }
+
+        private double SarsaEstimateValue(
+            Position state,
+            CliffWalkingAction action,
+            double reward,
+            Position nextState,
+            CliffWalkingAction nextAction)
+        {
+            // Q(s,a) <-- Q(s,a) + alpha[reward + Q(s', a') - Q(s, a)]
+            var tdError = reward + Value(nextState, nextAction) - Value(state, action);
+            return Value(state, action) + _learningRate * tdError;
         }
 
         private CliffWalkingAction GetAction(CliffWalkingEnvironment env, Position state)

@@ -46,12 +46,9 @@ namespace CliffWalking.Agent
                     rewardSum += reward;
                     // next action is e-greedy
                     nextAction = GetAction(env, nextState);
-                    // assumed next action is best
-                    var bestNextAction = BestAction(env, nextState);
                     isDone = done;
 
-                    var tdError = reward + Value(nextState, bestNextAction) - Value(state, action);
-                    var updatedValue = Value(state, action) + _learningRate * tdError;
+                    var updatedValue = QLearningEstimateValue(state, action, reward, nextState, env);
                     SetValue(state, action, updatedValue);
 
                     state = nextState;
@@ -62,6 +59,20 @@ namespace CliffWalking.Agent
             }
 
             return _stateActionValues;
+        }
+
+        private double QLearningEstimateValue(
+            Position state,
+            CliffWalkingAction action,
+            double reward,
+            Position nextState,
+            CliffWalkingEnvironment env)
+        {
+            // assume next action is best
+            // Q(s,a) <-- Q(s,a) + alpha[reward + best(Q(s',a')) - Q(s,a)]
+            var bestNextAction = BestAction(env, nextState);
+            var tdError = reward + Value(nextState, bestNextAction) - Value(state, action);
+            return Value(state, action) + _learningRate * tdError;
         }
 
         private CliffWalkingAction GetAction(CliffWalkingEnvironment env, Position state)
