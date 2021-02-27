@@ -9,9 +9,9 @@ namespace CliffWalking.Console
         static void Main(string[] args)
         {
             var env = new CliffWalkingEnvironment();
-            var td0Agent = new Td0CliffWalker();
+            var sarsaAgent = new SarsaCliffWalker();
 
-            var values = td0Agent.ImproveEstimates(env, out var tdDiags, 10000);
+            var values = sarsaAgent.ImproveEstimates(env, out var tdDiags, 10000);
 
             System.Console.WriteLine("td 0 avg Values:");
             StateActionValuesConsoleRenderer.RenderAverageValues(values);

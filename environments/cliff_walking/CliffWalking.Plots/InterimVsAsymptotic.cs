@@ -24,7 +24,7 @@ namespace CliffWalking.Plots
                 new AgentResults
                 {
                     Label = "TD 0 (Sarsa)",
-                    CreateAgentFunc = rate => new Td0CliffWalker(epsilon, rate),
+                    CreateAgentFunc = rate => new SarsaCliffWalker(epsilon, rate),
                     // comment this out to recalculate
                     AsymptoticPerformance = new[]
                     {

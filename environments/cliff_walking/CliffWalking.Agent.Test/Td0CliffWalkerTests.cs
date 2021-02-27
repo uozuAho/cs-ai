@@ -8,7 +8,7 @@ namespace CliffWalking.Agent.Test
         public void AfterImprovingEstimates_StartingPosition_HasActionValues()
         {
             var env = new CliffWalkingEnvironment();
-            var agent = new Td0CliffWalker();
+            var agent = new SarsaCliffWalker();
 
             var values = agent.ImproveEstimates(env, out var diags);
 

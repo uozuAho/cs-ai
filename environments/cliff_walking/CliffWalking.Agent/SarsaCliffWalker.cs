@@ -10,7 +10,7 @@ namespace CliffWalking.Agent
     /// - SARSA
     /// - on policy
     /// </summary>
-    public class Td0CliffWalker : ICliffWalkingAgent
+    public class SarsaCliffWalker : ICliffWalkingAgent
     {
         private readonly double _chanceOfRandomAction;
         private readonly double _learningRate;
@@ -21,7 +21,7 @@ namespace CliffWalking.Agent
         /// </summary>
         /// <param name="chanceOfRandomAction">Also known as epsilon</param>
         /// <param name="learningRate"></param>
-        public Td0CliffWalker(double chanceOfRandomAction = 0.1, double learningRate = 0.1)
+        public SarsaCliffWalker(double chanceOfRandomAction = 0.1, double learningRate = 0.1)
         {
             _chanceOfRandomAction = chanceOfRandomAction;
             _learningRate = learningRate;

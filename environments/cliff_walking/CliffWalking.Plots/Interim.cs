@@ -13,10 +13,10 @@ namespace CliffWalking.Plots
         {
             const int numEpisodes = 100;
             var env = new CliffWalkingEnvironment();
-            var td0Agent = new Td0CliffWalker(0.1, 0.1);
+            var sarsaAgent = new SarsaCliffWalker(0.1, 0.1);
             var qLearningAgent = new QLearningCliffWalker(0.1, 0.1);
 
-            var tdAverageRewards = CollectAverageRewardSums(td0Agent, env, numEpisodes);
+            var tdAverageRewards = CollectAverageRewardSums(sarsaAgent, env, numEpisodes);
             var qLearningAverageRewards = CollectAverageRewardSums(qLearningAgent, env, numEpisodes);
 
             var plotter = new Plotter();
