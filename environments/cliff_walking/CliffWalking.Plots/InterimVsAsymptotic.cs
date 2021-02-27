@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Diagnostics;
 using System.Drawing;
 using System.Linq;
 using CliffWalking.Agent;
@@ -23,7 +24,7 @@ namespace CliffWalking.Plots
             {
                 new AgentResults
                 {
-                    Label = "TD 0 (Sarsa)",
+                    Label = "Sarsa",
                     CreateAgentFunc = rate => new SarsaCliffWalker(epsilon, rate),
                     // comment this out to recalculate
                     AsymptoticPerformance = new[]
@@ -39,6 +40,16 @@ namespace CliffWalking.Plots
                     AsymptoticPerformance = new[]
                     {
                         -49.55242,-49.09966,-49.05334,-49.07107,-49.10195,-49.133,-48.82859,-48.91728,-49.10077,-48.49301
+                    }
+                },
+                new AgentResults
+                {
+                    Label = "Expected Sarsa",
+                    CreateAgentFunc = rate => new ExpectedSarsaCliffWalker(epsilon, rate),
+                    // comment this out to recalculate
+                    AsymptoticPerformance = new []
+                    {
+                        -23.41282,-23.52287,-23.54294,-23.5803,-23.31136,-23.347,-23.6232,-23.41913,-23.38462,-23.50039
                     }
                 }
             };
@@ -73,8 +84,11 @@ namespace CliffWalking.Plots
             {
                 env.Reset();
                 var agent = createAgentFunc(rate);
+                var sw = Stopwatch.StartNew();
 
                 agent.ImproveEstimates(env, out var diags, numEpisodes);
+
+                Console.WriteLine($"ran {numEpisodes} episodes in {sw.Elapsed}");
 
                 yield return diags.RewardSumPerEpisode.Average();
             }
