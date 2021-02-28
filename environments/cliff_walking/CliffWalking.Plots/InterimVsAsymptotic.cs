@@ -15,9 +15,12 @@ namespace CliffWalking.Plots
     /// </summary>
     internal class InterimVsAsymptotic
     {
+        private const int NumEpisodesForAsymptote = 100000;
+        private const int NumEpisodesForInterim = 100;
+        private const double Epsilon = 0.1; // chance of random action, 'e' in e-greedy
+
         public static void Run()
         {
-            const double epsilon = 0.1;
             var learningRates = new[] { 0.1, 0.2, 0.3, 0.4, 0.5, 0.6, 0.7, 0.8, 0.9, 1.0 };
 
             var agents = new[]
@@ -25,33 +28,57 @@ namespace CliffWalking.Plots
                 new AgentResults
                 {
                     Label = "Sarsa",
-                    CreateAgentFunc = rate => new SarsaCliffWalker(epsilon, rate),
-                    // comment this out to recalculate
+                    CreateAgentFunc = rate => new SarsaCliffWalker(Epsilon, rate),
+                    // Comment out the following performance data to recalculate.
+                    // Values from previous runs add here to save time.
                     AsymptoticPerformance = new[]
                     {
                         -24.71747, -25.29603, -25.96466, -27.26097, -28.95513, -33.26777, -40.56129, -52.7869, -86.58512, -1071.29097
+                    },
+                    InterimPerformance = new []
+                    {
+                        -129.0826,-92.76539999999999,-79.0146,-73.6626,-70.15160000000002,-67.23040000000003,-70.0704,-68.117,-66.73240000000001,-61.22659999999999
                     }
                 },
                 new AgentResults
                 {
                     Label = "Q learning",
-                    CreateAgentFunc = rate => new QLearningCliffWalker(epsilon, rate),
-                    // comment this out to recalculate
+                    CreateAgentFunc = rate => new QLearningCliffWalker(Epsilon, rate),
                     AsymptoticPerformance = new[]
                     {
                         -49.55242,-49.09966,-49.05334,-49.07107,-49.10195,-49.133,-48.82859,-48.91728,-49.10077,-48.49301
+                    },
+                    InterimPerformance = new []
+                    {
+                        -139.4942,-104.38739999999999,-92.9796,-84.31559999999998,-80.2604,-77.59,-77.22980000000001,-76.66980000000001,-76.05700000000002,-68.3978
                     }
                 },
                 new AgentResults
                 {
                     Label = "Expected Sarsa",
-                    CreateAgentFunc = rate => new ExpectedSarsaCliffWalker(epsilon, rate),
-                    // comment this out to recalculate
+                    CreateAgentFunc = rate => new ExpectedSarsaCliffWalker(Epsilon, rate),
                     AsymptoticPerformance = new []
                     {
                         -23.41282,-23.52287,-23.54294,-23.5803,-23.31136,-23.347,-23.6232,-23.41913,-23.38462,-23.50039
+                    },
+                    InterimPerformance = new []
+                    {
+                        -120.62039999999998,-84.183,-67.90859999999999,-59.79600000000001,-55.070999999999984,-51.64760000000001,-48.913799999999995,-47.46840000000001,-46.6214,-45.198199999999986
                     }
-                }
+                },
+                new AgentResults
+                {
+                    Label = "2 step Sarsa",
+                    CreateAgentFunc = rate => new NStepSarsaCliffWalker(Epsilon, rate, 2),
+                    AsymptoticPerformance = new []
+                    {
+                        -25.73667,-27.11891,-29.54441,-32.23437,-36.80025,-44.154,-55.70062,-74.36775,-127.74627,-402.80217
+                    },
+                    InterimPerformance = new []
+                    {
+                        -88.98760000000001,-70.93679999999999,-68.82500000000002,-67.54559999999998,-69.2294,-71.63199999999998,-77.0206,-85.7252,-90.54040000000003,-83.49079999999998
+                    }
+                },
             };
 
             GatherAsymptoticPerformance(agents, learningRates);
@@ -66,7 +93,8 @@ namespace CliffWalking.Plots
                 // use stored results if possible, since this takes a while
                 if (agent.AsymptoticPerformance != null) continue;
 
-                agent.AsymptoticPerformance = GatherAsymptoticPerformance(learningRates, agent.CreateAgentFunc).ToArray();
+                agent.AsymptoticPerformance = GatherAsymptoticPerformance(
+                    learningRates, agent.CreateAgentFunc).ToArray();
                 Console.WriteLine(agent.Label);
                 PrintValues(agent.AsymptoticPerformance);
             }
@@ -76,8 +104,6 @@ namespace CliffWalking.Plots
             IEnumerable<double> learningRates,
             Func<double, ICliffWalkingAgent> createAgentFunc)
         {
-            const int numEpisodes = 100000;
-
             var env = new CliffWalkingEnvironment();
 
             foreach (var rate in learningRates)
@@ -86,9 +112,9 @@ namespace CliffWalking.Plots
                 var agent = createAgentFunc(rate);
                 var sw = Stopwatch.StartNew();
 
-                agent.ImproveEstimates(env, out var diags, numEpisodes);
+                agent.ImproveEstimates(env, out var diags, NumEpisodesForAsymptote);
 
-                Console.WriteLine($"ran {numEpisodes} episodes in {sw.Elapsed}");
+                Console.WriteLine($"ran {NumEpisodesForAsymptote} episodes in {sw.Elapsed}");
 
                 yield return diags.RewardSumPerEpisode.Average();
             }
@@ -98,7 +124,13 @@ namespace CliffWalking.Plots
         {
             foreach (var agent in agents)
             {
-                agent.InterimPerformance = GatherInterimPerformance(learningRates, agent.CreateAgentFunc).ToArray();
+                // use stored results if possible, since this takes a while
+                if (agent.InterimPerformance != null) continue;
+
+                agent.InterimPerformance = GatherInterimPerformance(
+                    learningRates, agent.CreateAgentFunc).ToArray();
+                Console.WriteLine(agent.Label);
+                PrintValues(agent.InterimPerformance);
             }
         }
 
@@ -107,7 +139,6 @@ namespace CliffWalking.Plots
             Func<double, ICliffWalkingAgent> createAgentFunc)
         {
             const int numRuns = 50;
-            const int numEpisodesPerRun = 100;
 
             var env = new CliffWalkingEnvironment();
 
@@ -120,7 +151,7 @@ namespace CliffWalking.Plots
                     env.Reset();
                     var agent = createAgentFunc(rate);
 
-                    agent.ImproveEstimates(env, out var diags, numEpisodesPerRun);
+                    agent.ImproveEstimates(env, out var diags, NumEpisodesForInterim);
 
                     firstXEpisodeAverages.Add(diags.RewardSumPerEpisode.Average());
                 }
