@@ -29,30 +29,41 @@ namespace CliffWalking.Plots
                 {
                     Label = "Sarsa",
                     CreateAgentFunc = rate => new SarsaCliffWalker(Epsilon, rate),
-                    // comment this out to recalculate
+                    // Comment out the following performance data to recalculate.
+                    // Values from previous runs add here to save time.
                     AsymptoticPerformance = new[]
                     {
                         -24.71747, -25.29603, -25.96466, -27.26097, -28.95513, -33.26777, -40.56129, -52.7869, -86.58512, -1071.29097
+                    },
+                    InterimPerformance = new []
+                    {
+                        -129.0826,-92.76539999999999,-79.0146,-73.6626,-70.15160000000002,-67.23040000000003,-70.0704,-68.117,-66.73240000000001,-61.22659999999999
                     }
                 },
                 new AgentResults
                 {
                     Label = "Q learning",
                     CreateAgentFunc = rate => new QLearningCliffWalker(Epsilon, rate),
-                    // comment this out to recalculate
                     AsymptoticPerformance = new[]
                     {
                         -49.55242,-49.09966,-49.05334,-49.07107,-49.10195,-49.133,-48.82859,-48.91728,-49.10077,-48.49301
+                    },
+                    InterimPerformance = new []
+                    {
+                        -139.4942,-104.38739999999999,-92.9796,-84.31559999999998,-80.2604,-77.59,-77.22980000000001,-76.66980000000001,-76.05700000000002,-68.3978
                     }
                 },
                 new AgentResults
                 {
                     Label = "Expected Sarsa",
                     CreateAgentFunc = rate => new ExpectedSarsaCliffWalker(Epsilon, rate),
-                    // comment this out to recalculate
                     AsymptoticPerformance = new []
                     {
                         -23.41282,-23.52287,-23.54294,-23.5803,-23.31136,-23.347,-23.6232,-23.41913,-23.38462,-23.50039
+                    },
+                    InterimPerformance = new []
+                    {
+                        -120.62039999999998,-84.183,-67.90859999999999,-59.79600000000001,-55.070999999999984,-51.64760000000001,-48.913799999999995,-47.46840000000001,-46.6214,-45.198199999999986
                     }
                 }
             };
@@ -100,8 +111,13 @@ namespace CliffWalking.Plots
         {
             foreach (var agent in agents)
             {
+                // use stored results if possible, since this takes a while
+                if (agent.InterimPerformance != null) continue;
+
                 agent.InterimPerformance = GatherInterimPerformance(
                     learningRates, agent.CreateAgentFunc).ToArray();
+                Console.WriteLine(agent.Label);
+                PrintValues(agent.InterimPerformance);
             }
         }
 
