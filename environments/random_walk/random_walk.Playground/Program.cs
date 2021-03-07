@@ -158,16 +158,24 @@ namespace random_walk.Playground
             var avgRmsErrors = new List<double>();
             foreach (var learningRate in learningRates)
             {
-                var estimator = new Td0ValueEstimator(learningRate);
-                var estimates = estimator.Estimate(env, 10);
-                var avgError = AvgRmsError(actualValues, estimates);
-                avgRmsErrors.Add(avgError);
+                var avgRmsErrorSum = 0.0;
+                const int numRuns = 20;
+                for (var i = 0; i < numRuns; i++)
+                {
+                    var estimator = new Td0ValueEstimator(learningRate);
+                    var estimates = estimator.Estimate(env, 10);
+                    var avgError = AvgRmsError(actualValues, estimates);
+                    avgRmsErrorSum += avgError;
+                }
+                avgRmsErrors.Add(avgRmsErrorSum / numRuns);
             }
 
             var plotter = new Plotter();
             var plt = plotter.Plt;
 
             plt.Title("Average RMS error over 19 states and first 10 episodes");
+            plt.XLabel("Learning rate");
+            plt.YLabel("Avg. RMS error");
             plt.PlotScatter(learningRates, avgRmsErrors.ToArray(), label: "td0");
             plt.Legend();
             plotter.Show();
