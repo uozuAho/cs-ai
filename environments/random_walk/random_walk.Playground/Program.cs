@@ -14,7 +14,8 @@ namespace random_walk.Playground
         {
             // EstimateStateValuesWithMonteCarlo();
             // EstimateStateValuesWithTd0();
-            CompareMcAndTd0();
+            // CompareMcAndTd0();
+            CompareNStepLengths();
         }
 
         public static void EstimateStateValuesWithMonteCarlo()
@@ -120,10 +121,10 @@ namespace random_walk.Playground
                     var tdEstimates10 = td0ValueEstimator10.Estimate(env, i);
                     var tdEstimates20 = td0ValueEstimator20.Estimate(env, i);
 
-                    mcErrors[j] = RmsError(actualValues, mcEstimates);
-                    tdErrors05[j] = RmsError(actualValues, tdEstimates05);
-                    tdErrors10[j] = RmsError(actualValues, tdEstimates10);
-                    tdErrors20[j] = RmsError(actualValues, tdEstimates20);
+                    mcErrors[j] = AvgRmsError(actualValues, mcEstimates);
+                    tdErrors05[j] = AvgRmsError(actualValues, tdEstimates05);
+                    tdErrors10[j] = AvgRmsError(actualValues, tdEstimates10);
+                    tdErrors20[j] = AvgRmsError(actualValues, tdEstimates20);
                 }
 
                 avgMcErrors[i] = mcErrors.Average();
@@ -147,7 +148,32 @@ namespace random_walk.Playground
             plotter.Show();
         }
 
-        private static double RmsError(IEnumerable<double> actual, IEnumerable<double> estimate)
+        private static void CompareNStepLengths()
+        {
+            var env = new RandomWalkEnvironment(19, 10);
+            // actual probability of reaching goal state from given state
+            var actualValues = Enumerable.Range(1, 19).Select(i => i / 20.0).ToArray();
+            var learningRates = new[] {0.0, 0.1, 0.2, 0.3, 0.4, 0.5, 0.6, 0.7, 0.8, 0.9, 1.0};
+
+            var avgRmsErrors = new List<double>();
+            foreach (var learningRate in learningRates)
+            {
+                var estimator = new Td0ValueEstimator(learningRate);
+                var estimates = estimator.Estimate(env, 10);
+                var avgError = AvgRmsError(actualValues, estimates);
+                avgRmsErrors.Add(avgError);
+            }
+
+            var plotter = new Plotter();
+            var plt = plotter.Plt;
+
+            plt.Title("Average RMS error over 19 states and first 10 episodes");
+            plt.PlotScatter(learningRates, avgRmsErrors.ToArray(), label: "td0");
+            plt.Legend();
+            plotter.Show();
+        }
+
+        private static double AvgRmsError(IEnumerable<double> actual, IEnumerable<double> estimate)
         {
             var meanSquare = actual.Zip(estimate)
                 .Select(x => Math.Pow(x.First - x.Second, 2))
