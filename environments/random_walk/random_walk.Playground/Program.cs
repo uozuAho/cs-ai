@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Linq;
 using random_walk.Playground.mc;
+using ScottPlot;
 using WpfPlotter;
 
 namespace random_walk.Playground
@@ -137,11 +138,11 @@ namespace random_walk.Playground
             plt.Title("MC and TD0 RMS error vs num episodes");
             var dataX = Enumerable.Range(0, 100).Select(x => (double)x).ToArray();
             plt.PlotScatter(dataX, avgMcErrors, label: "mc");
-            plt.PlotScatter(dataX, avgTdErrors05, label: "td 0.05");
-            plt.PlotScatter(dataX, avgTdErrors10, label: "td 0.10");
-            plt.PlotScatter(dataX, avgTdErrors20, label: "td 0.20");
+            plt.PlotScatter(dataX, avgTdErrors05, label: "td, learning rate: 0.05");
+            plt.PlotScatter(dataX, avgTdErrors10, label: "td, learning rate: 0.10");
+            plt.PlotScatter(dataX, avgTdErrors20, label: "td, learning rate: 0.20");
 
-            plt.Legend();
+            plt.Legend(location: legendLocation.upperRight);
 
             plotter.Show();
         }
