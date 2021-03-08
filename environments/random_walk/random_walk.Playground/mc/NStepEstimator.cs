@@ -51,7 +51,7 @@ namespace random_walk.Playground.mc
 
                         var currentValue = Value(states[tau]);
                         var updatedValue = currentValue + _learningRate * (G - currentValue);
-                        _values[tau] = updatedValue;
+                        _values[states[tau]] = updatedValue;
                     }
                 }
             }
