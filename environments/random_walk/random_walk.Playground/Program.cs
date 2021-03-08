@@ -155,14 +155,13 @@ namespace random_walk.Playground
             var actualValues = Enumerable.Range(1, 19).Select(i => i / 20.0).ToArray();
             var learningRates = new[] {0.0, 0.1, 0.2, 0.3, 0.4, 0.5, 0.6, 0.7, 0.8, 0.9, 1.0};
 
-            var nStepResults = new[]
-            {
-                new NStepResult
+            var nStepResults = new[] {1, 2, 4}
+                .Select(numSteps => new NStepResult
                 {
-                    Label = "1",
-                    CreateEstimatorFunc = learningRate => new NStepEstimator(learningRate)
-                }
-            };
+                    Label = $"{numSteps}",
+                    CreateEstimatorFunc = learningRate => new NStepEstimator(learningRate, numSteps)
+                })
+                .ToList();
 
             foreach (var nStepResult in nStepResults)
             {

@@ -9,10 +9,10 @@ namespace random_walk.Playground.mc
         private readonly double _learningRate;
         private readonly int _numSteps;
 
-        public NStepEstimator(double learningRate = 0.1)
+        public NStepEstimator(double learningRate, int numSteps)
         {
-            _numSteps = 1;
             _learningRate = learningRate;
+            _numSteps = numSteps;
         }
 
         public double[] Estimate(RandomWalkEnvironment environment, int? episodeLimit = null)
@@ -25,7 +25,6 @@ namespace random_walk.Playground.mc
             {
                 var states = new List<int> {environment.Reset()};
                 var rewards = new List<double> { 0.0 };
-                var rewardSum = 0.0;
 
                 var episodeLength = int.MaxValue;
                 var t = 0;
@@ -39,7 +38,6 @@ namespace random_walk.Playground.mc
                         var (nextState, reward, done) = environment.Step();
                         states.Add(nextState);
                         rewards.Add(reward);
-                        rewardSum += reward;
 
                         if (done) episodeLength = t + 1;
                     }
