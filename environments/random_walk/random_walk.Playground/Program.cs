@@ -168,7 +168,7 @@ namespace random_walk.Playground
                 foreach (var learningRate in learningRates)
                 {
                     var avgRmsErrorSum = 0.0;
-                    const int numRuns = 20;
+                    const int numRuns = 50;
                     for (var i = 0; i < numRuns; i++)
                     {
                         var estimator = nStepResult.CreateEstimatorFunc(learningRate);

@@ -17,7 +17,7 @@ namespace random_walk.Playground.mc
 
         public double[] Estimate(RandomWalkEnvironment environment, int? episodeLimit = null)
         {
-            _values = Enumerable.Range(0, environment.NumPositions).Select(_ => 0.5).ToArray();
+            _values = Enumerable.Range(0, environment.NumPositions).Select(_ => 0.0).ToArray();
 
             var maxEpisodes = episodeLimit ?? 10000;
 
