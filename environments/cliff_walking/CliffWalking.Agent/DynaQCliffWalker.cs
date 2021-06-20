@@ -5,21 +5,23 @@ using ailib.Utils;
 
 namespace CliffWalking.Agent
 {
-    class DynaQCliffWalker : ICliffWalkingAgent
+    public class DynaQCliffWalker : ICliffWalkingAgent
     {
         private readonly double _chanceOfRandomAction;
         private readonly double _learningRate;
+        private readonly int _numPlanningSteps;
         private readonly Random _random = new();
         private readonly StateActionValues _stateActionValues = new();
         private readonly CliffWalkingEnvironmentModel _model;
 
-        private const int numPlanningSteps = 10; // 0 = no planning. 50 ~ good in a simple static maze in the book
-        // todo: compare with q learner for various num planning steps
-
-        public DynaQCliffWalker(double chanceOfRandomAction = 0.1, double learningRate = 0.1)
+        public DynaQCliffWalker(
+            double chanceOfRandomAction,
+            double learningRate,
+            int numPlanningSteps)
         {
             _chanceOfRandomAction = chanceOfRandomAction;
             _learningRate = learningRate;
+            _numPlanningSteps = numPlanningSteps;
             _model = new CliffWalkingEnvironmentModel();
         }
 
@@ -64,7 +66,7 @@ namespace CliffWalking.Agent
 
         private void ImproveEstimatesWithModel(CliffWalkingEnvironment env)
         {
-            for (var i = 0; i < numPlanningSteps; i++)
+            for (var i = 0; i < _numPlanningSteps; i++)
             {
                 var state = _random.Choice(_model.ObservedStates);
                 var action = _random.Choice(_model.ActionsTakenAt(state));
