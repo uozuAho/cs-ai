@@ -7,7 +7,7 @@ namespace CliffWalking.Plots
     /// <summary>
     /// Plots a comparison of interim performance, like Example 6.6, Cliff Walking
     /// </summary>
-    class Interim
+    class LearningAgentsInterimComparison
     {
         public static void Run()
         {

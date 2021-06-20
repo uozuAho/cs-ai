@@ -13,7 +13,7 @@ namespace CliffWalking.Plots
     /// Plots interim vs asymptotic performance of a number of agents, similar to
     /// Figure 6.3, Expected Sarsa
     /// </summary>
-    internal class InterimVsAsymptotic
+    internal class LearningAgentsInterimVsAsymptotic
     {
         private const int NumEpisodesForAsymptote = 100000;
         private const int NumEpisodesForInterim = 100;
