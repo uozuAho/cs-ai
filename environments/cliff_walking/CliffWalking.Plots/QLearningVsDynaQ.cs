@@ -46,17 +46,17 @@ namespace CliffWalking.Plots
                 InterimPerformance = GatherInterimPerformance(learningRates, rate => CreateDynaQAgent(rate, 0)).ToArray()
             };
 
-            // var dynaQ3Steps = new QAgentResults
-            // {
-            //     Label = "DynaQ Zero",
-            //     InterimPerformance = GatherInterimPerformance(learningRates, rate => CreateDynaQAgent(rate, 3)).ToArray()
-            // };
+            var dynaQ3Steps = new QAgentResults
+            {
+                Label = "DynaQ Zero",
+                InterimPerformance = GatherInterimPerformance(learningRates, rate => CreateDynaQAgent(rate, 3)).ToArray()
+            };
 
             // Console.WriteLine("qlearner");
             // PrintValues(qLearner.InterimPerformance);
             // PrintValues(qLearner.AsymptoticPerformance);
 
-            var agents = new[] {qLearner, dynaQZeroSteps};
+            var agents = new[] {qLearner, dynaQZeroSteps, dynaQ3Steps};
 
             // todo: plot q learning
             // todo: plot dyna q
