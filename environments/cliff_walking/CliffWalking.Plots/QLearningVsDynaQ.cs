@@ -18,10 +18,12 @@ namespace CliffWalking.Plots
         private static ICliffWalkingAgent CreateQLearner(double rate)
             => new QLearningCliffWalker(Epsilon, rate);
 
+        private static ICliffWalkingAgent CreateDynaQAgent(double rate, int planningSteps)
+            => new DynaQCliffWalker(Epsilon, rate, planningSteps);
+
         public static void Run()
         {
             var learningRates = new[] { 0.1, 0.2, 0.3, 0.4, 0.5, 0.6, 0.7, 0.8, 0.9, 1.0 };
-            var planningSteps = new[] {0, 1, 5};
 
             var qLearner = new QAgentResults
             {
@@ -38,11 +40,23 @@ namespace CliffWalking.Plots
                 }
             };
 
+            var dynaQZeroSteps = new QAgentResults
+            {
+                Label = "DynaQ Zero",
+                InterimPerformance = GatherInterimPerformance(learningRates, rate => CreateDynaQAgent(rate, 0)).ToArray()
+            };
+
+            // var dynaQ3Steps = new QAgentResults
+            // {
+            //     Label = "DynaQ Zero",
+            //     InterimPerformance = GatherInterimPerformance(learningRates, rate => CreateDynaQAgent(rate, 3)).ToArray()
+            // };
+
             // Console.WriteLine("qlearner");
             // PrintValues(qLearner.InterimPerformance);
             // PrintValues(qLearner.AsymptoticPerformance);
 
-            var agents = new[] {qLearner};
+            var agents = new[] {qLearner, dynaQZeroSteps};
 
             // todo: plot q learning
             // todo: plot dyna q
