@@ -1,6 +1,5 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Diagnostics;
 using System.Drawing;
 using System.Linq;
 using CliffWalking.Agent;
@@ -42,90 +41,12 @@ namespace CliffWalking.Plots
                 }
             };
 
-            // todo: create separate methods to get performance for q and dyna : q doesn't care about planning steps
-            GatherAsymptoticPerformance(agents, learningRates);
-            GatherInterimPerformance(agents, learningRates);
+            // todo: plot q learning
+            // todo: plot dyna q
             PlotAgents(agents, learningRates);
         }
 
-        private static void GatherAsymptoticPerformance(
-            IEnumerable<QAgentResults> agents,
-            double[] learningRates,
-            int[] planningSteps)
-        {
-            foreach (var agent in agents)
-            {
-                // use stored results if possible, since this takes a while
-                if (agent.AsymptoticPerformance != null) continue;
-
-                agent.AsymptoticPerformance = GatherAsymptoticPerformance(
-                    learningRates, agent.CreateAgentFunc).ToArray();
-                Console.WriteLine(agent.Label);
-                PrintValues(agent.AsymptoticPerformance);
-            }
-        }
-
-        private static IEnumerable<double> GatherAsymptoticPerformance(
-            IEnumerable<double> learningRates,
-            Func<double, int, ICliffWalkingAgent> createAgentFunc)
-        {
-            var env = new CliffWalkingEnvironment();
-
-            foreach (var rate in learningRates)
-            {
-                env.Reset();
-                var agent = createAgentFunc(rate);
-                var sw = Stopwatch.StartNew();
-
-                agent.ImproveEstimates(env, out var diags, NumEpisodesForAsymptote);
-
-                Console.WriteLine($"ran {NumEpisodesForAsymptote} episodes in {sw.Elapsed}");
-
-                yield return diags.RewardSumPerEpisode.Average();
-            }
-        }
-
-        private static void GatherInterimPerformance(IEnumerable<AgentResults> agents, double[] learningRates)
-        {
-            foreach (var agent in agents)
-            {
-                // use stored results if possible, since this takes a while
-                if (agent.InterimPerformance != null) continue;
-
-                agent.InterimPerformance = GatherInterimPerformance(
-                    learningRates, agent.CreateAgentFunc).ToArray();
-                Console.WriteLine(agent.Label);
-                PrintValues(agent.InterimPerformance);
-            }
-        }
-
-        private static IEnumerable<double> GatherInterimPerformance(
-            IEnumerable<double> learningRates,
-            Func<double, ICliffWalkingAgent> createAgentFunc)
-        {
-            const int numRuns = 50;
-
-            var env = new CliffWalkingEnvironment();
-
-            foreach (var rate in learningRates)
-            {
-                var firstXEpisodeAverages = new List<double>();
-
-                for (var i = 0; i < numRuns; i++)
-                {
-                    env.Reset();
-                    var agent = createAgentFunc(rate);
-
-                    agent.ImproveEstimates(env, out var diags, NumEpisodesForInterim);
-
-                    firstXEpisodeAverages.Add(diags.RewardSumPerEpisode.Average());
-                }
-
-                yield return firstXEpisodeAverages.Average();
-            }
-        }
-
-        private static void PlotAgents(IEnumerable<AgentResults> agents, double[] learningRates)
+        private static void PlotAgents(IEnumerable<QAgentResults> agents, double[] learningRates)
         {
             var plotter = new Plotter();
             var plt = plotter.Plt;
@@ -164,11 +85,6 @@ namespace CliffWalking.Plots
 
             plotter.Show();
         }
-
-        private static void PrintValues(IEnumerable<double> asym)
-        {
-            Console.WriteLine(string.Join(",", asym));
-        }
     }
 
     internal class QAgentResults
@@ -178,7 +94,8 @@ namespace CliffWalking.Plots
         /// learning rate, num planning steps -> agent
         /// </summary>
         public Func<double, int, ICliffWalkingAgent> CreateAgentFunc { get; set; }
-        public double[] AsymptoticPerformance { get; set; }
-        public double[] InterimPerformance { get; set; }
+
+        public double[] AsymptoticPerformance { get; set; } = { };
+        public double[] InterimPerformance { get; set; } = { };
     }
 }
