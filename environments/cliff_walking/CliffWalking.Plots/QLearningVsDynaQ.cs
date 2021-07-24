@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Diagnostics;
 using System.Drawing;
 using System.Linq;
 using CliffWalking.Agent;
@@ -22,11 +23,24 @@ namespace CliffWalking.Plots
             var learningRates = new[] { 0.1, 0.2, 0.3, 0.4, 0.5, 0.6, 0.7, 0.8, 0.9, 1.0 };
             var planningSteps = new[] {0, 1, 5};
 
-            var qLearner = new QAgentResults 
+            var qLearner = new QAgentResults
             {
                 Label = "Q learning",
-                InterimPerformance = GatherInterimPerformance(learningRates, CreateQLearner).ToArray()
+                InterimPerformance = new[]
+                {
+                    -139.76239999999999, -104.042, -88.63319999999997, -85.18440000000001, -81.70179999999999,
+                    -79.67020000000001, -76.99619999999999, -74.72879999999998, -75.48160000000001, -70.7964
+                },
+                AsymptoticPerformance = new[]
+                {
+                    -49.66553, -49.32863, -49.11585, -48.82648, -49.15973, -49.12489, -48.8334, -48.94537, -48.78564,
+                    -49.6059
+                }
             };
+
+            // Console.WriteLine("qlearner");
+            // PrintValues(qLearner.InterimPerformance);
+            // PrintValues(qLearner.AsymptoticPerformance);
 
             var agents = new[] {qLearner};
 
@@ -58,6 +72,26 @@ namespace CliffWalking.Plots
                 }
 
                 yield return firstXEpisodeAverages.Average();
+            }
+        }
+
+        private static IEnumerable<double> GatherAsymptoticPerformance(
+            IEnumerable<double> learningRates,
+            Func<double, ICliffWalkingAgent> createAgentFunc)
+        {
+            var env = new CliffWalkingEnvironment();
+
+            foreach (var rate in learningRates)
+            {
+                env.Reset();
+                var agent = createAgentFunc(rate);
+                var sw = Stopwatch.StartNew();
+
+                agent.ImproveEstimates(env, out var diags, NumEpisodesForAsymptote);
+
+                Console.WriteLine($"ran {NumEpisodesForAsymptote} episodes in {sw.Elapsed}");
+
+                yield return diags.RewardSumPerEpisode.Average();
             }
         }
 
@@ -99,6 +133,11 @@ namespace CliffWalking.Plots
             plt.Legend();
 
             plotter.Show();
+        }
+
+        private static void PrintValues(IEnumerable<double> asym)
+        {
+            Console.WriteLine(string.Join(",", asym));
         }
     }
 
