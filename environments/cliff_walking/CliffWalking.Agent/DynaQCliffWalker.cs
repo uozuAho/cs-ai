@@ -11,7 +11,7 @@ namespace CliffWalking.Agent
         private readonly double _learningRate;
         private readonly int _numPlanningSteps;
         private readonly Random _random = new();
-        private readonly StateActionValues _stateActionValues = new();
+        private StateActionValuesFaster? _stateActionValues;
         private readonly CliffWalkingEnvironmentModel _model;
 
         public DynaQCliffWalker(
@@ -32,6 +32,9 @@ namespace CliffWalking.Agent
         {
             var iterationCount = 0;
             diagnostics = new TrainingDiagnostics();
+
+            var (x, y) = env.Dimensions;
+            _stateActionValues = new StateActionValuesFaster(x, y);
 
             for (; iterationCount < numEpisodes; iterationCount++)
             {
@@ -61,7 +64,7 @@ namespace CliffWalking.Agent
                 diagnostics.RewardSumPerEpisode.Add(rewardSum);
             }
 
-            return _stateActionValues;
+            if (_stateActionValues != null) return _stateActionValues;
         }
 
         private void ImproveEstimatesWithModel(CliffWalkingEnvironment env)

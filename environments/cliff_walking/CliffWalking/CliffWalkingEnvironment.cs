@@ -14,6 +14,8 @@ namespace CliffWalking
     /// </summary>
     public class CliffWalkingEnvironment
     {
+        public (int, int) Dimensions => (12, 4);
+
         private static readonly Position BottomLeft = new(0, 0);
         private static readonly Position DefaultStartingPosition = BottomLeft;
         private static readonly Position BottomRight = new(11, 0);
