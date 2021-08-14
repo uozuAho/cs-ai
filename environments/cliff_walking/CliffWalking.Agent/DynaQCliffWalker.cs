@@ -99,15 +99,20 @@ namespace CliffWalking.Agent
 
         private CliffWalkingAction BestAction(CliffWalkingEnvironment env, Position currentPosition)
         {
-            return env
-                .ActionSpace()
-                .Select(a => new
+            var bestAction = CliffWalkingAction.Down;
+            var highestValue = double.MinValue;
+            
+            foreach (var action in env.ActionSpace())
+            {
+                var value = Value(currentPosition, action);
+                if (value > highestValue)
                 {
-                    action = a,
-                    value = Value(currentPosition, a)
-                })
-                .OrderByDescending(av => av.value)
-                .First().action;
+                    bestAction = action;
+                    highestValue = value;
+                }
+            }
+
+            return bestAction;
         }
 
         private double Value(Position position, CliffWalkingAction action)
@@ -133,20 +138,36 @@ namespace CliffWalking.Agent
 
     internal class CliffWalkingEnvironmentModel
     {
-        public IEnumerable<Position> ObservedStates => Enumerable.Empty<Position>();
+        private readonly HashSet<Position>
+            _observedStates = new();
+        private readonly Dictionary<Position, List<CliffWalkingAction>>
+            _actionsTakenAt = new();
+        private readonly Dictionary<(Position, CliffWalkingAction), (Position, double)>
+            _map = new();
+
+        public IEnumerable<Position>
+            ObservedStates => _observedStates;
+        public IEnumerable<CliffWalkingAction>
+            ActionsTakenAt(Position state) => _actionsTakenAt[state];
 
         public void Update(Position state, CliffWalkingAction action, Position nextState, double reward)
         {
-        }
-
-        public IEnumerable<CliffWalkingAction> ActionsTakenAt(Position state)
-        {
-            return Enumerable.Empty<CliffWalkingAction>();
+            _observedStates.Add(state);
+            if (_actionsTakenAt.ContainsKey(state))
+            {
+                _actionsTakenAt[state].Add(action);
+            }
+            else
+            {
+                _actionsTakenAt[state] = new List<CliffWalkingAction> {action};
+            }
+            _map[(state, action)] = (nextState, reward);
         }
 
         public Step DoAction(Position state, CliffWalkingAction action)
         {
-            return new Step(state, 0.0, false);
+            var (nextState, reward) = _map[(state, action)];
+            return new Step(nextState, reward, false);
         }
     }
 }

@@ -17,3 +17,6 @@ From example 6.6 in the RL book:
 as their learning rates are varied:
 
 ![](cliff_walking_interim_vs_asymp.png)
+
+# todo
+- dynaq 3 step performs worse than 0 step, and computation is slow

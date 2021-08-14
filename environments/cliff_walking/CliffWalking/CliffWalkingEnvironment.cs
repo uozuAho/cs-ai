@@ -19,9 +19,6 @@ namespace CliffWalking
         private static readonly Position BottomRight = new(11, 0);
         private static readonly Position GoalPosition = BottomRight;
 
-        private static readonly CliffWalkingAction[] AllActions =
-            (CliffWalkingAction[]) Enum.GetValues(typeof(CliffWalkingAction));
-
         private Position _currentPosition;
 
         public CliffWalkingEnvironment() : this(DefaultStartingPosition)
@@ -54,18 +51,14 @@ namespace CliffWalking
 
         public IEnumerable<CliffWalkingAction> ActionSpace()
         {
-            var actions = AllActions.Select(a => a).ToList();
-
-            if (_currentPosition.X == 0)
-                actions.Remove(CliffWalkingAction.Left);
-            if (_currentPosition.X == 11)
-                actions.Remove(CliffWalkingAction.Right);
-            if (_currentPosition.Y == 0)
-                actions.Remove(CliffWalkingAction.Down);
-            if (_currentPosition.Y == 3)
-                actions.Remove(CliffWalkingAction.Up);
-
-            return actions;
+            if (_currentPosition.X != 0)
+                yield return CliffWalkingAction.Left;
+            if (_currentPosition.X != 11)
+                yield return CliffWalkingAction.Right;
+            if (_currentPosition.Y != 0)
+                yield return CliffWalkingAction.Down;
+            if (_currentPosition.Y != 3)
+                yield return CliffWalkingAction.Up;
         }
 
         private double Reward()
