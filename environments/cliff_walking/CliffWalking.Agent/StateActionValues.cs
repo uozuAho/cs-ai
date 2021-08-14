@@ -3,7 +3,14 @@ using System.Linq;
 
 namespace CliffWalking.Agent
 {
-    public class StateActionValues
+    public interface IStateActionValues
+    {
+        public double Value(Position state, CliffWalkingAction action);
+        public void SetValue(Position state, CliffWalkingAction action, double value);
+        public IEnumerable<(CliffWalkingAction, double)> ActionValues(Position position);
+    }
+
+    public class StateActionValues : IStateActionValues
     {
         private const double DefaultActionValue = 0;
         private readonly Dictionary<Position, Dictionary<CliffWalkingAction, double>> _values = new();

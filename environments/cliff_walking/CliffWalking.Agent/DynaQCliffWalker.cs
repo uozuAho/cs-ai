@@ -25,7 +25,7 @@ namespace CliffWalking.Agent
             _model = new CliffWalkingEnvironmentModel();
         }
 
-        public StateActionValues ImproveEstimates(
+        public IStateActionValues ImproveEstimates(
             CliffWalkingEnvironment env,
             out TrainingDiagnostics diagnostics,
             int numEpisodes)
@@ -54,17 +54,17 @@ namespace CliffWalking.Agent
                     var updatedValue = QLearningEstimateValue(state, action, reward, nextState, env);
                     SetValue(state, action, updatedValue);
 
-                    state = nextState;
-                    action = nextAction;
-
                     _model.Update(state, action, nextState, reward);
                     ImproveEstimatesWithModel(env);
+
+                    state = nextState;
+                    action = nextAction;
                 }
 
                 diagnostics.RewardSumPerEpisode.Add(rewardSum);
             }
 
-            if (_stateActionValues != null) return _stateActionValues;
+            return _stateActionValues;
         }
 
         private void ImproveEstimatesWithModel(CliffWalkingEnvironment env)
@@ -120,11 +120,15 @@ namespace CliffWalking.Agent
 
         private double Value(Position position, CliffWalkingAction action)
         {
+            if (_stateActionValues == null) throw new NullReferenceException();
+
             return _stateActionValues.Value(position, action);
         }
 
         private void SetValue(Position position, CliffWalkingAction action, double value)
         {
+            if (_stateActionValues == null) throw new NullReferenceException();
+
             _stateActionValues.SetValue(position, action, value);
         }
 

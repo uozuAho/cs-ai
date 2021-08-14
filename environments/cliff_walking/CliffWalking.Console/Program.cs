@@ -35,7 +35,7 @@ namespace CliffWalking.Console
         }
 
         private static IEnumerable<Position> GreedyPath(
-            CliffWalkingEnvironment env, StateActionValues values)
+            CliffWalkingEnvironment env, IStateActionValues values)
         {
             var currentPosition = env.Reset();
             var isDone = false;

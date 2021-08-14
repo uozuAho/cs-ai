@@ -29,7 +29,7 @@ namespace CliffWalking.Agent
             _numSteps = numSteps;
         }
 
-        public StateActionValues ImproveEstimates(
+        public IStateActionValues ImproveEstimates(
             CliffWalkingEnvironment env, out TrainingDiagnostics diagnostics, int numEpisodes=10000)
         {
             var currentEpisode = 0;

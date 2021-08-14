@@ -1,10 +1,13 @@
-﻿namespace CliffWalking.Agent
+﻿using System.Collections.Generic;
+using System.Linq;
+
+namespace CliffWalking.Agent
 {
     /// <summary>
     /// Cheats by knowing more about cliff walking - stores action values in
     /// an array instead of a dictionary.
     /// </summary>
-    public class StateActionValuesFaster
+    public class StateActionValuesFaster : IStateActionValues
     {
         private readonly double[,,] _values;
 
@@ -13,7 +16,7 @@
             _values = new double[x,y,4];
         }
 
-        public double Valuef(Position state, CliffWalkingAction action)
+        public double Value(Position state, CliffWalkingAction action)
         {
             return _values[state.X, state.Y, (int) action];
         }
@@ -23,11 +26,12 @@
             _values[state.X, state.Y, (int) action] = value;
         }
 
-        // public IEnumerable<(CliffWalkingAction, double)> ActionValues(Position position)
-        // {
-        //     if (_values.TryGetValue(position, out var actionValues))
-        //         return actionValues.Select(av => (av.Key, av.Value));
-        //     return Enumerable.Empty<(CliffWalkingAction, double)>();
-        // }
+        public IEnumerable<(CliffWalkingAction, double)> ActionValues(Position position)
+        {
+            for (var i = 0; i < 4; i++)
+            {
+                yield return ((CliffWalkingAction) i, _values[position.X, position.Y, i]);
+            }
+        }
     }
 }
