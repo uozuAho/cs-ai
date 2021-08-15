@@ -113,6 +113,7 @@ namespace CliffWalking.Agent
             var bestAction = CliffWalkingAction.Right;
             var highestValue = double.MinValue;
             
+            // noooo want action space of current position!
             foreach (var action in env.ActionSpace())
             {
                 var value = Value(currentPosition, action);
