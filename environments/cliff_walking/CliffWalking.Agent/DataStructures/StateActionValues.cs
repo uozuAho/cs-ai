@@ -1,7 +1,7 @@
 ﻿using System.Collections.Generic;
 using System.Linq;
 
-namespace CliffWalking.Agent
+namespace CliffWalking.Agent.DataStructures
 {
     public interface IStateActionValues
     {

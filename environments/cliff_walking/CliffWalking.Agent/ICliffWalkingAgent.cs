@@ -1,4 +1,6 @@
-﻿namespace CliffWalking.Agent
+﻿using CliffWalking.Agent.DataStructures;
+
+namespace CliffWalking.Agent
 {
     public interface ICliffWalkingAgent
     {

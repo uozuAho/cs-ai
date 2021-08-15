@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Linq;
 using ailib.Utils;
+using CliffWalking.Agent.DataStructures;
 
 namespace CliffWalking.Agent
 {

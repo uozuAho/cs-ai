@@ -1,5 +1,6 @@
 ﻿using System.Linq;
 using CliffWalking.Agent;
+using CliffWalking.Agent.DataStructures;
 
 namespace CliffWalking.Console
 {

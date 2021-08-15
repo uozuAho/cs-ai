@@ -1,6 +1,6 @@
 ﻿using System.Collections.Generic;
 
-namespace CliffWalking.Agent
+namespace CliffWalking.Agent.DataStructures
 {
     /// <summary>
     /// Cheats by knowing more about cliff walking - stores action values in
