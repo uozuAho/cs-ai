@@ -43,8 +43,9 @@ namespace CliffWalking.Agent
                 var nextAction = action;
                 var isDone = false;
                 var rewardSum = 0.0;
+                var numSteps = 0;
 
-                while (!isDone)
+                for (; !isDone; numSteps++)
                 {
                     var (nextState, reward, done) = env.Step(nextAction);
                     nextAction = GetAction(env, nextState);
@@ -62,6 +63,10 @@ namespace CliffWalking.Agent
                 }
 
                 diagnostics.RewardSumPerEpisode.Add(rewardSum);
+                if (iterationCount < 5)
+                {
+                    Console.WriteLine($"iteration {iterationCount}, episode steps: {numSteps}");
+                }
             }
 
             return _stateActionValues;
