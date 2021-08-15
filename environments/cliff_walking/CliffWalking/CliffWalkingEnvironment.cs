@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
 
@@ -15,13 +16,12 @@ namespace CliffWalking
     public class CliffWalkingEnvironment
     {
         public (int, int) Dimensions => (12, 4);
+        public Position CurrentPosition;
 
         private static readonly Position BottomLeft = new(0, 0);
         private static readonly Position DefaultStartingPosition = BottomLeft;
         private static readonly Position BottomRight = new(11, 0);
         private static readonly Position GoalPosition = BottomRight;
-
-        private Position _currentPosition;
 
         public CliffWalkingEnvironment() : this(DefaultStartingPosition)
         {
@@ -32,13 +32,13 @@ namespace CliffWalking
             if (startingPosition == GoalPosition)
                 throw new ArgumentException("Cannot start at goal");
 
-            _currentPosition = startingPosition;
+            CurrentPosition = startingPosition;
         }
 
         public Position Reset()
         {
-            _currentPosition = DefaultStartingPosition;
-            return _currentPosition;
+            CurrentPosition = DefaultStartingPosition;
+            return CurrentPosition;
         }
 
         public Step Step(CliffWalkingAction action)
@@ -46,20 +46,27 @@ namespace CliffWalking
             Move(action);
             var reward = Reward();
             if (IsOnCliff())
-                _currentPosition = DefaultStartingPosition;
+                CurrentPosition = DefaultStartingPosition;
 
-            return new Step(_currentPosition, reward, _currentPosition == GoalPosition);
+            return new Step(CurrentPosition, reward, CurrentPosition == GoalPosition);
         }
 
         public IEnumerable<CliffWalkingAction> ActionSpace()
         {
-            if (_currentPosition.X != 0)
+            return ActionSpace(CurrentPosition);
+        }
+
+        public static IEnumerable<CliffWalkingAction> ActionSpace(Position position)
+        {
+            var (x, y) = position;
+
+            if (x != 0)
                 yield return CliffWalkingAction.Left;
-            if (_currentPosition.X != 11)
+            if (x != 11)
                 yield return CliffWalkingAction.Right;
-            if (_currentPosition.Y != 0)
+            if (y != 0)
                 yield return CliffWalkingAction.Down;
-            if (_currentPosition.Y != 3)
+            if (y != 3)
                 yield return CliffWalkingAction.Up;
         }
 
@@ -75,9 +82,9 @@ namespace CliffWalking
 
         private bool IsOnCliff()
         {
-            return _currentPosition.Y == 0
-                   && _currentPosition.X > 0
-                   && _currentPosition.X < 11;
+            return CurrentPosition.Y == 0
+                   && CurrentPosition.X > 0
+                   && CurrentPosition.X < 11;
         }
 
         private void Move(CliffWalkingAction action)
@@ -85,7 +92,7 @@ namespace CliffWalking
             if (!ActionSpace().Contains(action))
                 throw new InvalidOperationException("Invalid action");
 
-            var (x, y) = _currentPosition;
+            var (x, y) = CurrentPosition;
 
             switch (action)
             {
@@ -97,7 +104,7 @@ namespace CliffWalking
                     throw new InvalidOperationException("invalid action");
             }
 
-            _currentPosition = new Position(x, y);
+            CurrentPosition = new Position(x, y);
         }
     }
 }

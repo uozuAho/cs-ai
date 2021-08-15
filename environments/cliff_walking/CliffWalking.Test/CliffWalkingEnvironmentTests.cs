@@ -13,11 +13,9 @@ namespace CliffWalking.Test
         [Test]
         public void AtStart_ActionSpace_IsUpAndRight()
         {
-            var env = new CliffWalkingEnvironment();
-            var upAndRight = new[]
-                {CliffWalkingAction.Up, CliffWalkingAction.Right};
+            var upAndRight = new[] {CliffWalkingAction.Up, CliffWalkingAction.Right};
 
-            var actions = env.ActionSpace();
+            var actions = CliffWalkingEnvironment.ActionSpace(StartingPosition);
 
             CollectionAssert.AreEquivalent(upAndRight, actions);
         }
@@ -37,11 +35,10 @@ namespace CliffWalking.Test
         [Test]
         public void InMiddle_ActionSpace_IsAllDirections()
         {
-            var env = new CliffWalkingEnvironment(SomewhereInTheMiddle);
             var allDirections = Enum.GetValues(typeof(CliffWalkingAction));
-
-            var actions = env.ActionSpace();
-
+        
+            var actions = CliffWalkingEnvironment.ActionSpace(SomewhereInTheMiddle);
+        
             CollectionAssert.AreEquivalent(allDirections, actions);
         }
 
@@ -61,12 +58,10 @@ namespace CliffWalking.Test
         [Test]
         public void AtTopRight_ActionSpace_IsDownAndLeft()
         {
-            var env = new CliffWalkingEnvironment(TopRight);
-            var downAndLeft = new[]
-                {CliffWalkingAction.Down, CliffWalkingAction.Left};
-
-            var actions = env.ActionSpace();
-
+            var downAndLeft = new[] {CliffWalkingAction.Down, CliffWalkingAction.Left};
+        
+            var actions = CliffWalkingEnvironment.ActionSpace(TopRight);
+        
             CollectionAssert.AreEquivalent(downAndLeft, actions);
         }
 
