@@ -2,7 +2,7 @@
 
 namespace CliffWalking.Agent.DataStructures
 {
-    internal class CliffWalkingEnvironmentModel
+    public class CliffWalkingEnvironmentModel
     {
         private readonly HashSet<Position>
             _observedStates = new();
