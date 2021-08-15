@@ -50,7 +50,7 @@ namespace CliffWalking.Agent
                     var doExplore = ShouldDoExploratoryAction();
                     nextAction = doExplore
                         ? RandomAction(env)
-                        : BestAction(env, nextState);
+                        : BestAction(nextState);
                     isDone = done;
                     rewardSum += reward;
 
@@ -65,10 +65,10 @@ namespace CliffWalking.Agent
                 }
 
                 diagnostics.RewardSumPerEpisode.Add(rewardSum);
-                if (iterationCount < 5)
-                {
-                    Console.WriteLine($"iteration {iterationCount}, episode steps: {numSteps}");
-                }
+                // if (iterationCount < 5)
+                // {
+                //     Console.WriteLine($"iteration {iterationCount}, episode steps: {numSteps}");
+                // }
             }
 
             return _stateActionValues;
@@ -95,7 +95,7 @@ namespace CliffWalking.Agent
         {
             // assume next action is best
             // Q(s,a) <-- Q(s,a) + alpha[reward + best(Q(s',a')) - Q(s,a)]
-            var bestNextAction = BestAction(env, nextState);
+            var bestNextAction = BestAction(nextState);
             var tdError = reward + Value(nextState, bestNextAction) - Value(state, action);
             return Value(state, action) + _learningRate * tdError;
         }
@@ -104,10 +104,10 @@ namespace CliffWalking.Agent
         {
             return ShouldDoExploratoryAction()
                 ? RandomAction(env)
-                : BestAction(env, state);
+                : BestAction(state);
         }
 
-        private CliffWalkingAction BestAction(CliffWalkingEnvironment env, Position position)
+        private CliffWalkingAction BestAction(Position position)
         {
             var bestAction = CliffWalkingAction.Right;
             var highestValue = double.MinValue;

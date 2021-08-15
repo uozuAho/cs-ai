@@ -56,19 +56,19 @@ namespace CliffWalking.Plots
                 InterimPerformance = GatherInterimPerformance(learningRates, rate => CreateDynaQAgent(rate, 3)).ToArray()
             };
 
+            Console.WriteLine("Gathering interim performance for dynaq 10");
+
+            var dynaQ10Steps = new QAgentResults
+            {
+                Label = "DynaQ 10",
+                InterimPerformance = GatherInterimPerformance(learningRates, rate => CreateDynaQAgent(rate, 3)).ToArray()
+            };
+
             // Console.WriteLine("qlearner");
             // PrintValues(qLearner.InterimPerformance);
             // PrintValues(qLearner.AsymptoticPerformance);
 
-            Console.WriteLine("dyna 0");
-            PrintValues(dynaQZeroSteps.InterimPerformance);
-            PrintValues(dynaQZeroSteps.AsymptoticPerformance);
-
-            Console.WriteLine("dyna 3");
-            PrintValues(dynaQ3Steps.InterimPerformance);
-            PrintValues(dynaQ3Steps.AsymptoticPerformance);
-
-            var agents = new[] {qLearner, dynaQZeroSteps, dynaQ3Steps};
+            var agents = new[] {qLearner, dynaQZeroSteps, dynaQ3Steps, dynaQ10Steps};
 
             PlotAgents(agents, learningRates);
         }
@@ -83,7 +83,7 @@ namespace CliffWalking.Plots
 
             foreach (var rate in learningRates)
             {
-                Console.WriteLine($"rate: {rate}");
+                Console.WriteLine($"learning rate: {rate}");
                 var firstXEpisodeAverages = new List<double>();
 
                 for (var i = 0; i < numRuns; i++)
