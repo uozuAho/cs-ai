@@ -48,7 +48,10 @@ namespace CliffWalking.Agent
                 for (; !isDone; numSteps++)
                 {
                     var (nextState, reward, done) = env.Step(nextAction);
-                    nextAction = GetAction(env, nextState);
+                    var doExplore = ShouldDoExploratoryAction();
+                    nextAction = doExplore
+                        ? RandomAction(env)
+                        : BestAction(env, nextState);
                     isDone = done;
                     rewardSum += reward;
 
@@ -107,7 +110,7 @@ namespace CliffWalking.Agent
 
         private CliffWalkingAction BestAction(CliffWalkingEnvironment env, Position currentPosition)
         {
-            var bestAction = CliffWalkingAction.Down;
+            var bestAction = CliffWalkingAction.Right;
             var highestValue = double.MinValue;
             
             foreach (var action in env.ActionSpace())
