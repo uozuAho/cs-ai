@@ -1,6 +1,7 @@
 ﻿using System.Collections.Generic;
 using System.Linq;
 using CliffWalking.Agent;
+using CliffWalking.Agent.DataStructures;
 
 namespace CliffWalking.Console
 {
@@ -35,7 +36,7 @@ namespace CliffWalking.Console
         }
 
         private static IEnumerable<Position> GreedyPath(
-            CliffWalkingEnvironment env, StateActionValues values)
+            CliffWalkingEnvironment env, IStateActionValues values)
         {
             var currentPosition = env.Reset();
             var isDone = false;

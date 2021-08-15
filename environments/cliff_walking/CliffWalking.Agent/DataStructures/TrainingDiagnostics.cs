@@ -1,6 +1,6 @@
 ﻿using System.Collections.Generic;
 
-namespace CliffWalking.Agent
+namespace CliffWalking.Agent.DataStructures
 {
     public class TrainingDiagnostics
     {

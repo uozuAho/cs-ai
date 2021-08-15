@@ -7,8 +7,9 @@ namespace CliffWalking.Plots
         [STAThread]
         static void Main(string[] args)
         {
-            // Interim.Run();
-            InterimVsAsymptotic.Run();
+            // LearningAgentsInterimComparison.Run();
+            // LearningAgentsInterimVsAsymptotic.Run();
+            QLearningVsDynaQ.Run();
         }
     }
 }

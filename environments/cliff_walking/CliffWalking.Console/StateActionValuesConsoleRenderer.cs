@@ -1,11 +1,12 @@
 ﻿using System.Linq;
 using CliffWalking.Agent;
+using CliffWalking.Agent.DataStructures;
 
 namespace CliffWalking.Console
 {
     internal class StateActionValuesConsoleRenderer
     {
-        public static void RenderAverageValues(StateActionValues values)
+        public static void RenderAverageValues(IStateActionValues values)
         {
             for (var y = 3; y >= 0; y--)
             {
@@ -16,7 +17,7 @@ namespace CliffWalking.Console
             }
         }
 
-        public static void RenderHighestValues(StateActionValues values)
+        public static void RenderHighestValues(IStateActionValues values)
         {
             for (var y = 3; y >= 0; y--)
             {
@@ -27,7 +28,7 @@ namespace CliffWalking.Console
             }
         }
 
-        private static string RenderAverageValueAtPosition(StateActionValues values, Position pos)
+        private static string RenderAverageValueAtPosition(IStateActionValues values, Position pos)
         {
             var posValues = values.ActionValues(pos).Select(av => av.Item2).ToList();
             if (posValues.Count == 0)
@@ -37,7 +38,7 @@ namespace CliffWalking.Console
             return string.Format(format, posValues.Average());
         }
 
-        private static string RenderHighestValueAtPosition(StateActionValues values, Position pos)
+        private static string RenderHighestValueAtPosition(IStateActionValues values, Position pos)
         {
             var posValues = values.ActionValues(pos).Select(av => av.Item2).ToList();
             if (posValues.Count == 0)

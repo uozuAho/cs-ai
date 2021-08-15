@@ -3,6 +3,7 @@ using System.Diagnostics;
 using System.Linq;
 using System.Runtime.InteropServices;
 using ailib.Utils;
+using CliffWalking.Agent.DataStructures;
 
 namespace CliffWalking.Agent
 {
@@ -25,7 +26,7 @@ namespace CliffWalking.Agent
             _learningRate = learningRate;
         }
 
-        public StateActionValues ImproveEstimates(
+        public IStateActionValues ImproveEstimates(
             CliffWalkingEnvironment env, out TrainingDiagnostics diagnostics, int iterations=10000)
         {
             var iterationCount = 0;
