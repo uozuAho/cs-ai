@@ -20,3 +20,4 @@ as their learning rates are varied:
 
 # todo
 - dynaq 3 step performs worse than 0 step, why?
+  - print number of steps per episode. planning should be less than no planning

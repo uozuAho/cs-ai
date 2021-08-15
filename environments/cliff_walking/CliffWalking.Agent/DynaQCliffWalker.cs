@@ -147,7 +147,7 @@ namespace CliffWalking.Agent
     {
         private readonly HashSet<Position>
             _observedStates = new();
-        private readonly Dictionary<Position, List<CliffWalkingAction>>
+        private readonly Dictionary<Position, HashSet<CliffWalkingAction>>
             _actionsTakenAt = new();
         private readonly Dictionary<(Position, CliffWalkingAction), (Position, double)>
             _map = new();
@@ -166,7 +166,7 @@ namespace CliffWalking.Agent
             }
             else
             {
-                _actionsTakenAt[state] = new List<CliffWalkingAction> {action};
+                _actionsTakenAt[state] = new HashSet<CliffWalkingAction> {action};
             }
             _map[(state, action)] = (nextState, reward);
         }
