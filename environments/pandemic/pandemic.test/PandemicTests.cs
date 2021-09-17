@@ -12,6 +12,7 @@ namespace pandemic.test
         {
             _state = PandemicState.Init(
                 PandemicBoard.CreateRealGameBoard(),
+                4,
                 Role.Medic,
                 Role.Scientist);
         }
@@ -65,6 +66,7 @@ namespace pandemic.test
         {
             const int totalNumPlayerCards = 48;
             const int numEpidemicCards = 4;
+
             Assert.AreEqual(totalNumPlayerCards + numEpidemicCards - 8, _state.PlayerDeck.Count);
         }
     }
@@ -76,7 +78,7 @@ namespace pandemic.test
         [SetUp]
         public void Setup()
         {
-            _state = PandemicState.Init(PandemicBoard.CreateRealGameBoard(), Role.Medic);
+            _state = PandemicState.Init(PandemicBoard.CreateRealGameBoard(), 4, Role.Medic);
 
             _state = _state.Apply(new DriveFerry("Chicago"));
             _state = _state.Apply(new DriveFerry("Atlanta"));

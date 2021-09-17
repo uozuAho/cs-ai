@@ -24,7 +24,7 @@ namespace pandemic
         private readonly PandemicBoard _board;
         private readonly Dictionary<string, CityState> _cityNameLookup;
         
-        public PandemicState(PandemicBoard board, Role[] characters)
+        public PandemicState(PandemicBoard board, int numEpidemicCards, Role[] characters)
         {
             _board = board;
             InfectionRate = 2;
@@ -35,13 +35,17 @@ namespace pandemic
             _cityNameLookup = BuildCityNameLookup(CityStates);
             CubePile = CreateNewCubePile();
             Players = characters.Select(c => new PlayerState()).ToArray();
-            PlayerDeck = new Stack<PlayerCard>();
+            var playerDeck = new List<PlayerCard>();
+            playerDeck.AddRange(_board.Cities.Select(c => new PlayerCityCard(c.Name)));
+            playerDeck.AddRange(Enumerable.Range(0, numEpidemicCards).Select(_ => new EpidemicCard()));
+            PlayerDeck = new Stack<PlayerCard>(playerDeck);
         }
 
-        public static PandemicState Init(PandemicBoard board, params Role[] roles)
+        public static PandemicState Init(PandemicBoard board, int numEpidemicCards, params Role[] roles)
         {
-            var state = new PandemicState(board, roles);
+            var state = new PandemicState(board, numEpidemicCards, roles);
             InitialInfectCities(state);
+            DrawPlayerCards(state);
             return state;
         }
 
@@ -61,6 +65,17 @@ namespace pandemic
 
                     state.InfectionDiscardPile.Push(cityName);
                 }
+            }
+        }
+
+        private static void DrawPlayerCards(PandemicState state)
+        {
+            foreach (var player in state.Players)
+            {
+                player.Hand.Add(state.PlayerDeck.Pop());
+                player.Hand.Add(state.PlayerDeck.Pop());
+                player.Hand.Add(state.PlayerDeck.Pop());
+                player.Hand.Add(state.PlayerDeck.Pop());
             }
         }
 
