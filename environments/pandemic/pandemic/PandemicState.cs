@@ -14,25 +14,7 @@ namespace pandemic
         public PlayerState[] Players { get; set; }
         public Stack<PlayerCard> PlayerDeck { get; set; }
 
-        private readonly PandemicBoard _board;
         private readonly Dictionary<string, CityState> _cityNameLookup;
-        
-        public PandemicState(PandemicBoard board, int numEpidemicCards, Role[] characters)
-        {
-            _board = board;
-            InfectionRate = 2;
-            // todo: shuffle
-            InfectionDeck = new Stack<string>(_board.Cities.Select(c => c.Name));
-            InfectionDiscardPile = new Stack<string>();
-            CityStates = _board.Cities.Select(c => new CityState(c)).ToList();
-            _cityNameLookup = BuildCityNameLookup(CityStates);
-            CubePile = CreateNewCubePile();
-            Players = characters.Select(c => new PlayerState()).ToArray();
-            var playerDeck = new List<PlayerCard>();
-            playerDeck.AddRange(_board.Cities.Select(c => new PlayerCityCard(c.Name)));
-            playerDeck.AddRange(Enumerable.Range(0, numEpidemicCards).Select(_ => new EpidemicCard()));
-            PlayerDeck = new Stack<PlayerCard>(playerDeck);
-        }
 
         public static PandemicState Init(PandemicBoard board, int numEpidemicCards, params Role[] roles)
         {
@@ -40,6 +22,27 @@ namespace pandemic
             InitialInfectCities(state);
             DrawPlayerCards(state);
             return state;
+        }
+
+        public PandemicState Apply(DriveFerry driveFerry)
+        {
+            return this;
+        }
+
+        private PandemicState(PandemicBoard board, int numEpidemicCards, Role[] characters)
+        {
+            InfectionRate = 2;
+            // todo: shuffle
+            InfectionDeck = new Stack<string>(board.Cities.Select(c => c.Name));
+            InfectionDiscardPile = new Stack<string>();
+            CityStates = board.Cities.Select(c => new CityState(c)).ToList();
+            _cityNameLookup = BuildCityNameLookup(CityStates);
+            CubePile = CreateNewCubePile();
+            Players = characters.Select(c => new PlayerState()).ToArray();
+            var playerDeck = new List<PlayerCard>();
+            playerDeck.AddRange(board.Cities.Select(c => new PlayerCityCard(c.Name)));
+            playerDeck.AddRange(Enumerable.Range(0, numEpidemicCards).Select(_ => new EpidemicCard()));
+            PlayerDeck = new Stack<PlayerCard>(playerDeck);
         }
 
         private static void InitialInfectCities(PandemicState state)
@@ -72,7 +75,7 @@ namespace pandemic
             }
         }
 
-        public CityState GetCity(string name)
+        private CityState GetCity(string name)
         {
             return _cityNameLookup[name];
         }
@@ -96,11 +99,6 @@ namespace pandemic
             }
 
             return cubes;
-        }
-
-        public PandemicState Apply(DriveFerry driveFerry)
-        {
-            return this;
         }
     }
 }
