@@ -1,6 +1,6 @@
 namespace pandemic
 {
-    public enum Character
+    public enum Role
     {
         Medic,
         Scientist

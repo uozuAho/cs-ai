@@ -25,7 +25,7 @@ namespace pandemic.States
         private readonly PandemicBoard _board;
         private readonly Dictionary<string, CityState> _cityNameLookup;
         
-        public PandemicGameState(PandemicBoard board, Character[] characters)
+        public PandemicGameState(PandemicBoard board, Role[] characters)
         {
             _board = board;
             InfectionRate = 2;

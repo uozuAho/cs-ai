@@ -14,8 +14,8 @@ namespace pandemic.test
         {
             _state = PandemicGame.Init(
                 PandemicBoard.CreateRealGameBoard(),
-                Character.Medic,
-                Character.Scientist);
+                Role.Medic,
+                Role.Scientist);
         }
 
         [Test]
@@ -70,7 +70,7 @@ namespace pandemic.test
         [SetUp]
         public void Setup()
         {
-            _state = PandemicGame.Init(PandemicBoard.CreateRealGameBoard(), Character.Medic);
+            _state = PandemicGame.Init(PandemicBoard.CreateRealGameBoard(), Role.Medic);
 
             _state = _state.Apply(new DriveFerry("Chicago"));
             _state = _state.Apply(new DriveFerry("Atlanta"));
