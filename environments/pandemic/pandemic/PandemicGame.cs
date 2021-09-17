@@ -1,6 +1,4 @@
 using pandemic.GameObjects;
-using pandemic.StateMachine;
-using pandemic.StateMachine.ActionProcessors;
 using pandemic.States;
 
 namespace pandemic
