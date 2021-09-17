@@ -19,6 +19,7 @@ namespace pandemic
         public List<CityState> CityStates { get; }
         public Cubes CubePile { get; set; }
         public PlayerState[] Players { get; set; }
+        public Stack<PlayerCard> PlayerDeck { get; set; }
 
         private readonly PandemicBoard _board;
         private readonly Dictionary<string, CityState> _cityNameLookup;
@@ -34,6 +35,7 @@ namespace pandemic
             _cityNameLookup = BuildCityNameLookup(CityStates);
             CubePile = CreateNewCubePile();
             Players = characters.Select(c => new PlayerState()).ToArray();
+            PlayerDeck = new Stack<PlayerCard>();
         }
 
         public static PandemicState Init(PandemicBoard board, params Role[] roles)

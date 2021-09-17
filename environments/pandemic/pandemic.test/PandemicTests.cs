@@ -59,6 +59,14 @@ namespace pandemic.test
         {
             Assert.AreEqual(4, _state.Players[0].Hand.Count);
         }
+
+        [Test]
+        public void Player_card_pile_has_8_cards_drawn()
+        {
+            const int totalNumPlayerCards = 48;
+            const int numEpidemicCards = 4;
+            Assert.AreEqual(totalNumPlayerCards + numEpidemicCards - 8, _state.PlayerDeck.Count);
+        }
     }
 
     public class NewGame_then_player_moves_4_times
