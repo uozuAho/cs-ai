@@ -55,6 +55,12 @@ namespace pandemic.test
 
             Assert.AreEqual(4 * 24 - 9 - 6 - 3, sumOfAllCubesInPile);
         }
+
+        [Test]
+        public void Players_have_4_city_cards()
+        {
+            Assert.AreEqual(4, _state.Players[0].Hand.Count);
+        }
     }
 
     public class NewGame_then_player_moves_4_times

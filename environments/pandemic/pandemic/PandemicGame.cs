@@ -8,17 +8,6 @@ namespace pandemic
     public class PandemicGame
     {
         public bool IsFinished => false;
-        public PandemicGameState State => _stateMachine.State;
-        
-        private readonly PandemicStateMachine _stateMachine;
-
-        public PandemicGame()
-        {
-            var initialState = new PandemicGameState(PandemicBoard.CreateRealGameBoard());
-            var actionProcessorFactory = new ActionProcessorFactory();
-        
-            _stateMachine = new PandemicStateMachine(initialState, actionProcessorFactory);
-        }
 
         public void DoMove(PlayerMove move)
         {
@@ -26,7 +15,7 @@ namespace pandemic
 
         public static PandemicGameState Init(PandemicBoard board, params Character[] characters)
         {
-            var state = new PandemicGameState(board);
+            var state = new PandemicGameState(board, characters);
             InitialInfectCities(state);
             return state;
         }

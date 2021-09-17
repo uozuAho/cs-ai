@@ -21,7 +21,6 @@ namespace pandemic.console
 
         private static void PrintGameStateToConsole(PandemicGame game)
         {
-            Console.WriteLine(game.State);
         }
 
         private static PlayerMove ReadPlayerMoveFromConsole()
