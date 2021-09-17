@@ -5,7 +5,7 @@ namespace pandemic.test
 {
     public class New_2_player_game
     {
-        private PandemicGameState _state;
+        private PandemicState _state;
 
         [SetUp]
         public void Setup()
@@ -63,7 +63,7 @@ namespace pandemic.test
 
     public class NewGame_then_player_moves_4_times
     {
-        private PandemicGameState _state;
+        private PandemicState _state;
 
         [SetUp]
         public void Setup()

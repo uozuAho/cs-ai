@@ -2,14 +2,14 @@ namespace pandemic
 {
     public class PandemicGame
     {
-        public static PandemicGameState Init(PandemicBoard board, params Role[] roles)
+        public static PandemicState Init(PandemicBoard board, params Role[] roles)
         {
-            var state = new PandemicGameState(board, roles);
+            var state = new PandemicState(board, roles);
             InitialInfectCities(state);
             return state;
         }
 
-        private static void InitialInfectCities(PandemicGameState state)
+        private static void InitialInfectCities(PandemicState state)
         {
             for (var numCubes = 1; numCubes <= 3; numCubes++)
             {

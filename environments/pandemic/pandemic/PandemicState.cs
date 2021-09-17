@@ -3,7 +3,7 @@ using System.Linq;
 
 namespace pandemic
 {
-    public class PandemicGameState
+    public class PandemicState
     {
         /** infection cards per turn */
         public int InfectionRate { get; }
@@ -23,7 +23,7 @@ namespace pandemic
         private readonly PandemicBoard _board;
         private readonly Dictionary<string, CityState> _cityNameLookup;
         
-        public PandemicGameState(PandemicBoard board, Role[] characters)
+        public PandemicState(PandemicBoard board, Role[] characters)
         {
             _board = board;
             InfectionRate = 2;
@@ -62,7 +62,7 @@ namespace pandemic
             return cubes;
         }
 
-        public PandemicGameState Apply(DriveFerry driveFerry)
+        public PandemicState Apply(DriveFerry driveFerry)
         {
             return this;
         }
