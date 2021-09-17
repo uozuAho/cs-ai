@@ -3,19 +3,12 @@ using System.Linq;
 
 namespace pandemic
 {
-    public class PandemicState
+    public record PandemicState
     {
-        /** infection cards per turn */
         public int InfectionRate { get; }
-        
-        /** city name[] */
-        public Stack<string> InfectionDeck { get; }
-        
-        /** city name[] */
-        public Stack<string> InfectionDiscardPile { get; }
-
         public int OutbreakCounter { get; set; }
-
+        public Stack<string> InfectionDeck { get; }
+        public Stack<string> InfectionDiscardPile { get; }
         public List<CityState> CityStates { get; }
         public Cubes CubePile { get; set; }
         public PlayerState[] Players { get; set; }
