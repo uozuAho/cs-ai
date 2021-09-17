@@ -89,7 +89,7 @@ namespace pandemic.test
         [Test]
         public void Player_picks_up_2_city_cards()
         {
-            // _state.Players[0]
+            Assert.AreEqual("Atlanta", _state.Players[0].Position);
         }
     }
 }

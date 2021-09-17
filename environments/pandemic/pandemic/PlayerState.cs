@@ -5,6 +5,12 @@ namespace pandemic
     public record PlayerState
     {
         public List<PlayerCard> Hand { get; set; } = new();
+        public string Position { get; set; }
+
+        public PlayerState(string postition)
+        {
+            Position = postition;
+        }
     }
 
     public abstract record PlayerCard;

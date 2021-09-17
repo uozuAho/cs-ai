@@ -38,7 +38,7 @@ namespace pandemic
             CityStates = board.Cities.Select(c => new CityState(c)).ToList();
             _cityNameLookup = BuildCityNameLookup(CityStates);
             CubePile = CreateNewCubePile();
-            Players = characters.Select(c => new PlayerState()).ToArray();
+            Players = characters.Select(c => new PlayerState("Atlanta")).ToArray();
             var playerDeck = new List<PlayerCard>();
             playerDeck.AddRange(board.Cities.Select(c => new PlayerCityCard(c.Name)));
             playerDeck.AddRange(Enumerable.Range(0, numEpidemicCards).Select(_ => new EpidemicCard()));
