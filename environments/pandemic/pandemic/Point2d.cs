@@ -1,4 +1,4 @@
-namespace pandemic.GameObjects
+namespace pandemic
 {
     public struct Point2D
     {

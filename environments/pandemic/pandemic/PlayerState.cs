@@ -1,6 +1,6 @@
 ﻿using System.Collections.Generic;
 
-namespace pandemic.States
+namespace pandemic
 {
     public record PlayerState
     {

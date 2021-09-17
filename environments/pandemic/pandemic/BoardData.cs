@@ -1,8 +1,7 @@
 using System.Collections.Generic;
 using ailib.DataStructures;
-using pandemic.GameObjects;
 
-namespace pandemic.Data
+namespace pandemic
 {
   public static class BoardData
   {

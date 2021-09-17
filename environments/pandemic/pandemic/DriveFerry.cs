@@ -1,4 +1,4 @@
-namespace pandemic.test
+namespace pandemic
 {
     public class DriveFerry
     {
