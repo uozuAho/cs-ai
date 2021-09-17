@@ -5,14 +5,17 @@ using pandemic.States;
 
 namespace pandemic.test
 {
-    public class NewGame
+    public class New_2_player_game
     {
         private PandemicGameState _state;
 
         [SetUp]
         public void Setup()
         {
-            _state = PandemicGame.Init(PandemicBoard.CreateRealGameBoard());
+            _state = PandemicGame.Init(
+                PandemicBoard.CreateRealGameBoard(),
+                Character.Medic,
+                Character.Scientist);
         }
 
         [Test]
@@ -51,6 +54,28 @@ namespace pandemic.test
                 .Sum();
 
             Assert.AreEqual(4 * 24 - 9 - 6 - 3, sumOfAllCubesInPile);
+        }
+    }
+
+    public class NewGame_then_player_moves_4_times
+    {
+        private PandemicGameState _state;
+
+        [SetUp]
+        public void Setup()
+        {
+            _state = PandemicGame.Init(PandemicBoard.CreateRealGameBoard(), Character.Medic);
+
+            _state = _state.Apply(new DriveFerry("Chicago"));
+            _state = _state.Apply(new DriveFerry("Atlanta"));
+            _state = _state.Apply(new DriveFerry("Chicago"));
+            _state = _state.Apply(new DriveFerry("Atlanta"));
+        }
+
+        [Test]
+        public void Player_picks_up_2_city_cards()
+        {
+            // _state.Players[0]
         }
     }
 }

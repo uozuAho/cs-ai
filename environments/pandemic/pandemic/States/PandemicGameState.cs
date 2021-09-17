@@ -1,6 +1,7 @@
 ﻿using System.Collections.Generic;
 using System.Linq;
 using pandemic.GameObjects;
+using pandemic.test;
 
 namespace pandemic.States
 {
@@ -59,6 +60,11 @@ namespace pandemic.States
             }
 
             return cubes;
+        }
+
+        public PandemicGameState Apply(DriveFerry driveFerry)
+        {
+            return this;
         }
     }
 }
