@@ -4,7 +4,7 @@ using pandemic.GameObjects;
 
 namespace pandemic.test
 {
-    public class PandemicBoardTests
+    public class PandemicBoardSanityTests
     {
         [Test]
         public void RealBoard_ShouldHave48Cities()
