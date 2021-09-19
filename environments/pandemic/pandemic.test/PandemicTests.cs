@@ -1,3 +1,4 @@
+using System;
 using System.Linq;
 using NUnit.Framework;
 
@@ -69,6 +70,12 @@ namespace pandemic.test
 
             Assert.AreEqual(totalNumPlayerCards + numEpidemicCards - 8, _state.PlayerDeck.Count);
         }
+
+        [Test]
+        public void Player_cannot_drive_ferry_to_non_adjacent_city()
+        {
+            Assert.Throws<InvalidOperationException>(() => _state.Apply(new DriveFerry("Paris")));
+        }
     }
 
     public class NewGame_then_player_moves_4_times
@@ -78,7 +85,11 @@ namespace pandemic.test
         [SetUp]
         public void Setup()
         {
-            _state = PandemicState.Init(PandemicBoard.CreateRealGameBoard(), 4, Role.Medic);
+            _state = PandemicState.Init(
+                PandemicBoard.CreateRealGameBoard(),
+                4,
+                Role.Medic,
+                Role.Scientist);
 
             _state = _state.Apply(new DriveFerry("Chicago"));
             _state = _state.Apply(new DriveFerry("Atlanta"));

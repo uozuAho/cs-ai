@@ -1,5 +1,8 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
+using System.Diagnostics;
 using System.Linq;
+using System.Reflection.Metadata;
 
 namespace pandemic
 {
@@ -12,9 +15,12 @@ namespace pandemic
         public List<CityState> CityStates { get; }
         public Cubes CubePile { get; set; }
         public PlayerState[] Players { get; set; }
+        public PlayerState CurrentPlayer => Players[_currentPlayerIdx];
         public Stack<PlayerCard> PlayerDeck { get; set; }
 
         private readonly Dictionary<string, CityState> _cityNameLookup;
+        private readonly PandemicBoard _board;
+        private int _currentPlayerIdx = 0;
 
         public static PandemicState Init(PandemicBoard board, int numEpidemicCards, params Role[] roles)
         {
@@ -26,11 +32,21 @@ namespace pandemic
 
         public PandemicState Apply(DriveFerry driveFerry)
         {
+            var currentCity = _board.GetCity(CurrentPlayer.Position);
+            var destination = _board.GetCity(driveFerry.City);
+
+            if (!_board.Adjacent(currentCity).Contains(destination))
+                throw new InvalidOperationException($"Invalid drive/ferry: {currentCity.Name} to {destination.Name}");
+
             return this;
         }
 
-        private PandemicState(PandemicBoard board, int numEpidemicCards, Role[] characters)
+        private PandemicState(PandemicBoard board, int numEpidemicCards, Role[] roles)
         {
+            Debug.Assert(numEpidemicCards >= 4 && numEpidemicCards <= 6);
+            Debug.Assert(roles.Length >= 2);
+
+            _board = board;
             InfectionRate = 2;
             // todo: shuffle
             InfectionDeck = new Stack<string>(board.Cities.Select(c => c.Name));
@@ -38,7 +54,7 @@ namespace pandemic
             CityStates = board.Cities.Select(c => new CityState(c)).ToList();
             _cityNameLookup = BuildCityNameLookup(CityStates);
             CubePile = CreateNewCubePile();
-            Players = characters.Select(c => new PlayerState("Atlanta")).ToArray();
+            Players = roles.Select(c => new PlayerState("Atlanta")).ToArray();
             var playerDeck = new List<PlayerCard>();
             playerDeck.AddRange(board.Cities.Select(c => new PlayerCityCard(c.Name)));
             playerDeck.AddRange(Enumerable.Range(0, numEpidemicCards).Select(_ => new EpidemicCard()));
