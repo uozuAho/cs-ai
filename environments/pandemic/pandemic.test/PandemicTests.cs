@@ -78,7 +78,7 @@ namespace pandemic.test
         }
     }
 
-    public class NewGame_then_player_moves_4_times
+    public class New_2_player_game_then_player_moves_4_times
     {
         private PandemicState _state;
 
@@ -98,9 +98,15 @@ namespace pandemic.test
         }
 
         [Test]
-        public void Player_picks_up_2_city_cards()
+        public void Player_is_at_last_destination()
         {
             Assert.AreEqual("Atlanta", _state.Players[0].Position);
+        }
+
+        [Test]
+        public void Player_picks_up_2_player_cards()
+        {
+            Assert.AreEqual(6, _state.Players[0].Hand.Count);
         }
     }
 }
