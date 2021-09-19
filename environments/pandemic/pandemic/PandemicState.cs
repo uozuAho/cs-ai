@@ -2,7 +2,6 @@
 using System.Collections.Generic;
 using System.Diagnostics;
 using System.Linq;
-using System.Reflection.Metadata;
 
 namespace pandemic
 {
@@ -38,7 +37,10 @@ namespace pandemic
             if (!_board.Adjacent(currentCity).Contains(destination))
                 throw new InvalidOperationException($"Invalid drive/ferry: {currentCity.Name} to {destination.Name}");
 
-            return this;
+            var newPlayers = Players.Select(p => p with { }).ToArray();
+            newPlayers[_currentPlayerIdx].Position = destination.Name;
+
+            return this with {Players = newPlayers};
         }
 
         private PandemicState(PandemicBoard board, int numEpidemicCards, Role[] roles)
